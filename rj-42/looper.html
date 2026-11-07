@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RJ-42 Looper (mockup)</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --page: #2a2a29; --page-ink: #9a9a94;
+    --face: #232221; --ear: #1c1b1a; --ink: #dcd9d2; --ink-dim: #8e8b85;
+    --btn: #c9c6be; --btn-edge: #77746d;
+    --red: #d3302a; --red-edge: #8f1d19;
+    --led-off: #3a1c1a; --led-on: #ff3b26;
+    --seg-on: #ff3b26; --seg-off: rgba(255, 59, 38, .08);
+    --lcd-glass: #b3c25c; --lcd-ink: rgba(38, 48, 15, .78);
+    --rule: #4b8ad0;
+    --font: "Archivo Narrow", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--font); min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 32px 16px; }
+  .note { color: var(--page-ink); font-size: 13px; max-width: 1240px; width: 100%; line-height: 1.5; }
+  .note b { color: #d9d9d3; }
+  .scroll { width: 100%; max-width: 1240px; overflow-x: auto; }
+
+  /* rack */
+  .rack { display: grid; grid-template-columns: 34px minmax(0, 1fr) 34px; min-width: 1180px;
+    background: var(--face); border-radius: 4px;
+    box-shadow: 0 1px 0 #3a3836 inset, 0 -1px 0 #0b0b0b inset, 0 20px 44px rgba(0,0,0,.45); }
+  .ear { background: linear-gradient(90deg, #171615, var(--ear) 40%, #262523);
+    display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 22px 0; border-radius: 4px 0 0 4px; }
+  .ear:last-child { border-radius: 0 4px 4px 0; background: linear-gradient(270deg, #171615, var(--ear) 40%, #262523); }
+  .ear i { width: 15px; height: 9px; border-radius: 5px; background: #060606; box-shadow: inset 0 1px 2px #000, 0 1px 0 #34363a; }
+  .face { display: grid; column-gap: 26px; row-gap: 14px; padding: 18px 22px 20px;
+    grid-template-columns: 170px minmax(0, 1fr) 210px 150px;
+    grid-template-areas:
+      "brand  leds   leds   search"
+      "drive  lcd    lcd    search"
+      "pow    bars   trans  tempo"
+      "pow    send   trans  tempo";
+    border-left: 1px solid #0d0d0d; border-right: 1px solid #0d0d0d;
+    /* faixa fina escovada, como o PCM42 */
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 3px); }
+
+  .cap { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink); text-align: center; line-height: 1.15; }
+  .cap.dim { color: var(--ink-dim); }
+  .kc { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .group { border: 1px solid #47443f; border-radius: 3px; padding: 14px 10px 10px; position: relative; }
+  .group > .gt { position: absolute; top: -6px; left: 10px; padding: 0 6px; background: var(--face);
+    font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim); }
+
+  /* marca */
+  .brand { grid-area: brand; display: flex; flex-direction: column; gap: 3px; }
+  .maker { font-weight: 700; font-size: 28px; line-height: 1; transform: scaleY(1.1); transform-origin: left bottom; }
+  .sub { font-size: 9px; letter-spacing: .26em; text-transform: uppercase; }
+  .model { font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: .06em; color: transparent; -webkit-text-stroke: 1.2px var(--ink); margin-top: 8px; }
+
+  /* disquete (de onde vem a musica) */
+  .drive-wrap { grid-area: drive; display: flex; flex-direction: column; gap: 6px; align-self: center; }
+  .drive { display: flex; flex-direction: column; justify-content: center; gap: 9px; height: 58px; padding: 0 14px;
+    background: linear-gradient(#1b1c1d, #0f1011); border: 1px solid #000; border-radius: 3px; box-shadow: inset 0 1px 0 #303234, 0 1px 0 #2f3133; }
+  .slot { height: 6px; border-radius: 3px; background: #020202; box-shadow: inset 0 1px 2px #000, 0 1px 0 #2d2e2f; }
+  .drive-row { display: flex; justify-content: space-between; align-items: center; }
+  .busy { width: 9px; height: 4px; border-radius: 1px; background: #59ff76; box-shadow: 0 0 6px 1px rgba(89,255,118,.7); }
+  .eject { width: 22px; height: 8px; border-radius: 2px; background: linear-gradient(#3a3b3d, #232425); box-shadow: 0 1px 0 #000; }
+
+  /* displays de LED vermelho, 7 segmentos */
+  .leds { grid-area: leds; display: flex; gap: 14px; align-items: stretch; }
+  .readout { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  .window { background: #0a0505; border-radius: 3px; padding: 8px 10px; display: flex; gap: 3px; align-items: flex-end;
+    box-shadow: inset 0 2px 6px #000, 0 1px 0 #3a3836; }
+  .window svg { width: 22px; height: 38px; display: block; }
+  .window.small svg { width: 16px; height: 28px; }
+  .seg { fill: var(--seg-off); }
+  .seg.on { fill: var(--seg-on); filter: drop-shadow(0 0 3px rgba(255, 59, 38, .6)); }
+  .arrow { align-self: center; color: var(--ink-dim); font-size: 22px; }
+  .mode-sw { display: flex; flex-direction: column; justify-content: center; gap: 8px; margin-left: auto; }
+  .lr { display: flex; align-items: center; gap: 7px; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+  .led { width: 7px; height: 7px; border-radius: 50%; background: var(--led-off); flex: none; }
+  .led.on { background: var(--led-on); box-shadow: 0 0 6px 1px rgba(255, 59, 38, .7); }
+
+  /* LCD 2 x 40 com a forma de onda */
+  .lcd-wrap { grid-area: lcd; }
+  .bezel { background: #0d0d0d; border-radius: 3px; padding: 7px 9px; box-shadow: inset 0 1px 3px #000, 0 1px 0 #3a3836; }
+  .lcd { background: var(--lcd-glass); border-radius: 2px; padding: 5px 7px; font-family: "VT323", monospace; font-size: 18px; color: var(--lcd-ink);
+    box-shadow: inset 0 0 12px rgba(0,0,0,.25); }
+  .row { display: grid; grid-template-columns: repeat(40, minmax(0, 1fr)); height: 21px; gap: 1px; }
+  .row span { background: rgba(38, 48, 15, .065); display: flex; align-items: center; justify-content: center; position: relative; line-height: 1; }
+  .row span.w::after { content: ""; position: absolute; left: 1px; right: 1px; bottom: 1px; background: currentColor; height: var(--h); }
+  .row span.out::after { opacity: .28; }
+  .row span.in { background: rgba(38, 48, 15, .2); }
+  .row span.mk-l { box-shadow: inset 2px 0 0 currentColor; }
+  .row span.mk-r { box-shadow: inset -2px 0 0 currentColor; }
+  .row span.bar::before { content: ""; position: absolute; top: 0; left: 50%; margin-left: -3px; border: 3px solid transparent; border-top-color: currentColor; }
+  .lcd-caps { display: flex; justify-content: space-between; margin-top: 6px; }
+
+  /* botoes */
+  .btn { width: 40px; height: 26px; padding: 0; border: 0; border-radius: 2px; cursor: pointer;
+    background: linear-gradient(#e2dfd7, var(--btn)); box-shadow: 0 2px 0 var(--btn-edge), 0 4px 6px rgba(0,0,0,.5); }
+  .btn.red { background: linear-gradient(#e2463f, var(--red)); box-shadow: 0 2px 0 var(--red-edge), 0 4px 6px rgba(0,0,0,.5); }
+  .btn.wide { width: 58px; }
+  .btn.down, .btn:active { transform: translateY(2px); box-shadow: 0 0 0 var(--btn-edge), 0 1px 3px rgba(0,0,0,.5); }
+  .bk { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bk .t { min-height: 20px; display: flex; align-items: flex-end; font-size: 9px; text-transform: uppercase; letter-spacing: .05em; text-align: center; line-height: 1.1; }
+
+  .bars { grid-area: bars; display: flex; gap: 14px; align-items: flex-end; }
+  .bars .group { display: flex; gap: 10px; }
+  .bars .num { font-size: 15px; font-weight: 700; color: #1c1b1a; }
+  .slots { display: grid; grid-template-columns: repeat(8, 14px); gap: 6px 6px; justify-items: center; }
+  .slots .cap { font-size: 8px; }
+
+  .send { grid-area: send; display: flex; gap: 14px; }
+  .send .group { display: flex; gap: 14px; flex: 1; justify-content: space-around; }
+
+  .trans { grid-area: trans; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 8px; align-content: start; padding-top: 4px; }
+
+  /* knobs */
+  .knob { border-radius: 50%; position: relative; background: radial-gradient(circle at 38% 30%, #3a3a3a, #0d0d0d 70%);
+    box-shadow: 0 0 0 2px #070707, 0 4px 8px rgba(0,0,0,.6); }
+  .knob i { position: absolute; left: 50%; background: #e8e5dc; border-radius: 1px; }
+  .search { grid-area: search; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .jog { width: 118px; height: 118px; border-radius: 50%; position: relative;
+    background: radial-gradient(circle at 38% 30%, #d0d2d4, #8e9194 55%, #5b5e61);
+    box-shadow: 0 0 0 3px #0b0b0b, 0 8px 14px rgba(0,0,0,.6); }
+  .jog::before { content: ""; position: absolute; inset: 14px; border-radius: 50%;
+    background: repeating-conic-gradient(rgba(0,0,0,.18) 0 4deg, transparent 4deg 12deg); }
+  .jog::after { content: ""; position: absolute; width: 22px; height: 22px; border-radius: 50%; top: 18px; left: 50%; margin-left: -11px;
+    background: radial-gradient(circle at 40% 35%, #6c6f72, #2a2b2d); box-shadow: inset 0 1px 2px rgba(0,0,0,.6); }
+  .tempo { grid-area: tempo; display: flex; justify-content: space-around; align-items: flex-start; padding-top: 4px; }
+  .k-m { width: 46px; height: 46px; } .k-m i { top: 5px; height: 13px; width: 3px; margin-left: -1.5px; transform-origin: 50% 18px; }
+  .k-s { width: 36px; height: 36px; } .k-s i { top: 4px; height: 11px; width: 3px; margin-left: -1.5px; transform-origin: 50% 14px; }
+
+  .pow { grid-area: pow; display: flex; gap: 22px; align-items: flex-start; padding-top: 4px; }
+  .power { width: 42px; height: 34px; border: 0; border-radius: 2px; background: linear-gradient(#dcdedb, #a7a9a5);
+    box-shadow: 0 1px 0 #686a66, 0 2px 4px rgba(0,0,0,.5); transform: translateY(2px); }
+  .jack { display: block; width: 26px; height: 26px; border-radius: 50%;
+    background: radial-gradient(circle, #050505 30%, #c0c2c4 34%, #7f8285 58%, #2b2c2e 63%); box-shadow: 0 0 0 2px #0d0d0d; }
+
+  .legend { max-width: 1240px; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px 28px;
+    color: var(--page-ink); font-size: 12.5px; line-height: 1.45; }
+  .legend b { color: #d9d9d3; font-weight: 600; }
+  @media (prefers-color-scheme: light) { :root { --page: #dcdcd6; --page-ink: #55554f; } .note b, .legend b { color: #1c1c1c; } }
+</style>
+</head>
+<body>
+  <p class="note"><b>Mockup do looper</b>, rack que fica junto do RJ-950. Visual inspirado no Lexicon PCM42 (rack de metal, LED vermelho de 7 segmentos) e funções inspiradas no JamMan, no SP-202 e no Electrix Repeater. Ainda não funciona: é só a aparência.</p>
+
+  <div class="scroll">
+  <section class="rack" aria-label="RJ-42 Loop Phrase Recorder">
+    <div class="ear"><i></i><i></i></div>
+    <div class="face">
+
+      <div class="brand">
+        <span class="maker">DCX</span>
+        <span class="sub">Loop Phrase Recorder</span>
+        <span class="model">RJ-42</span>
+      </div>
+
+      <div class="leds">
+        <div class="readout"><div class="window" data-seg="92.4"></div><span class="cap">Source BPM</span></div>
+        <div class="arrow">&#9654;</div>
+        <div class="readout"><div class="window" data-seg="90.0"></div><span class="cap">Target BPM</span></div>
+        <div class="readout"><div class="window small" data-seg="017.3"></div><span class="cap">Bar . Beat</span></div>
+        <div class="readout"><div class="window small" data-seg="03"></div><span class="cap">Loop</span></div>
+        <div class="mode-sw">
+          <span class="lr"><i class="led on"></i>Vari-Speed</span>
+          <span class="lr"><i class="led"></i>Stretch</span>
+          <span class="lr"><i class="led"></i>Off (Source)</span>
+        </div>
+      </div>
+
+      <div class="search">
+        <div class="jog" aria-label="Search: percorre a musica"></div>
+        <span class="cap">Search</span>
+      </div>
+
+      <div class="drive-wrap">
+        <span class="cap">Floppy Disk Drive</span>
+        <div class="drive"><span class="slot"></span><span class="drive-row"><i class="busy"></i><span class="eject"></span></span></div>
+        <span class="cap dim">Song In</span>
+      </div>
+
+      <div class="lcd-wrap">
+        <div class="bezel"><div class="lcd"><div class="row" id="l1"></div><div class="row" id="l2"></div></div></div>
+        <div class="lcd-caps"><span class="cap dim">In &#9664;</span><span class="cap dim">&#9660; = bar</span><span class="cap dim">&#9654; Out</span></div>
+      </div>
+
+      <div class="pow">
+        <div class="kc"><button class="power" aria-label="Power"></button><span class="cap">Power</span></div>
+        <div class="kc"><i class="jack"></i><span class="cap">Input</span></div>
+        <div class="kc"><i class="jack"></i><span class="cap">Foot<br>Tap</span></div>
+      </div>
+
+      <div class="bars">
+        <div class="group"><span class="gt">Loop Length (Bars)</span>
+          <div class="bk"><span class="t"><i class="led"></i></span><button class="btn"><span class="num">1</span></button></div>
+          <div class="bk"><span class="t"><i class="led"></i></span><button class="btn"><span class="num">2</span></button></div>
+          <div class="bk"><span class="t"><i class="led on"></i></span><button class="btn down"><span class="num">4</span></button></div>
+          <div class="bk"><span class="t"><i class="led"></i></span><button class="btn"><span class="num">8</span></button></div>
+        </div>
+        <div class="group"><span class="gt">Loop Memory</span>
+          <div class="slots">
+            <i class="led on"></i><i class="led on"></i><i class="led on"></i><i class="led"></i><i class="led"></i><i class="led"></i><i class="led"></i><i class="led"></i>
+            <span class="cap">1</span><span class="cap">2</span><span class="cap">3</span><span class="cap">4</span><span class="cap">5</span><span class="cap">6</span><span class="cap">7</span><span class="cap">8</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="send">
+        <div class="group"><span class="gt">Send Loop</span>
+          <div class="bk"><span class="t"><i class="led"></i></span><button class="btn wide"></button><span class="cap">To<br>RJ-2000</span></div>
+          <div class="bk"><span class="t"><i class="led on"></i></span><button class="btn wide"></button><span class="cap">To<br>RJ-950</span></div>
+          <div class="bk"><span class="t"><i class="led"></i></span><button class="btn wide"></button><span class="cap">Disk<br>WAV / MP3</span></div>
+        </div>
+      </div>
+
+      <div class="trans">
+        <div class="bk"><span class="t">Nudge &minus;</span><button class="btn"></button></div>
+        <div class="bk"><span class="t">Nudge +</span><button class="btn"></button></div>
+        <div class="bk"><span class="t">Tap<br>Tempo</span><button class="btn"></button></div>
+        <div class="bk"><span class="t">Set In<br>(Downbeat)</span><button class="btn"></button></div>
+        <div class="bk"><span class="t">Play<br>Loop</span><button class="btn"></button></div>
+        <div class="bk"><span class="t">Store</span><button class="btn red"></button></div>
+      </div>
+
+      <div class="tempo">
+        <div class="kc"><div class="knob k-m"><i style="transform: rotate(18deg)"></i></div><span class="cap">Target<br>Tempo</span></div>
+        <div class="kc"><div class="knob k-s"><i style="transform: rotate(-30deg)"></i></div><span class="cap">Fade</span></div>
+        <div class="kc"><div class="knob k-s"><i style="transform: rotate(60deg)"></i></div><span class="cap">Output</span></div>
+      </div>
+
+    </div>
+    <div class="ear"><i></i><i></i></div>
+  </section>
+  </div>
+
+  <div class="legend">
+    <div><b>Floppy (Song In):</b> solta a música inteira aqui (WAV, MP3...). O LCD mostra a forma de onda dela.</div>
+    <div><b>Source BPM:</b> o tempo original da música, achado sozinho ou pelo Tap Tempo. <b>Target BPM:</b> o tempo que você quer, no knob Target Tempo.</div>
+    <div><b>Vari-Speed / Stretch / Off:</b> como chegar no tempo alvo. Vari-speed muda o tom junto (como o 45 RPM); Stretch mantém o tom.</div>
+    <div><b>Search + Set In:</b> o jog percorre a música; Set In marca o tempo forte onde o loop começa. Nudge anda o início um tempo para cada lado.</div>
+    <div><b>Loop Length 1/2/4/8:</b> quantos compassos o loop tem. O fim é calculado pelo BPM, então o loop fecha certinho.</div>
+    <div><b>Store + Loop Memory:</b> Store guarda o loop marcado num dos 8 espaços. Dá para tirar vários loops da mesma música.</div>
+    <div><b>Send Loop:</b> manda o loop escolhido para um pad do RJ-2000, para o RJ-950 ou salva em arquivo (WAV ou MP3).</div>
+    <div><b>Fade:</b> um fade curto nas pontas do loop, para não estalar quando ele repete.</div>
+  </div>
+
+<script>
+  // 7 segmentos: a b c d e f g, e o ponto
+  const SEG = {
+    a: "4,2 18,2 15,5 7,5", b: "19,3 19,18 16,16 16,6", c: "19,20 19,35 16,32 16,22", d: "4,36 18,36 15,33 7,33",
+    e: "3,20 6,22 6,32 3,35", f: "3,3 6,6 6,16 3,18", g: "4,19 7,17 15,17 18,19 15,21 7,21",
+  };
+  const DIG = { "0": "abcdef", "1": "bc", "2": "abged", "3": "abgcd", "4": "fgbc", "5": "afgcd", "6": "afgedc", "7": "abc", "8": "abcdefg", "9": "abcfgd", " ": "" };
+  document.querySelectorAll("[data-seg]").forEach(w => {
+    const txt = w.dataset.seg;
+    const chars = [];
+    for (const ch of txt) { if (ch === "." && chars.length) chars[chars.length - 1].dp = true; else chars.push({ ch, dp: false }); }
+    w.innerHTML = chars.map(({ ch, dp }) => {
+      const on = DIG[ch] || "";
+      const polys = Object.keys(SEG).map(k => `<polygon class="seg${on.includes(k) ? " on" : ""}" points="${SEG[k]}"/>`).join("");
+      return `<svg viewBox="0 0 24 40">${polys}<circle class="seg${dp ? " on" : ""}" cx="22" cy="36" r="1.8"/></svg>`;
+    }).join("");
+  });
+
+  // LCD: linha 1 texto, linha 2 a musica inteira com o loop marcado
+  const put = (id, cells) => { document.getElementById(id).innerHTML = cells.join(""); };
+  const l1 = "SONG CHORO-LONGO   LOOP 03  4 BARS 10.7s";
+  put("l1", [...l1.padEnd(40).slice(0, 40)].map(c => `<span>${c === " " ? "&nbsp;" : c}</span>`));
+  const cells = [];
+  let seed = 7;
+  const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < 40; i++) {
+    const env = 0.35 + 0.5 * Math.abs(Math.sin(i / 6.5)) + rnd() * 0.25;
+    const h = Math.round(Math.min(1, env) * 17) + 2;
+    const inLoop = i >= 15 && i <= 24;
+    const cls = ["w", inLoop ? "in" : "out", i === 15 ? "mk-l" : "", i === 24 ? "mk-r" : "", inLoop && (i - 15) % 3 === 0 && i !== 15 ? "bar" : ""].join(" ");
+    cells.push(`<span class="${cls}" style="--h:${h}px"></span>`);
+  }
+  put("l2", cells);
+</script>
+</body>
+</html>
