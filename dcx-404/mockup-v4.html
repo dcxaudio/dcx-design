@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DCX 404 (mockup v4)</title>
+<!--
+  Mockup v4 do DCX 404, sampler de performance da DCX Audio (GPL-3.0).
+  Irmão do RJ-2000, do RJ-950 e do RJ-42: usa direto o CSS e as fontes deles
+  (rj-2000/core/css/base.css, rj-2000/css/rj2000.css e rj-2000/core/fonts), com os
+  repositórios lado a lado em ~/Documents/GitHub. Aqui só fica o que é do 404 (prefixo d4-).
+  Componentes reaproveitados: .r9-maker/.r9-sub/.r9-model (marca), .r9-btn (teclas claras),
+  .led.r9-led (LED vermelho), .r42-group/.r42-gt/.r42-bk/.r42-t (grupos e rótulos),
+  .r42-win/.r42-seg (7 segmentos), .knob/.r9-knob-s/.r9-control (knobs), .pcol/.pad (pads do RJ-2000),
+  .r9-jack (jacks), .r9-cap (serigrafia).
+  Ganchos combinados com a sala Oficina:
+    - cada controle tem data-ctrl="...";
+    - knob: o ângulo vem da variável --a no elemento .knob (graus, -135 a 135);
+      o traço interno (i) gira com transform: rotate(var(--a));
+    - tamanho: --scale no :root (o .d4 usa zoom: var(--scale)); medidas internas na escala 1;
+    - LED: classe .on;  pad tocado: classe .down (a mesma do RJ-2000);
+    - display: drawSeg(elemento, "F.07").
+-->
+<link rel="stylesheet" href="https://dcxaudio.github.io/rj-2000/core/css/base.css">
+<link rel="stylesheet" href="https://dcxaudio.github.io/rj-2000/css/rj2000.css">
+<link rel="stylesheet" href="https://dcxaudio.github.io/rj-950/css/rj950.css">
+<link rel="stylesheet" href="https://dcxaudio.github.io/rj-42/css/rj42.css">
+<style>
+  /* só o que é do 404 */
+  :root { --scale: 1; /* tamanho do aparelho: 1 = 580 x ~940 px */ }
+  body { display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 32px 16px 48px; color: var(--page-ink); }
+  .d4-note { font-size: 13px; max-width: 900px; width: 100%; line-height: 1.5; margin: 0; }
+  .d4-note b { color: var(--ink); }
+  .d4-scroll { width: 100%; max-width: 900px; overflow-x: auto; display: flex; justify-content: center; padding: 6px 0 30px; }
+
+  /* gabinete em pé: a mesma face e a mesma sombra do rack, cantos arredondados */
+  .d4 { zoom: var(--scale); width: 580px; flex: none; position: relative; color: var(--rack-ink);
+    padding: 22px 26px 22px; border-radius: 14px; background: var(--rack-face);
+    box-shadow: 0 1px 0 #34363a inset, 0 -1px 0 #0b0b0b inset, 0 0 0 1px #0d0d0d, 0 20px 44px rgba(0,0,0,.45); }
+  /* furos de fixação: os das orelhas do rack */
+  .d4-hole { position: absolute; width: 15px; height: 9px; border-radius: 5px; background: #060606; box-shadow: inset 0 1px 2px #000, 0 1px 0 #34363a; }
+  .d4 .r9-cap { font-size: 9px; }
+
+  .d4-top { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 4px; }
+  .d4-top .r9-brand { display: flex; flex-direction: column; gap: 2px; }
+
+  /* knobs: Volume (prateado, como o Control do 950) à parte; Ctrl 1–3 pretos no grupo */
+  .d4-knobs { display: flex; align-items: flex-end; gap: 18px; margin-top: 16px; }
+  .d4 .knob i { transform: rotate(var(--a, 0deg)); }
+  .d4-vol { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 4px 8px; }
+  .d4-vol .r9-control { width: 56px; height: 56px; }
+  .d4-vol .r9-control i { top: 7px; height: 14px; transform-origin: 50% 21px; }
+  .d4-fx { flex: 1; justify-content: space-around; padding: 16px 10px 10px; }
+  .d4-fx .kc { gap: 8px; }
+  .d4 .r9-knob-s i { transform-origin: 50% 14px; }
+
+  /* centro: display de 7 segmentos e os 6 efeitos em colunas retas */
+  .d4-center { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; margin-top: 16px; }
+  .d4-col { display: flex; flex-direction: column; gap: 10px; }
+  .d4-fxk { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+  .d4-col.r .d4-fxk { flex-direction: row-reverse; }
+  .d4-fxk .r42-t { min-height: 0; gap: 6px; }
+  .d4-screen { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .d4-screen .r42-win { padding: 10px 12px; }
+  .d4-screen .r42-win svg { width: 26px; height: 44px; }
+  .d4-leds { display: flex; gap: 10px; }
+
+  /* teclas: as .r9-btn do rack, um pouco maiores para o toque (alvo de 28 px) */
+  .d4 .r9-btn { width: 44px; height: 30px; }
+  .d4 .r9-btn.red { background: linear-gradient(#e2463f, var(--key-red)); box-shadow: 0 2px 0 var(--key-red-edge), 0 4px 6px rgba(0,0,0,.5); }
+  .d4 .r9-btn.red.down { box-shadow: 0 0 0 var(--key-red-edge), 0 1px 3px rgba(0,0,0,.5); }
+  .d4-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; width: 100%; }
+  .d4-grp { margin-top: 16px; display: block; padding: 14px 8px 8px; }
+  .d4-grp .r42-bk { gap: 5px; }
+  .d4-grp .r42-t { min-height: 14px; }
+
+  /* pads do RJ-2000, 4 x 4 */
+  .d4-pads { margin-top: 16px; display: block; padding: 14px 10px 8px; }
+  .d4-pads-grid { display: grid; grid-template-columns: repeat(4, 62px); justify-content: center; gap: 6px 22px; }
+  .d4-pads-grid .pcol { gap: 4px; }
+  .d4-pads-grid .cap { font-size: 9px; color: var(--ink-dim); }
+
+  /* embaixo: entrada e fone */
+  .d4-bottom { display: flex; align-items: flex-end; gap: 18px; margin-top: 14px; padding: 0 6px; }
+  .d4-bottom .kc { gap: 6px; }
+  .d4-src { display: flex; align-items: flex-end; gap: 10px; }
+  .d4-src .d4-srcleds { display: flex; flex-direction: column; gap: 6px; padding-bottom: 16px; }
+  .d4-sp { flex: 1; }
+
+  /* adesivos próprios, pequenos e foscos */
+  .d4-st { position: absolute; pointer-events: none; transform: rotate(var(--rot)); filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)) saturate(.8); }
+  .d4-st > div { position: relative; overflow: hidden; border: 2px solid #e9e6dd; }
+  .d4-st svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .d4-bx { position: relative; --rot: -2deg; margin-bottom: 8px; }
+  .d4-bx > div { padding: 3px 7px 1px; border-radius: 2px; background: #141414; color: #e9e6dd; white-space: nowrap; font: 400 14px/1 var(--lcd-font); letter-spacing: .08em; }
+
+  .d4-legend { max-width: 900px; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px 28px; font-size: 12.5px; line-height: 1.45; }
+  .d4-legend b { color: var(--ink); font-weight: 600; }
+</style>
+</head>
+<body>
+  <p class="d4-note"><b>Mockup v4 do DCX 404</b>, sampler de performance para tocar ao vivo. Irmão do RJ-2000, do RJ-950 e do RJ-42: usa o mesmo CSS, as mesmas fontes, as mesmas teclas e os mesmos pads, no formato em pé dos samplers de performance. Ainda não toca: os pads afundam ao clicar, as teclas acendem o LED e os knobs giram arrastando para cima ou para baixo.</p>
+
+  <div class="d4-scroll">
+  <section class="d4" aria-label="DCX 404 Performance Sampler">
+    <i class="d4-hole" style="left:12px;top:10px"></i><i class="d4-hole" style="right:12px;top:10px"></i>
+    <i class="d4-hole" style="left:12px;bottom:10px"></i><i class="d4-hole" style="right:12px;bottom:10px"></i>
+
+    <!-- marca, como no rack -->
+    <div class="d4-top">
+      <div class="r9-brand"><span class="r9-maker">DCX</span><span class="r9-sub">Performance Sampler</span></div>
+      <span class="r9-model">404</span>
+    </div>
+
+    <!-- knobs -->
+    <div class="d4-knobs">
+      <div class="d4-vol"><div class="knob r9-control" data-ctrl="volume" role="slider" tabindex="0" aria-label="Volume" style="--a:40deg"><i></i></div><span class="r9-cap">Volume</span></div>
+      <div class="r42-group d4-fx"><span class="r42-gt">FX Control</span>
+        <div class="kc"><div class="knob" data-ctrl="ctrl-1" role="slider" tabindex="0" aria-label="Ctrl 1" style="--a:-70deg"><i></i></div><span class="r9-cap">Ctrl 1<br><span class="r42-dim">Cutoff</span></span></div>
+        <div class="kc"><div class="knob" data-ctrl="ctrl-2" role="slider" tabindex="0" aria-label="Ctrl 2" style="--a:10deg"><i></i></div><span class="r9-cap">Ctrl 2<br><span class="r42-dim">Reso</span></span></div>
+        <div class="kc"><div class="knob" data-ctrl="ctrl-3" role="slider" tabindex="0" aria-label="Ctrl 3" style="--a:80deg"><i></i></div><span class="r9-cap">Ctrl 3<br><span class="r42-dim">Drive</span></span></div>
+      </div>
+    </div>
+
+    <!-- display e efeitos -->
+    <div class="d4-center" data-radio="fx">
+      <div class="d4-col l">
+        <div class="d4-fxk"><span class="r42-t">Filter+Drive<i class="led r9-led on"></i></span><button class="r9-btn down" data-ctrl="fx-filter" aria-label="Filter + Drive"></button></div>
+        <div class="d4-fxk"><span class="r42-t">Isolator<i class="led r9-led"></i></span><button class="r9-btn" data-ctrl="fx-isolator" aria-label="Isolator"></button></div>
+        <div class="d4-fxk"><span class="r42-t">Delay<i class="led r9-led"></i></span><button class="r9-btn" data-ctrl="fx-delay" aria-label="Delay"></button></div>
+      </div>
+      <div class="d4-screen">
+        <div class="r42-win" data-seg="F.07" aria-label="Display"></div>
+        <div class="d4-leds">
+          <span class="r42-lr"><i class="led r9-led on" data-led="bpm"></i>BPM</span>
+          <span class="r42-lr"><i class="led r9-led" data-led="pad"></i>Pad</span>
+          <span class="r42-lr"><i class="led r9-led on" data-led="fx"></i>FX</span>
+        </div>
+      </div>
+      <div class="d4-col r">
+        <div class="d4-fxk"><span class="r42-t"><i class="led r9-led"></i>Vinyl Sim</span><button class="r9-btn" data-ctrl="fx-vinyl" aria-label="Vinyl Sim"></button></div>
+        <div class="d4-fxk"><span class="r42-t"><i class="led r9-led"></i>DJFX Looper</span><button class="r9-btn" data-ctrl="fx-djfx" aria-label="DJFX Looper"></button></div>
+        <div class="d4-fxk"><span class="r42-t"><i class="led r9-led"></i>MFX <span class="r42-dim">Pad 1–4</span></span><button class="r9-btn" data-ctrl="fx-mfx" aria-label="MFX"></button></div>
+      </div>
+    </div>
+
+    <!-- performance -->
+    <div class="r42-group d4-grp"><span class="r42-gt">Perform</span>
+      <div class="d4-row">
+        <div class="r42-bk"><span class="r42-t">Bus 1</span><i class="led r9-led on"></i><button class="r9-btn" data-ctrl="bus-1" aria-label="Bus 1"></button><span class="r9-cap r42-dim">Perform</span></div>
+        <div class="r42-bk"><span class="r42-t">Bus 2</span><i class="led r9-led"></i><button class="r9-btn" data-ctrl="bus-2" aria-label="Bus 2"></button><span class="r9-cap r42-dim">Master</span></div>
+        <div class="r42-bk"><span class="r42-t">Mute</span><i class="led r9-led"></i><button class="r9-btn" data-ctrl="mute" aria-label="Mute"></button><span class="r9-cap r42-dim">Break</span></div>
+        <div class="r42-bk"><span class="r42-t">Hold</span><i class="led r9-led"></i><button class="r9-btn" data-ctrl="hold" aria-label="Hold"></button><span class="r9-cap r42-dim">&nbsp;</span></div>
+        <div class="r42-bk"><span class="r42-t">Sub Pad</span><i class="led r9-led"></i><button class="r9-btn" data-ctrl="subpad" aria-label="Sub Pad"></button><span class="r9-cap r42-dim">Roll</span></div>
+        <div class="r42-bk"><span class="r42-t">Resample</span><i class="led r9-led"></i><button class="r9-btn red" data-ctrl="resample" aria-label="Resample"></button><span class="r9-cap r42-dim">Rec</span></div>
+      </div>
+    </div>
+
+    <div class="r42-group d4-grp"><span class="r42-gt">Pad Mode</span>
+      <div class="d4-row">
+        <div class="r42-bk"><span class="r42-t">Gate</span><i class="led r9-led on"></i><button class="r9-btn" data-ctrl="gate" aria-label="Gate"></button></div>
+        <div class="r42-bk"><span class="r42-t">Loop</span><i class="led r9-led"></i><button class="r9-btn" data-ctrl="loop" aria-label="Loop"></button></div>
+        <div class="r42-bk"><span class="r42-t">Reverse</span><i class="led r9-led"></i><button class="r9-btn" data-ctrl="reverse" aria-label="Reverse"></button></div>
+        <div class="r42-bk"><span class="r42-t">Velocity</span><span class="led-slot" style="height:7px"></span><button class="r9-btn" data-ctrl="velocity" aria-label="Velocity"></button></div>
+        <div class="r42-bk"><span class="r42-t">Set-up</span><span class="led-slot" style="height:7px"></span><button class="r9-btn" data-ctrl="setup" aria-label="Set-up"></button></div>
+        <div class="r42-bk"><span class="r42-t">Shift</span><span class="led-slot" style="height:7px"></span><button class="r9-btn" data-ctrl="shift" aria-label="Shift"></button></div>
+      </div>
+    </div>
+
+    <!-- 16 pads do RJ-2000 -->
+    <div class="r42-group d4-pads"><span class="r42-gt">Sample Pads</span>
+      <div class="d4-pads-grid" id="pads"></div>
+    </div>
+
+    <!-- entrada e fone -->
+    <div class="d4-bottom">
+      <div class="kc"><i class="r9-jack" data-jack="line-in"></i><span class="r9-cap">Line In</span></div>
+      <div class="kc"><div class="knob r9-knob-s" data-ctrl="in-level" role="slider" tabindex="0" aria-label="Input Level" style="--a:20deg"><i></i></div><span class="r9-cap">Level</span></div>
+      <div class="d4-src">
+        <div class="r42-bk"><button class="r9-btn" data-ctrl="in-source" aria-label="Source"></button><span class="r9-cap">Source</span></div>
+        <div class="d4-srcleds"><span class="r42-lr"><i class="led r9-led on" data-led="src-rj"></i>RJ-2000</span><span class="r42-lr"><i class="led r9-led" data-led="src-line"></i>Line</span></div>
+      </div>
+      <span class="d4-sp"></span>
+      <div class="d4-st d4-bx"><div>FEITO NA BAIXADA</div></div>
+      <span class="d4-sp"></span>
+      <div class="kc"><i class="r9-jack" data-jack="phones"></i><span class="r9-cap">Phones</span></div>
+    </div>
+
+  </section>
+  </div>
+
+  <div class="d4-legend">
+    <div><b>Display (LED de 3 dígitos):</b> mostra o BPM, o pad escolhido ou o efeito e o valor do knob que você está girando (aqui, <i>F.07</i> = efeito 7). Os 6 efeitos ficam dos lados.</div>
+    <div><b>Volume e FX Control:</b> o Volume, prateado, fica à parte. Os três knobs pretos mexem no efeito ligado; os nomes mudam com o efeito (no Filter+Drive: corte, ressonância e drive).</div>
+    <div><b>Effects:</b> cinco efeitos diretos e o MFX. No MFX, os pads 1 a 4 escolhem Reverb, Lo-fi/Bit Crush, Compressor ou Stopper/Back Spin. São 9 efeitos ao todo.</div>
+    <div><b>Input (RJ-2000 / Line):</b> embaixo, junto da entrada. No DCX Studio, a saída do RJ-2000 entra aqui e passa pelos efeitos; sozinho, entra o Line In.</div>
+    <div><b>Bus 1 e Bus 2:</b> o Bus 1 é o de performance (pads e entrada); o Bus 2 fica no master, depois de tudo. O efeito escolhido vai para o bus aceso.</div>
+    <div><b>Mute (Break):</b> corta o Bus 1 na hora, para o "break" ao vivo. Aperta de novo e o beat volta.</div>
+    <div><b>Hold, Sub Pad, Gate / Loop / Reverse:</b> Hold trava o pad ou o efeito; Sub Pad repete o último pad no tempo; os modos valem para cada pad.</div>
+    <div><b>Resample:</b> a única tecla vermelha, como o Store do RJ-42. Grava o que está saindo, com efeito, num pad vazio.</div>
+    <div><b>Adesivo:</b> "Feito na Baixada", da casa, sem cobrir nenhum controle.</div>
+  </div>
+
+<script>
+  // ---------- display de 7 segmentos: o mesmo desenho e as mesmas classes do RJ-42 ----------
+  const SEG = {
+    a: "4,2 18,2 15,5 7,5", b: "19,3 19,18 16,16 16,6", c: "19,20 19,35 16,32 16,22", d: "4,36 18,36 15,33 7,33",
+    e: "3,20 6,22 6,32 3,35", f: "3,3 6,6 6,16 3,18", g: "4,19 7,17 15,17 18,19 15,21 7,21",
+  };
+  const DIG = { "0": "abcdef", "1": "bc", "2": "abged", "3": "abgcd", "4": "fgbc", "5": "afgcd", "6": "afgedc", "7": "abc", "8": "abcdefg", "9": "abcfgd",
+    "F": "aefg", "P": "abefg", "b": "cdefg", "d": "bcdeg", "E": "adefg", "r": "eg", "-": "g", " ": "" };
+  function drawSeg(w, txt) {
+    const chars = [];
+    for (const ch of txt) { if (ch === "." && chars.length) chars[chars.length - 1].dp = true; else chars.push({ ch, dp: false }); }
+    w.innerHTML = chars.map(({ ch, dp }) => {
+      const on = DIG[ch] || "";
+      const polys = Object.keys(SEG).map(k => `<polygon class="r42-seg${on.includes(k) ? " on" : ""}" points="${SEG[k]}"/>`).join("");
+      return `<svg viewBox="0 0 24 40">${polys}<circle class="r42-seg${dp ? " on" : ""}" cx="22" cy="36" r="1.8"/></svg>`;
+    }).join("");
+  }
+  const win = document.querySelector("[data-seg]");
+  drawSeg(win, win.dataset.seg);
+
+  // ---------- knobs: arrastar na vertical ----------
+  document.querySelectorAll(".d4 .knob").forEach(k => {
+    let y0 = 0, a0 = 0;
+    k.addEventListener("pointerdown", e => { k.setPointerCapture(e.pointerId); y0 = e.clientY; a0 = parseFloat(getComputedStyle(k).getPropertyValue("--a")) || 0; });
+    k.addEventListener("pointermove", e => {
+      if (!k.hasPointerCapture(e.pointerId)) return;
+      const a = Math.max(-135, Math.min(135, a0 + (y0 - e.clientY) * 1.6));
+      k.style.setProperty("--a", a + "deg");
+      drawSeg(win, String(Math.round((a + 135) / 270 * 127)).padStart(3, " "));
+    });
+  });
+
+  // ---------- teclas ----------
+  document.querySelectorAll(".d4 .r9-btn").forEach(b => {
+    b.addEventListener("click", () => {
+      const radio = b.closest("[data-radio]");
+      if (radio) {
+        const all = [...radio.querySelectorAll(".r9-btn")];
+        radio.querySelectorAll(".d4-fxk").forEach(r => { r.querySelector(".r9-btn").classList.remove("down"); r.querySelector(".led").classList.remove("on"); });
+        b.classList.add("down"); b.closest(".d4-fxk").querySelector(".led").classList.add("on");
+        drawSeg(win, "F." + String(all.indexOf(b) + 1).padStart(2, "0"));
+      } else if (b.dataset.ctrl === "in-source") {
+        document.querySelectorAll('[data-led^="src"]').forEach(l => l.classList.toggle("on"));
+      } else {
+        const led = b.closest(".r42-bk").querySelector("i.led");
+        if (led) led.classList.toggle("on");
+      }
+    });
+  });
+
+  // ---------- 16 pads: o mesmo .pcol/.pad do RJ-2000 ----------
+  const padsEl = document.getElementById("pads");
+  for (let i = 0; i < 16; i++) {
+    const pc = document.createElement("div");
+    pc.className = "pcol";
+    pc.innerHTML = `<button class="pad" data-ctrl="pad-${i + 1}" aria-label="Pad ${i + 1}"></button><span class="cap">${i + 1}</span>`;
+    const b = pc.firstElementChild;
+    const hit = () => { b.classList.add("down"); drawSeg(win, "P." + String(i + 1).padStart(2, "0")); };
+    const off = () => b.classList.remove("down");
+    b.addEventListener("pointerdown", hit);
+    b.addEventListener("pointerup", off);
+    b.addEventListener("pointercancel", off);
+    b.addEventListener("pointerleave", off);
+    padsEl.appendChild(pc);
+  }
+</script>
+</body>
+</html>

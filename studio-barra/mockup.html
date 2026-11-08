@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DCX Studio, barra inferior (mockup)</title>
+<!--
+  Mockup da barra inferior do DCX Studio (GPL-3.0): logo, nome do projeto, VU meter discreto e
+  engrenagem de config. O painel de config tem Projeto (Salvar, Carregar e os 4 disquetes) e
+  Audio (ajustes ainda em aberto). Autocontido: fontes em ./fonts, logo embutida, nada de ../../rj-*.
+  Espirito Braun dos anos 60: poucos elementos, alinhados, um acento so (o vermelho da casa).
+  Ganchos para a etapa 2:
+    - data-ctrl="projeto-nome" | "vu" | "config" | "salvar" | "carregar" | "master" | "limitador" | "saida";
+    - cada disquete: [data-disk="rj2000|rj950|rj42|dcx404"] com data-state="salvo|alterado|vazio";
+    - painel aberto: .cfg.open ; tema do Studio: html[data-theme="dark|light"] (sem atributo = segue o sistema).
+-->
+<style>
+@font-face { font-family: "Archivo Narrow"; font-weight: 400 700; font-display: swap;
+  src: url("fonts/archivo-narrow-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Archivo Narrow"; font-weight: 400 700; font-display: swap;
+  src: url("fonts/archivo-narrow-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "VT323"; font-weight: 400; font-display: swap;
+  src: url("fonts/vt323-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* tokens do Studio (mesmos valores do base.css), mais os da barra, claro e escuro */
+:root {
+  --page: #2a2a29; --page-ink: #9a9a94; --ink: #d9d9d3; --ink-dim: #a3a39d; --rule: #4b8ad0;
+  --key: #ebe8da; --key-red: #d3302a; --led-off: #3a1c1a; --led-on: #ff3b26;
+  --lcd-glass: #b3c25c; --lcd-ink: #26300f;
+  --rack-face: #222324; --rack-ink: #d8dad5; --rack-block: #121314;
+  --font: "Archivo Narrow", "Helvetica Neue", Arial, sans-serif; --lcd-font: "VT323", "Courier New", monospace;
+  --bar: #1b1c1d; --bar-ink: #d8dad5; --bar-dim: #8d8f8a; --bar-line: #34363a; --bar-shadow: rgba(0,0,0,.5);
+  --panel: #232425; --field: #141516; --seg-off: #2e3032; --seg-ok: #8fae5a; --seg-hot: #d9a53a; --seg-clip: #d3302a;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --page: #dcdcd6; --page-ink: #55554f; --ink: #1c1c1c; --ink-dim: #55554f;
+    --bar: #e9e8e2; --bar-ink: #1c1c1c; --bar-dim: #6c6d68; --bar-line: #c4c3bb; --bar-shadow: rgba(0,0,0,.18);
+    --panel: #f1f0eb; --field: #dedcd4; --seg-off: #cfcdc4; --seg-ok: #5f8a2e; --seg-hot: #c58d12;
+  }
+}
+:root[data-theme="light"] {
+  --page: #dcdcd6; --page-ink: #55554f; --ink: #1c1c1c; --ink-dim: #55554f;
+  --bar: #e9e8e2; --bar-ink: #1c1c1c; --bar-dim: #6c6d68; --bar-line: #c4c3bb; --bar-shadow: rgba(0,0,0,.18);
+  --panel: #f1f0eb; --field: #dedcd4; --seg-off: #cfcdc4; --seg-ok: #5f8a2e; --seg-hot: #c58d12;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--page); color: var(--page-ink); font-family: var(--font); min-height: 100vh;
+  padding: 18px 16px 96px; -webkit-font-smoothing: antialiased; }
+button, select, input { font-family: inherit; color: inherit; }
+button { cursor: pointer; }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--rule); outline-offset: 2px; }
+
+/* ---- aviso do mockup (fora do Studio) ---- */
+.note { max-width: 980px; margin: 0 auto 18px; font-size: 13px; line-height: 1.5; display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.note b { color: var(--ink); }
+.note .tools { display: flex; gap: 6px; margin-left: auto; }
+.tool { background: transparent; border: 1px solid var(--bar-line); color: var(--page-ink); border-radius: 3px; padding: 4px 10px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.tool[aria-pressed="true"] { background: var(--ink); color: var(--page); border-color: var(--ink); }
+
+/* ---- o Studio, so como silhueta: 4 aparelhos no rack ---- */
+.rack { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.unit { background: var(--rack-face); color: var(--rack-ink); border-radius: 10px; padding: 12px 16px 16px; min-height: 150px;
+  box-shadow: 0 1px 0 #34363a inset, 0 0 0 1px #0d0d0d, 0 14px 30px rgba(0,0,0,.35); position: relative; }
+.unit h3 { margin: 0 0 10px; font-size: 14px; letter-spacing: .14em; font-weight: 700; }
+.unit h3 small { font-weight: 400; letter-spacing: .06em; color: #8d8f8a; margin-left: 8px; }
+.unit .keys { display: flex; gap: 6px; flex-wrap: wrap; }
+.unit .keys i { width: 30px; height: 24px; border-radius: 3px; background: linear-gradient(#f4f2e6, var(--key)); box-shadow: 0 2px 0 #b9b6a8; }
+.unit .keys i.r { background: linear-gradient(#e24a43, var(--key-red)); box-shadow: 0 2px 0 #8f1d19; }
+.unit .lcd { margin-top: 12px; height: 34px; border-radius: 3px; background: var(--lcd-glass); color: var(--lcd-ink); font-family: var(--lcd-font); font-size: 24px; padding: 3px 10px; box-shadow: inset 0 2px 4px rgba(0,0,0,.4); }
+.unit.wide { grid-column: 1 / -1; min-height: 110px; }
+
+/* ================= a barra ================= */
+.bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; height: 48px; padding-bottom: env(safe-area-inset-bottom);
+  background: var(--bar); color: var(--bar-ink); border-top: 1px solid var(--bar-line);
+  box-shadow: 0 -6px 18px var(--bar-shadow); display: flex; align-items: center; gap: 18px; padding: 0 16px; box-sizing: content-box; }
+.bar .logo { height: 14px; width: auto; flex: none; color: var(--bar-ink); display: block; }
+.bar .sep { width: 1px; height: 22px; background: var(--bar-line); flex: none; }
+.bar .proj { display: flex; align-items: baseline; gap: 8px; min-width: 0; background: transparent; border: 0; padding: 4px 0; text-align: left; }
+.bar .proj .lbl { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--bar-dim); }
+.bar .proj .name { font-size: 15px; font-weight: 600; letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .proj .dirty { width: 6px; height: 6px; border-radius: 50%; background: var(--led-on); align-self: center; box-shadow: 0 0 4px var(--led-on); }
+.bar .sp { flex: 1; }
+
+/* VU: 16 segmentos finos, canal unico por canal, discreto */
+.vu { display: flex; flex-direction: column; gap: 3px; flex: none; }
+.vu .row { display: flex; gap: 2px; align-items: center; }
+.vu .row b { font-size: 8px; width: 8px; color: var(--bar-dim); font-weight: 600; }
+.vu .seg { width: 6px; height: 5px; border-radius: 1px; background: var(--seg-off); }
+.vu .seg.on { background: var(--seg-ok); }
+.vu .seg.on.hot { background: var(--seg-hot); }
+.vu .seg.on.clip { background: var(--seg-clip); }
+
+.cfg-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--bar-line); background: transparent; display: grid; place-items: center; flex: none; color: var(--bar-ink); }
+.cfg-btn svg { width: 18px; height: 18px; }
+.cfg-btn[aria-expanded="true"] { background: var(--bar-ink); color: var(--bar); border-color: var(--bar-ink); }
+
+/* ================= painel de config ================= */
+.cfg { position: fixed; right: 12px; bottom: 60px; z-index: 19; width: 440px; max-width: calc(100vw - 24px); max-height: calc(100vh - 76px); overflow: auto;
+  background: var(--panel); color: var(--bar-ink); border: 1px solid var(--bar-line); border-radius: 10px;
+  box-shadow: 0 18px 40px var(--bar-shadow); padding: 4px 18px 18px; display: none; }
+.cfg.open { display: block; }
+.cfg section { padding-top: 14px; }
+.cfg section + section { border-top: 1px solid var(--bar-line); margin-top: 16px; }
+.cfg h2 { margin: 0 0 10px; font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.cfg h2::before { content: ""; width: 14px; height: 2px; background: var(--key-red); }
+.cfg h2 em { margin-left: auto; font-style: normal; font-weight: 400; letter-spacing: .04em; text-transform: none; font-size: 11px; color: var(--bar-dim); }
+
+.btns { display: flex; gap: 8px; margin-bottom: 12px; }
+.btn { flex: 1; height: 36px; border-radius: 4px; border: 1px solid var(--bar-line); background: transparent; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+.btn.main { background: var(--bar-ink); color: var(--bar); border-color: var(--bar-ink); }
+.btn:hover { border-color: var(--bar-ink); }
+
+.disks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.disk { display: grid; grid-template-columns: 26px 1fr auto auto; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 4px; background: var(--field); }
+.disk .fl { width: 22px; height: 22px; color: var(--bar-dim); }
+.disk[data-state="salvo"] .fl { color: var(--bar-ink); }
+.disk .nm { font-size: 14px; font-weight: 600; letter-spacing: .06em; line-height: 1.1; }
+.disk .nm small { display: block; font-weight: 400; font-size: 11px; letter-spacing: .02em; color: var(--bar-dim); margin-top: 1px; }
+.disk .st { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--bar-dim); display: flex; align-items: center; gap: 6px; }
+.disk .st i { width: 7px; height: 7px; border-radius: 50%; background: var(--led-off); }
+.disk[data-state="salvo"] .st i { background: var(--seg-ok); box-shadow: 0 0 4px var(--seg-ok); }
+.disk[data-state="alterado"] .st i { background: var(--led-on); box-shadow: 0 0 4px var(--led-on); }
+.disk .one { height: 26px; padding: 0 9px; border-radius: 3px; border: 1px solid var(--bar-line); background: transparent; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.disk .one:hover { border-color: var(--bar-ink); }
+.foot { margin: 10px 0 0; font-size: 11px; color: var(--bar-dim); line-height: 1.4; }
+
+.field { display: grid; grid-template-columns: 96px 1fr 52px; align-items: center; gap: 10px; margin-bottom: 12px; }
+.field label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.field output { font-family: var(--lcd-font); font-size: 20px; text-align: right; color: var(--bar-ink); }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; background: transparent; margin: 0; }
+input[type=range]::-webkit-slider-runnable-track { height: 3px; background: var(--bar-line); border-radius: 2px; }
+input[type=range]::-moz-range-track { height: 3px; background: var(--bar-line); border-radius: 2px; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 20px; margin-top: -8.5px; border-radius: 2px; background: linear-gradient(#f4f2e6, var(--key)); border: 1px solid #7d7f7b; box-shadow: 0 2px 0 #b9b6a8; }
+input[type=range]::-moz-range-thumb { width: 12px; height: 20px; border-radius: 2px; background: var(--key); border: 1px solid #7d7f7b; }
+.sw { width: 44px; height: 22px; border-radius: 11px; border: 1px solid var(--bar-line); background: var(--field); position: relative; padding: 0; }
+.sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--bar-dim); transition: transform .15s, background .15s; }
+.sw[aria-checked="true"]::after { transform: translateX(22px); background: var(--key-red); }
+select { height: 32px; border-radius: 4px; border: 1px solid var(--bar-line); background: var(--field); padding: 0 8px; font-size: 13px; width: 100%; grid-column: 2 / 4; }
+.open-items { margin: 4px 0 0; padding: 8px 10px; border: 1px dashed var(--bar-line); border-radius: 4px; font-size: 11px; line-height: 1.45; color: var(--bar-dim); }
+
+@media (max-width: 640px) {
+  .rack { grid-template-columns: 1fr; }
+  .bar { gap: 12px; padding: 0 12px; }
+  .bar .proj .lbl, .vu .row b { display: none; }
+  .bar .logo { height: 11px; }
+  .vu .seg { width: 4px; }
+  .cfg { right: 8px; left: 8px; width: auto; max-width: none; }
+  .field { grid-template-columns: 80px 1fr 46px; }
+}
+</style>
+</head>
+<body>
+<p class="note">
+  <span><b>Mockup:</b> barra inferior do DCX Studio e painel de config. Os aparelhos acima da barra sao so silhuetas.</span>
+  <span class="tools" role="group" aria-label="Opcoes do mockup">
+    <button class="tool" id="t-auto" aria-pressed="true">Auto</button>
+    <button class="tool" id="t-dark" aria-pressed="false">Escuro</button>
+    <button class="tool" id="t-light" aria-pressed="false">Claro</button>
+    <button class="tool" id="t-panel" aria-pressed="true">Painel</button>
+  </span>
+</p>
+
+<main class="rack">
+  <div class="unit"><h3>RJ-2000<small>Sampling Percussion</small></h3><div class="keys"><i></i><i></i><i></i><i></i><i class="r"></i><i></i><i></i><i></i></div><div class="lcd">PROJETO 1</div></div>
+  <div class="unit"><h3>DCX 404<small>Performance Sampler</small></h3><div class="keys"><i></i><i></i><i></i><i></i><i></i><i></i><i class="r"></i><i></i></div><div class="lcd">PAD 01</div></div>
+  <div class="unit"><h3>RJ-950<small>Digital Sampler</small></h3><div class="keys"><i></i><i></i><i></i><i class="r"></i><i></i><i></i></div><div class="lcd">MEM 3</div></div>
+  <div class="unit"><h3>RJ-42<small>Looper</small></h3><div class="keys"><i></i><i></i><i class="r"></i><i></i><i></i></div><div class="lcd">LOOP 1</div></div>
+</main>
+
+<!-- ================= painel de config ================= -->
+<div class="cfg open" id="cfg" role="dialog" aria-label="Configuracoes do Studio">
+  <section aria-labelledby="h-proj">
+    <h2 id="h-proj">Projeto <em>um arquivo .zip, quatro disquetes</em></h2>
+    <div class="btns">
+      <button class="btn main" data-ctrl="salvar">Salvar projeto</button>
+      <button class="btn" data-ctrl="carregar">Carregar projeto</button>
+    </div>
+    <ul class="disks">
+      <li class="disk" data-disk="rj2000" data-state="alterado">
+        <svg class="fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 3h15l3 3v15H3z"/><path d="M7 3v6h9V3M7 21v-7h10v7"/></svg>
+        <span class="nm">RJ-2000<small>12 sequencias, 31 sons</small></span>
+        <span class="st"><i></i>alterado</span><button class="one">Disquete</button></li>
+      <li class="disk" data-disk="rj950" data-state="salvo">
+        <svg class="fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 3h15l3 3v15H3z"/><path d="M7 3v6h9V3M7 21v-7h10v7"/></svg>
+        <span class="nm">RJ-950<small>memoria com 1 sample, 0,8 MB</small></span>
+        <span class="st"><i></i>salvo</span><button class="one">Disquete</button></li>
+      <li class="disk" data-disk="rj42" data-state="salvo">
+        <svg class="fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 3h15l3 3v15H3z"/><path d="M7 3v6h9V3M7 21v-7h10v7"/></svg>
+        <span class="nm">RJ-42<small>3 loops</small></span>
+        <span class="st"><i></i>salvo</span><button class="one">Disquete</button></li>
+      <li class="disk" data-disk="dcx404" data-state="vazio">
+        <svg class="fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 3h15l3 3v15H3z"/><path d="M7 3v6h9V3M7 21v-7h10v7"/></svg>
+        <span class="nm">DCX 404<small>sem pads nem efeitos</small></span>
+        <span class="st"><i></i>vazio</span><button class="one">Disquete</button></li>
+    </ul>
+    <p class="foot">Cada botao "Disquete" salva ou carrega so aquela maquina. Salvar projeto junta os quatro mais o indice num .zip.</p>
+  </section>
+
+  <section aria-labelledby="h-audio">
+    <h2 id="h-audio">Audio <em>ajustes em aberto</em></h2>
+    <div class="field"><label for="master">Volume master</label><input id="master" data-ctrl="master" type="range" min="0" max="100" value="80"><output id="master-o">80</output></div>
+    <div class="field"><label id="l-lim">Limitador</label><button class="sw" data-ctrl="limitador" role="switch" aria-checked="true" aria-labelledby="l-lim"></button><output>ON</output></div>
+    <div class="field"><label for="saida">Saida de audio</label>
+      <select id="saida" data-ctrl="saida"><option>Padrao do sistema</option><option>Alto-falantes internos</option><option>Fones de ouvido</option><option>Interface USB</option></select></div>
+    <p class="open-items">Ainda nao definidos: taxa de amostragem e latencia.</p>
+  </section>
+</div>
+
+<!-- ================= a barra ================= -->
+<footer class="bar" role="contentinfo">
+  <svg class="logo" role="img" aria-label="DCX Studio" viewBox="0 0 741 98" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M654.864 48.64C654.864 41.8987 655.76 35.584 657.552 29.696C659.429 23.808 662.16 18.688 665.744 14.336C669.328 9.89867 673.765 6.4 679.056 3.84C684.347 1.28 690.448 0 697.36 0C704.528 0 710.8 1.28 716.176 3.84C721.637 6.31467 726.16 9.77067 729.744 14.208C733.413 18.56 736.144 23.7227 737.936 29.696C739.813 35.584 740.752 41.8987 740.752 48.64C740.752 55.296 739.813 61.568 737.936 67.456C736.144 73.2587 733.456 78.3787 729.872 82.816C726.288 87.168 721.808 90.624 716.432 93.184C711.056 95.744 704.827 97.024 697.744 97.024C690.661 97.024 684.432 95.744 679.056 93.184C673.68 90.624 669.2 87.168 665.616 82.816C662.032 78.3787 659.344 73.2587 657.552 67.456C655.76 61.568 654.864 55.296 654.864 48.64ZM697.872 89.6C703.845 89.6 708.965 88.4907 713.232 86.272C717.584 83.968 721.125 80.9387 723.856 77.184C726.672 73.4293 728.72 69.0773 730 64.128C731.365 59.1787 732.048 54.016 732.048 48.64C732.048 42.24 731.237 36.5227 729.616 31.488C728.08 26.368 725.819 22.016 722.832 18.432C719.845 14.848 716.219 12.1173 711.952 10.24C707.685 8.36266 702.907 7.424 697.616 7.424C691.728 7.424 686.608 8.576 682.256 10.88C677.989 13.184 674.448 16.256 671.632 20.096C668.901 23.8507 666.853 28.2027 665.488 33.152C664.208 38.1013 663.568 43.264 663.568 48.64C663.568 54.1013 664.208 59.3067 665.488 64.256C666.853 69.2053 668.901 73.5573 671.632 77.312C674.448 81.0667 677.989 84.0533 682.256 86.272C686.608 88.4907 691.813 89.6 697.872 89.6Z" fill="currentColor"/>
+<path d="M625.895 94.592V2.43201H634.599V94.592H625.895Z" fill="currentColor"/>
+<path d="M530.448 94.592V2.43201H561.936C564.496 2.43201 567.013 2.51734 569.488 2.688C571.963 2.77334 574.395 3.07201 576.784 3.58401C579.173 4.01067 581.477 4.69334 583.696 5.632C586 6.57067 588.219 7.80801 590.352 9.34401C593.424 11.5627 595.941 14.2933 597.904 17.536C599.867 20.6933 601.403 24.064 602.512 27.648C603.707 31.1467 604.517 34.7307 604.944 38.4C605.456 41.984 605.712 45.312 605.712 48.384C605.712 51.456 605.499 54.5707 605.072 57.728C604.731 60.8853 604.133 64 603.28 67.072C602.427 70.0587 601.275 72.96 599.824 75.776C598.459 78.5067 596.709 81.024 594.576 83.328C592.443 85.7173 590.096 87.6373 587.536 89.088C585.061 90.5387 582.416 91.6907 579.6 92.544C576.869 93.312 574.011 93.8667 571.024 94.208C568.037 94.464 565.008 94.592 561.936 94.592H530.448ZM539.152 87.168H560.016C563.941 87.168 567.611 86.9547 571.024 86.528C574.523 86.016 578.064 84.8213 581.648 82.944C584.72 81.408 587.237 79.3173 589.2 76.672C591.163 74.0267 592.699 71.168 593.808 68.096C595.003 64.9387 595.813 61.6533 596.24 58.24C596.752 54.8267 597.008 51.5413 597.008 48.384C597.008 45.056 596.795 41.6853 596.368 38.272C595.941 34.7733 595.131 31.488 593.936 28.416C592.741 25.2587 591.12 22.4 589.072 19.84C587.024 17.1947 584.379 15.0187 581.136 13.312C578.405 11.8613 575.163 10.9227 571.408 10.496C567.653 10.0693 563.856 9.856 560.016 9.856H539.152V87.168Z" fill="currentColor"/>
+<path d="M438.201 2.43201H446.905V57.344C446.905 68.7787 449.038 77.0133 453.305 82.048C457.572 87.0827 464.441 89.6 473.913 89.6C478.862 89.6 483.044 88.96 486.457 87.68C489.956 86.3147 492.772 84.3093 494.905 81.664C497.038 78.9333 498.574 75.5627 499.513 71.552C500.452 67.5413 500.921 62.8053 500.921 57.344V2.43201H509.625V59.904C509.625 71.936 506.638 81.152 500.665 87.552C494.777 93.8667 485.86 97.024 473.913 97.024C461.881 97.024 452.921 93.7813 447.033 87.296C441.145 80.8107 438.201 71.68 438.201 59.904V2.43201Z" fill="currentColor"/>
+<path d="M358.628 2.43201H425.7V9.856H396.516V94.592H387.812V9.856H358.628V2.43201Z" fill="currentColor"/>
+<path d="M292.282 67.072C292.623 71.168 293.519 74.6667 294.97 77.568C296.506 80.384 298.426 82.688 300.73 84.48C303.119 86.272 305.85 87.5947 308.922 88.448C311.994 89.216 315.279 89.6 318.778 89.6C322.874 89.6 326.415 89.088 329.402 88.064C332.389 87.04 334.821 85.6747 336.698 83.968C338.575 82.176 339.941 80.128 340.794 77.824C341.733 75.52 342.202 73.088 342.202 70.528C342.202 66.944 341.391 64.0427 339.77 61.824C338.149 59.6053 336.015 57.8133 333.37 56.448C330.81 54.9973 327.823 53.8453 324.41 52.992C321.082 52.1387 317.626 51.328 314.042 50.56C310.543 49.7067 307.087 48.7253 303.674 47.616C300.346 46.5067 297.359 45.0133 294.714 43.136C292.154 41.2587 290.063 38.8693 288.442 35.968C286.821 32.9813 286.01 29.2267 286.01 24.704C286.01 21.5467 286.65 18.4747 287.93 15.488C289.295 12.5013 291.258 9.856 293.818 7.552C296.463 5.248 299.749 3.41333 303.674 2.048C307.599 0.682665 312.122 0 317.242 0C322.447 0 326.97 0.725332 330.81 2.17599C334.735 3.62666 337.978 5.632 340.538 8.192C343.098 10.6667 345.018 13.568 346.298 16.896C347.578 20.224 348.218 23.7653 348.218 27.52H339.898C339.898 24.0213 339.258 20.992 337.978 18.432C336.783 15.872 335.119 13.7813 332.986 12.16C330.853 10.5387 328.421 9.344 325.69 8.576C322.959 7.808 320.143 7.424 317.242 7.424C312.805 7.424 309.05 8.064 305.978 9.344C302.991 10.5387 300.602 12.1173 298.81 14.08C297.018 16.0427 295.781 18.2187 295.098 20.608C294.415 22.9973 294.287 25.3867 294.714 27.776C295.226 30.7627 296.421 33.152 298.298 34.944C300.175 36.736 302.479 38.2293 305.21 39.424C307.941 40.5333 310.927 41.472 314.17 42.24C317.498 42.9227 320.869 43.6907 324.282 44.544C327.695 45.312 330.981 46.2507 334.138 47.36C337.381 48.4693 340.239 49.9627 342.714 51.84C345.189 53.7173 347.151 56.1493 348.602 59.136C350.138 62.0373 350.906 65.7067 350.906 70.144C350.906 78.6773 347.962 85.2907 342.074 89.984C336.186 94.6773 327.909 97.024 317.242 97.024C312.463 97.024 308.026 96.384 303.93 95.104C299.834 93.9093 296.293 92.0747 293.306 89.6C290.319 87.04 287.973 83.9253 286.266 80.256C284.645 76.5013 283.834 72.1067 283.834 67.072H292.282Z" fill="currentColor"/>
+<path d="M241.142 94.592H217.767L200.267 63.217L181.767 94.592H159.392L189.017 47.6545L160.83 2.46704H183.83L200.267 32.4045L217.142 2.46704H239.392L211.205 46.9045L241.142 94.592Z" fill="currentColor"/>
+<path d="M152.38 87.717C145.505 94.0087 136.713 97.1545 126.005 97.1545C112.755 97.1545 102.338 92.9045 94.755 84.4045C87.1717 75.8629 83.38 64.1545 83.38 49.2795C83.38 33.1962 87.6925 20.8004 96.3175 12.092C103.818 4.50871 113.359 0.717041 124.943 0.717041C140.443 0.717041 151.776 5.80037 158.943 15.967C162.901 21.6754 165.026 27.4045 165.318 33.1545H146.068C144.818 28.7379 143.213 25.4045 141.255 23.1545C137.755 19.1545 132.568 17.1545 125.693 17.1545C118.693 17.1545 113.172 19.9879 109.13 25.6545C105.088 31.2795 103.068 39.2587 103.068 49.592C103.068 59.9254 105.193 67.6754 109.443 72.842C113.734 77.967 119.172 80.5295 125.755 80.5295C132.505 80.5295 137.651 78.3212 141.193 73.9045C143.151 71.5295 144.776 67.967 146.068 63.217H165.13C163.463 73.2587 159.213 81.4254 152.38 87.717Z" fill="currentColor"/>
+<path d="M39.6875 94.592H0V2.46704H39.6875C45.3958 2.55037 50.1458 3.21704 53.9375 4.46704C60.3958 6.59204 65.625 10.4879 69.625 16.1545C72.8333 20.7379 75.0208 25.6962 76.1875 31.0295C77.3542 36.3629 77.9375 41.4462 77.9375 46.2795C77.9375 58.5295 75.4792 68.9045 70.5625 77.4045C63.8958 88.8629 53.6042 94.592 39.6875 94.592ZM54 25.967C51.0417 20.967 45.1875 18.467 36.4375 18.467H18.6875V78.592H36.4375C45.5208 78.592 51.8542 74.1129 55.4375 65.1545C57.3958 60.2379 58.375 54.3837 58.375 47.592C58.375 38.217 56.9167 31.0087 54 25.967Z" fill="currentColor"/>
+</svg>
+  <span class="sep"></span>
+  <button class="proj" data-ctrl="projeto-nome" title="Renomear o projeto"><span class="lbl">Projeto</span><span class="name">Sem titulo 1</span><i class="dirty" title="Alteracoes nao salvas"></i></button>
+  <span class="sp"></span>
+  <div class="vu" data-ctrl="vu" aria-label="Nivel de saida" role="img">
+    <div class="row"><b>L</b></div><div class="row"><b>R</b></div>
+  </div>
+  <button class="cfg-btn" id="cfg-btn" data-ctrl="config" aria-expanded="true" aria-controls="cfg" aria-label="Configuracoes">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+  </button>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  function $(s) { return document.querySelector(s); }
+  // tema (so do mockup): auto segue o sistema
+  var tb = { auto: $('#t-auto'), dark: $('#t-dark'), light: $('#t-light') };
+  function theme(t) {
+    if (t === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+    for (var k in tb) tb[k].setAttribute('aria-pressed', k === t);
+  }
+  for (var k in tb) (function (k) { tb[k].addEventListener('click', function () { theme(k); }); })(k);
+  // painel
+  var cfg = $('#cfg'), btn = $('#cfg-btn'), tp = $('#t-panel');
+  function panel(open) { cfg.classList.toggle('open', open); btn.setAttribute('aria-expanded', open); tp.setAttribute('aria-pressed', open); }
+  btn.addEventListener('click', function () { panel(!cfg.classList.contains('open')); });
+  tp.addEventListener('click', function () { panel(!cfg.classList.contains('open')); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') panel(false); });
+  // volume e limitador
+  $('#master').addEventListener('input', function (e) { $('#master-o').textContent = e.target.value; });
+  var sw = $('.sw');
+  sw.addEventListener('click', function () { var on = sw.getAttribute('aria-checked') !== 'true'; sw.setAttribute('aria-checked', on); sw.parentNode.querySelector('output').textContent = on ? 'ON' : 'OFF'; });
+  // VU de mentira: 16 segmentos por canal
+  var N = 16, rows = document.querySelectorAll('.vu .row'), segs = [];
+  rows.forEach(function (r) { var a = []; for (var i = 0; i < N; i++) { var s = document.createElement('span'); s.className = 'seg'; r.appendChild(s); a.push(s); } segs.push(a); });
+  var lvl = [0, 0], t = 0;
+  function tick() {
+    t += 0.09;
+    var base = 0.5 + 0.28 * Math.sin(t) + 0.12 * Math.sin(t * 2.7);
+    for (var c = 0; c < 2; c++) {
+      var target = Math.max(0, Math.min(1, base + (Math.random() - 0.5) * 0.25 - c * 0.04));
+      lvl[c] = target > lvl[c] ? target : lvl[c] * 0.88 + target * 0.12;
+      var on = Math.round(lvl[c] * N);
+      for (var i = 0; i < N; i++) segs[c][i].className = 'seg' + (i < on ? ' on' + (i >= 14 ? ' clip' : i >= 11 ? ' hot' : '') : '');
+    }
+  }
+  tick(); setInterval(tick, 60);
+})();
+</script>
+</body>
+</html>
