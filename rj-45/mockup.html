@@ -119,6 +119,13 @@
   .xf .cap-x::after { content: ""; position: absolute; top: 3px; bottom: 3px; left: 50%; width: 3px; margin-left: -1.5px; background: #e8e8e2; border-radius: 1px; }
   .r45-xf { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 
+  /* disco do scratch: fonte, kit, gesto, modo do fader e Slip (acrescentado em 08/11/2026, a pedido de Igor) */
+  .r45-disc { display: block; padding: 14px 6px 8px; }
+  .r45-dgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 2px; }
+  .r45-dgrid .r45-dual { gap: 5px; }
+  .r45-dgrid .r45-leds { gap: 5px; min-height: 12px; }
+  .r45-dgrid .r42-lr { gap: 3px; font-size: 8.5px; }
+
   .r45-legend { max-width: 900px; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px 28px; font-size: 12.5px; line-height: 1.45; }
   .r45-legend b { color: var(--ink); font-weight: 600; }
 </style>
@@ -178,6 +185,17 @@
           <div class="r45-knob"><div class="knob r9-knob-s" data-ctrl="torque" role="slider" tabindex="0" aria-label="Torque" style="--a:-20deg"><i></i></div><span class="r9-cap">Torque</span></div>
           <div class="r45-knob"><div class="knob r9-knob-s" data-ctrl="volume" role="slider" tabindex="0" aria-label="Volume" style="--a:50deg"><i></i></div><span class="r9-cap">Volume</span></div>
         </div>
+        <!-- disco do scratch: fonte, kit, gesto, modo do fader e Slip (novos, aprovados por Igor em 08/11/2026) -->
+        <div class="r42-group r45-disc"><span class="r42-gt">Scratch Disc</span>
+          <div class="r45-dgrid">
+            <div class="r45-dual"><div class="r45-leds"><span class="r42-lr"><i class="led r9-led on" data-led="src-mus"></i>Mus</span><span class="r42-lr"><i class="led r9-led" data-led="src-smp"></i>Smp</span></div><button class="r9-btn" data-ctrl="src" aria-label="Fonte do scratch: música ou sample"></button><span class="r9-cap">Source</span></div>
+            <div class="r45-dual"><div class="r45-leds"><span class="r42-lr"><i class="led r9-led on" data-led="kit-1"></i>01</span><span class="r42-lr"><i class="led r9-led" data-led="kit-2"></i>02</span></div><button class="r9-btn" data-ctrl="kit" aria-label="Kit de samples"></button><span class="r9-cap">Kit</span></div>
+            <div class="r45-dual"><div class="r45-leds"><span class="r42-lr"><i class="led r9-led on" data-led="mix"></i>Mix</span><span class="r42-lr"><i class="led r9-led" data-led="cut"></i>Cut</span></div><button class="r9-btn" data-ctrl="fader-mode" aria-label="Fader: mix ou cut"></button><span class="r9-cap">Mode</span></div>
+            <div class="r45-dual"><div class="r45-leds"><span class="r42-lr r42-dim">&nbsp;</span></div><button class="r9-btn" data-ctrl="gest-prev" aria-label="Gesto anterior"></button><span class="r9-cap">Gest &minus;</span></div>
+            <div class="r45-dual"><div class="r45-leds"><span class="r42-lr r42-dim">&nbsp;</span></div><button class="r9-btn" data-ctrl="gest-next" aria-label="Próximo gesto"></button><span class="r9-cap">Gest +</span></div>
+            <div class="r45-dual"><div class="r45-leds"><span class="r42-lr"><i class="led r9-led on" data-led="slip"></i>Slip</span></div><button class="r9-btn" data-ctrl="slip" aria-label="Slip"></button><span class="r9-cap">Slip</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -200,6 +218,7 @@
     <div><b>Scratch Fader:</b> corta o som do disco, com curso curto. A chave da esquerda escolhe a curva (Sharp, Medium, Smooth); a da direita (Hamster) inverte o lado.</div>
     <div><b>Wheel:</b> como o pitch wheel do Arturia mexe no disco: Hand (mão no disco, o padrão) ou Speed (velocidade, para backspin).</div>
     <div><b>Load / Grab / Cue:</b> Load carrega um som no disco; Grab, no Studio, grava os últimos segundos do RJ-2000 ou do 404 como o som do disco; Cue volta ao começo do som.</div>
+    <div><b>Scratch Disc:</b> Source escolhe o que o disco que você mexe toca (a música ou um gesto dos kits); Kit troca de kit; Gest − / + trocam o gesto; Mode é o fader Mix (música de um lado, scratch do outro) ou Cut (clássico); Slip faz o scratch voltar à música ao largar o disco.</div>
     <div><b>Visor:</b> uma linha, com o nome do som e o tempo.</div>
   </div>
 
@@ -263,6 +282,18 @@
     paintSwitch(sw);
     sw.addEventListener("click", () => { const o = sw.dataset.opts.split(","); sw.dataset.pos = o[(o.indexOf(sw.dataset.pos) + 1) % o.length]; paintSwitch(sw); });
   });
+
+  // ---------- disco do scratch (novos) ----------
+  let src = "music", kit = 1, mix = "mix", slip = true, gest = 0;
+  const paintDisc = () => { led("src-mus").classList.toggle("on", src === "music"); led("src-smp").classList.toggle("on", src === "sample");
+    led("kit-1").classList.toggle("on", kit === 1); led("kit-2").classList.toggle("on", kit === 2);
+    led("mix").classList.toggle("on", mix === "mix"); led("cut").classList.toggle("on", mix === "cut"); led("slip").classList.toggle("on", slip && mix === "mix"); };
+  $('[data-ctrl="src"]').addEventListener("click", () => { src = src === "music" ? "sample" : "music"; paintDisc(); setLcd(src === "sample" ? "A1 SCRATCH" : "BREAK 01", null); });
+  $('[data-ctrl="kit"]').addEventListener("click", () => { kit = kit === 1 ? 2 : 1; gest = 0; paintDisc(); });
+  $('[data-ctrl="fader-mode"]').addEventListener("click", () => { mix = mix === "mix" ? "cut" : "mix"; paintDisc(); });
+  $('[data-ctrl="slip"]').addEventListener("click", () => { slip = !slip; paintDisc(); });
+  $('[data-ctrl="gest-prev"]').addEventListener("click", () => { gest = (gest + 15) % 16; src = "sample"; paintDisc(); setLcd((kit === 1 ? "AB"[gest >> 3] : "CD"[gest >> 3]) + (gest % 8 + 1) + " GESTO", null); });
+  $('[data-ctrl="gest-next"]').addEventListener("click", () => { gest = (gest + 1) % 16; src = "sample"; paintDisc(); setLcd((kit === 1 ? "AB"[gest >> 3] : "CD"[gest >> 3]) + (gest % 8 + 1) + " GESTO", null); });
 
   // ---------- fader de scratch ----------
   const xf = $(".xf");
