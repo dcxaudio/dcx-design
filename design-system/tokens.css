@@ -1,0 +1,224 @@
+/* DCX Audio · design system · tokens (DS-1)
+ * Marca, home e documentação. Preto #1c1c1c, branco "vintage" (não puro), Helvetica.
+ *
+ * TIPOGRAFIA: duas famílias de uso, que não se misturam
+ *   - Máquinas (painéis RJ-2000, DCX 404, RJ-950, RJ-42, RJ-1202): mantêm a tipografia do
+ *     hardware que já está no código (Roboto Condensed, Inter, Russo One, embutidas, OFL).
+ *     O painel é um objeto; a marca não o "reveste".
+ *   - Marca / home / documentação: Helvetica. Helvetica é proprietária (Monotype): NÃO se
+ *     embute nem se versiona arquivo dela. Plano:
+ *       1. usa a do sistema quando existe (macOS/iOS têm "Helvetica Neue" e "Helvetica");
+ *       2. onde não existe (Windows, Android, Linux), a alternativa livre equivalente é
+ *          TeX Gyre Heros (desenho Helvetica, derivada da Nimbus Sans da URW; licença GUST
+ *          Font License, permite embutir como webfont) ou Nimbus Sans (URW base35, AGPL v3 com
+ *          exceção de fonte). Arimo (Apache 2.0) entra antes de Arial: métrica de Arial,
+ *          desenho mais neutro. Conferir o texto da licença antes de embutir (card DS-3).
+ *       3. DS-8: a TeX Gyre Heros 2.004 (GUST Font License 1.0) está embutida em fonts/ (woff2 400 e 700,
+          subset latino, ~29 KB) e entra pela pilha abaixo só onde o sistema não tem Helvetica.
+          Cada página liga fonts/tex-gyre-heros.css; crédito discreto no rodapé.
+ *
+ * CONTRASTE WCAG 2.x (razão calculada pela luminância relativa; AA texto = 4.5, AA grande = 3)
+ *   fundo          | 1c1c1c | cinza-700 | cinza-600 | cinza-500 | vinho | marinho | verm.esc | vermelho | rosa | cinza-painel
+ *   papel  #ebe8df | 13.91  |   9.40    |   5.61    |   3.64*   |  8.38 |  10.98  |   5.34   |  3.12*   | 2.19x|   2.39x
+ *   marfim #f2ecdc | 14.45  |   9.77    |   5.83    |   3.78*   |  8.71 |  11.40  |   5.54   |  3.24*   | 2.28x|   2.48x
+ *   creme  #ebe0c8 | 13.01  |   8.79    |   5.25    |   3.41*   |  7.84 |  10.26  |   4.99   |  2.92x   | 2.05x|   2.23x
+ *   sobre 1c1c1c   | marfim 14.45 · papel 13.91 · creme 13.01 · cinza-400 6.31 · cinza-500 3.82* · rosa 6.34
+ *                  | vermelho 4.46* · cinza-painel 5.82 · vinho 1.66x · marinho 1.27x
+ *   * só texto grande (>= 24px, ou >= 18.66px negrito) ou elemento gráfico · x só decoração
+ *   Recomendação: marfim como fundo principal; vinho para links/ênfase sobre claro; rosa e
+ *   vermelho de display só sobre preto ou como cor de objeto (LED, tecla acesa), nunca texto
+ *   corrido sobre claro.
+ */
+
+:root {
+  /* ---------------------------------------------------------------- base */
+  --dcx-preto: #1c1c1c;
+
+  /* três candidatos de branco vintage (Igor escolhe; --dcx-branco aponta para o recomendado) */
+  --dcx-branco-papel: #ebe8df;   /* papel de manual: neutro, quase cinza (parente do #e8e8e2 do RJ-2000 e do #e9e6dd do mockup 404) */
+  --dcx-branco-marfim: #f2ecdc;  /* marfim: quente, claro, o de maior contraste com o preto */
+  --dcx-branco-creme: #ebe0c8;   /* creme: cartão envelhecido, mais amarelo; ainda passa AA com cinza-600 */
+  --dcx-branco: var(--dcx-branco-marfim);
+
+  /* cinzas quentes: interpolados do preto para o papel, sem azul (o azul fica nos painéis) */
+  --dcx-cinza-900: #1c1c1c;
+  --dcx-cinza-800: #2b2a27;
+  --dcx-cinza-700: #3b3935;  /* texto secundário */
+  --dcx-cinza-600: #5d5a53;  /* legenda, menor cinza para texto corrido sobre claro */
+  --dcx-cinza-500: #7b776e;  /* fios, ícones, texto grande */
+  --dcx-cinza-400: #a29d92;  /* texto secundário sobre preto */
+  --dcx-cinza-300: #c6c0b3;  /* bordas sobre claro */
+  --dcx-cinza-200: #dbd5c8;  /* divisórias, faixas */
+
+  /* ---------------------------------------------------------------- acentos dos painéis reais
+   * conferidos em dcx-404/novo/css/dcx404-novo.css (variáveis do Figma), rj-2000/css/rj2000.css
+   * e dcx-design/dcx-404/mockup-v4.html */
+  --dcx-rosa: #ef7b80;            /* 404 · superfície da tecla acesa (--dx-on-1) */
+  --dcx-rosa-sombra: #cc626e;     /* 404 · fim do degradê aceso (--dx-on-2) */
+  --dcx-vinho: #76232b;           /* 404 · borda do elastômero aceso (--dx-borda-on) */
+  --dcx-vinho-tinta: #5f262b;     /* 404 · texto sobre tecla acesa (--dx-ink-on) */
+  --dcx-vermelho-display: #f53925;/* 404 · segmento aceso (--dx-seg-on) */
+  --dcx-segmento-apagado: #42251f;/* 404 · segmento apagado (--dx-seg-off) */
+  --dcx-vermelho-escuro: #b3261e; /* 404 · erro (texto vermelho legível sobre claro) */
+  --dcx-vermelho-mockup: #e2463f; /* mockup-v4 · acento */
+  --dcx-marinho: #292c4d;         /* 404 · placas e legendas azuis (--dx-navy) */
+  --dcx-marinho-claro: #3d4260;   /* 404 · moldura da grade */
+  --dcx-cinza-painel: #929899;    /* 404 · painel cinza (--dx-panel) */
+  --dcx-aluminio-1: #d1d6e0;      /* 404 · face do painel, topo do degradê */
+  --dcx-aluminio-2: #aeb1b8;      /* 404 · face do painel, base */
+  --dcx-elastomero-1: #adb1b7;    /* 404 · superfície da tecla solta */
+  --dcx-elastomero-2: #979ba2;
+  --dcx-elastomero-borda: #5a5d61;
+  --dcx-alojamento: #222321;      /* 404 · alojamento das teclas */
+  --dcx-rj-face: #e8e8e2;         /* RJ-2000 · face clara */
+  --dcx-rj-cinza: #8c8c86;        /* RJ-2000 · legendas */
+  --dcx-rj-chassi: #0f0f0f;       /* RJ-2000 · chassi */
+
+  /* ---------------------------------------------------------------- tipografia */
+  --dcx-fonte: "Helvetica Neue", Helvetica, "TeX Gyre Heros", Arial, sans-serif; /* TeX Gyre Heros embutida em fonts/tex-gyre-heros.css (DS-8) */
+  --dcx-fonte-mono: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; /* código e números de spec */
+  /* máquinas (só dentro dos painéis; não usar na marca) */
+  --dcx-fonte-painel: "DX Inter", "Inter", system-ui, sans-serif;
+  --dcx-fonte-painel-cond: "DX Roboto Condensed", "Roboto Condensed", sans-serif;
+  --dcx-fonte-painel-num: "DX Russo One", "Russo One", sans-serif;
+
+  /* escala: razão 1.25 a partir de 16px, arredondada para pixel inteiro */
+  --dcx-t-xs: 12px;   /* só rótulos em caixa-alta, nunca texto corrido */
+  --dcx-t-sm: 14px;
+  --dcx-t-base: 16px;
+  --dcx-t-md: 20px;
+  --dcx-t-lg: 25px;
+  --dcx-t-xl: 31px;
+  --dcx-t-2xl: 39px;
+  --dcx-t-3xl: 49px;
+  --dcx-t-4xl: 61px;
+  --dcx-t-5xl: 76px;  /* título da home */
+  --dcx-peso-regular: 400;
+  --dcx-peso-medio: 500;
+  --dcx-peso-negrito: 700;
+  --dcx-entrelinha-texto: 1.5;
+  --dcx-entrelinha-titulo: 1.02;
+  --dcx-espaco-letra-titulo: -0.02em;  /* Helvetica grande fecha */
+  --dcx-espaco-letra-rotulo: 0.08em;   /* caixa-alta pequena abre, como serigrafia de painel */
+  --dcx-medida: 64ch;                  /* largura máxima de leitura */
+
+  /* ---------------------------------------------------------------- espaço (base 4) */
+  --dcx-e-1: 4px;
+  --dcx-e-2: 8px;
+  --dcx-e-3: 12px;
+  --dcx-e-4: 16px;
+  --dcx-e-5: 24px;
+  --dcx-e-6: 32px;
+  --dcx-e-7: 48px;
+  --dcx-e-8: 64px;
+  --dcx-e-9: 96px;
+  --dcx-e-10: 128px;
+  --dcx-calha: 16px;        /* margem lateral no celular */
+  --dcx-largura: 1200px;    /* conteúdo da home */
+
+  /* ---------------------------------------------------------------- raios (medidos no 404) */
+  --dcx-r-0: 0;
+  --dcx-r-1: 2px;   /* superfície do pad */
+  --dcx-r-2: 3px;   /* superfície da tecla */
+  --dcx-r-3: 4px;   /* borda do elastômero */
+  --dcx-r-4: 6px;   /* alojamento da tecla */
+  --dcx-r-5: 16px;  /* canto do painel */
+  --dcx-r-cheio: 999px;
+
+  /* ---------------------------------------------------------------- movimento
+     Uma escala só para o site inteiro. Nenhum componente escreve "160ms" nem cubic-bezier à mão.
+     tecla  = o clique do hardware: curto e seco (linear de propósito, é o toque de uma tecla, não uma entrada de interface).
+     rapido = cor, sublinhado, foco · medio = elevação de cartão e botão · lento = o que se move mais de 8 px. */
+  --dcx-dur-tecla: 40ms;
+  --dcx-dur-tecla-cor: 90ms;
+  --dcx-dur-rapido: 120ms;
+  --dcx-dur-medio: 160ms;
+  --dcx-dur-lento: 260ms;
+  --dcx-ease-tecla: linear;
+  --dcx-ease-saida: cubic-bezier(.2, .7, .3, 1);   /* entra rápido e assenta: hover, elevação, aparecer */
+
+  /* ---------------------------------------------------------------- bordas */
+  --dcx-fio: 1px solid var(--dcx-cinza-300);
+  --dcx-fio-forte: 1px solid var(--dcx-preto);
+  --dcx-fio-tracejado: 1px dashed var(--dcx-cinza-500);
+
+  /* ---------------------------------------------------------------- sombras
+   * sem "sombra padrão": as duas primeiras são as do Figma do 404, com a cor esverdeada
+   * do painel; as de papel são curtas e quentes, como folha sobre mesa */
+  --dcx-sombra-alojamento: 0 2px 3px 0 rgba(16, 23, 18, .2);       /* 404 · efeitos/alojamento-circular */
+  --dcx-sombra-moldada: inset 0 2px 3px 0 rgba(23, 27, 23, .5);    /* 404 · efeitos/superficie-moldada (pressionado) */
+  --dcx-sombra-folha: 0 1px 0 rgba(60, 45, 20, .10), 0 2px 1px -1px rgba(60, 45, 20, .12), 0 8px 14px -10px rgba(60, 45, 20, .35);
+  --dcx-sombra-cartao: 0 1px 0 rgba(255, 252, 240, .6) inset, 0 1px 1px rgba(40, 30, 10, .16), 0 12px 20px -14px rgba(40, 30, 10, .45);
+  --dcx-brilho-led: 0 0 2.5px rgba(255, 36, 28, .533);             /* 404 · halo do segmento aceso */
+}
+
+/* ================================================================ TOKENS FINAIS (DS-8)
+ * Aprovados por Igor em 10/11/2026: a prata (--dcx-prata-clara #d3cdbf no lugar do branco da
+ * capa) e as 5 cores por máquina (--dcx-maq-rj2000, -dcx404, -rj950, -rj42, -rj1202, incluindo o
+ * amarelo #e7b23a do RJ-1202). Nomes estáveis: não renomear nem mudar valor sem nova aprovação.
+ * Quem usa: capas, OG, cartões da home, guia (seção 08). Os valores estão no bloco DS-5 abaixo,
+ * cada um marcado "FINAL · aprovado por Igor 10/11/2026".
+ */
+
+/* ================================================================ DIREÇÃO "CAPA DE CASSETE" (DS-5)
+ * Referências de Igor (só inspiração, nada de marca, logo ou texto de terceiros): capa de fita
+ * dos anos 70/80 (fundo preto chapado, impressão em prata velha, faixa cinza larga, palavra-marca
+ * enorme, numeral gigante, ficha técnica miúda, UM ponto focal quente), série de fitas com uma cor
+ * chapada por produto, capa com grade de círculos em meio-tom, anúncio de gravador com régua de
+ * linhas paralelas e produto sob luz forte.
+ *
+ * Regra das tintas: capa = preto + prata + no máximo UMA cor (o acento OU a cor da máquina).
+ * A prata nunca é branco puro: é tinta cinza-quente sobre cartão preto.
+ *
+ * CONTRASTE (WCAG 2.x)        sobre preto 1c1c1c | sobre marfim f2ecdc | uso
+ *   prata        #b8b2a5   |  8.07              |  1.79x             | texto sobre preto (todo tamanho)
+ *   prata-clara  #d3cdbf   | 10.76              |  1.34x             | palavra-marca, numeral sobre preto
+ *   faixa        #8d8980   |  4.89 (preto sobre faixa) | 2.96x       | faixa larga; texto preto por cima
+ *   acento       #e2463f   |  4.21* (preto sobre acento) | 3.44*     | só ponto focal e texto >= 24px
+ *   * só texto grande ou elemento gráfico · x só decoração
+ *
+ * COR POR MÁQUINA (série: uma cor chapada por aparelho, tirada do próprio painel; texto em preto)
+ *   máquina  | cor      | de onde vem no painel                              | preto sobre ela
+ *   RJ-2000  | #4b8ad0  | régua azul das seções (rj-2000/css, --rule)         | 4.74
+ *   DCX 404  | #ef7b80  | superfície da tecla acesa (Figma, --dx-on-1)        | 6.34
+ *   RJ-950   | #b3c25c  | vidro do LCD verde (rj-2000 --lcd-glass, igual no 950) | 8.75
+ *   RJ-42    | #ec6a2c  | display de BPM (#ff3b26 do LED) baixado para laranja de tinta, para não brigar com o acento | 5.41
+ *   RJ-1202  | #e7b23a  | degrau amarelo do medidor de LED (meio da escala)   | 8.79
+ *   Studio   | preto + prata (o rack é a capa inteira; o acento é o ponto focal)
+ */
+:root {
+  --dcx-capa: #1c1c1c;               /* cartão preto chapado (= --dcx-preto) */
+  --dcx-capa-funda: #151514;         /* lombada e aba dobrada: o preto do lado da sombra */
+  --dcx-prata: #b8b2a5;              /* FINAL · aprovado por Igor 10/11/2026 · tinta prata velha: texto e fio sobre preto */
+  --dcx-prata-clara: #d3cdbf;        /* FINAL · aprovado por Igor 10/11/2026 · prata no lugar do branco da capa: palavra-marca, numeral */
+  --dcx-prata-escura: #6f6a61;       /* prata rala: legenda secundária sobre preto, fio fino */
+  --dcx-faixa: #8d8980;              /* faixa larga cinza atravessando a capa */
+  --dcx-faixa-clara: #a29e94;        /* reflexo da faixa (topo) */
+  --dcx-faixa-tinta: #1c1c1c;        /* numeral e texto impressos sobre a faixa */
+  --dcx-acento: #e2463f;             /* o ÚNICO acento quente (mockup-v4 e rj-42/rj-1202: #e2463f) */
+  --dcx-acento-sombra: #b8352f;      /* acento do lado da sombra / dobra */
+  --dcx-acento-papel: #f2e6d4;       /* meio-tom do selo sobre o acento (marfim com tinta vermelha por baixo) */
+
+  /* cor por máquina · FINAL · aprovado por Igor 10/11/2026 */
+  --dcx-maq-rj2000: #4b8ad0;
+  --dcx-maq-dcx404: #ef7b80;
+  --dcx-maq-rj950: #b3c25c;
+  --dcx-maq-rj42: #ec6a2c;
+  --dcx-maq-rj1202: #e7b23a;
+  --dcx-maq: var(--dcx-acento);      /* cor do contexto: troque por máquina (.dcx-cor-rj2000 etc.) */
+
+  /* tipografia da capa: Helvetica pesada e fechada (mesma pilha da marca) */
+  --dcx-peso-pesado: 700;            /* Helvetica Neue Bold; não usar 800/900 sintético */
+  --dcx-espaco-marca: -0.055em;      /* palavra-marca enorme: letras quase encostando */
+  --dcx-espaco-numeral: -0.07em;     /* numeral gigante */
+  --dcx-espaco-regular-grande: -0.03em; /* frase em Helvetica regular grande */
+  --dcx-entrelinha-marca: .8;
+  --dcx-t-ficha: 11px;               /* ficha técnica: só caixa-baixa curta, nunca texto corrido */
+  --dcx-t-marca: clamp(64px, 14vw, 200px);
+  --dcx-t-numeral: clamp(88px, 18vw, 260px);
+
+  /* luz da capa */
+  --dcx-fio-de-luz: inset 0 1px 0 rgb(255 248 230 / .16);   /* aresta de cima de cada faixa empilhada */
+  --dcx-dobra-sombra: inset 0 -1px 0 rgb(0 0 0 / .55);      /* vinco embaixo da faixa */
+  --dcx-luz-forte: radial-gradient(ellipse 58% 52% at 60% 36%, rgb(255 244 222 / .34), rgb(255 240 215 / .10) 42%, rgb(0 0 0 / 0) 72%);
+}

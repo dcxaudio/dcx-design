@@ -1,0 +1,535 @@
+/* DCX Audio · design system · componentes (DS-2)
+ * Depende de tokens.css e textures.css (DS-1). HTML + CSS puro; nenhum componente precisa de JS.
+ *
+ * Mesma física das peças do 404 (dcx-404/novo): cada controle é uma peça sobre um alojamento.
+ *   solto       = face acima do alojamento, degrau de 2px (espessura) + sombra do Figma do 404
+ *                 (--dcx-sombra-alojamento, cor esverdeada do painel)
+ *   pressionado = a face desce os 2px do degrau, a sombra externa some e entra a sombra
+ *                 moldada do 404 por dentro (--dcx-sombra-moldada)
+ *   aceso       = cores da tecla acesa do 404 (rosa / vinho / vinho-tinta)
+ *   apagado     = sem degrau, sem sombra, cor de plástico sem tinta
+ * Estados forçados para documentação: .is-hover, .is-down, .is-focus (espelham :hover, :active,
+ * :focus-visible). Foco sempre visível: marinho sobre claro, marfim sobre preto.
+ *
+ * Componentes: .dcx-btn (botão) · .dcx-etq (etiqueta) · .dcx-maquina (cartão de máquina) ·
+ *              .dcx-cab (cabeçalho) · .dcx-rod (rodapé) · .dcx-cod (bloco de código) · .dcx-tab (tabela)
+ *   capa de cassete (DS-5): .dcx-selo · .dcx-marca · .dcx-numeral · .dcx-faixa · .dcx-ficha ·
+ *              .dcx-lombada · .dcx-regua · .dcx-meiotom · .dcx-chapado (.dcx-cor-*) · .dcx-anuncio · .dcx-luz
+ * Medidas: múltiplos de 4 (tokens --dcx-e-*); raios do 404 (--dcx-r-*).
+ */
+
+:root {
+  --dcx-foco: var(--dcx-marinho);
+  --dcx-degrau: 2px;                         /* espessura da tecla: o quanto ela desce */
+  --dcx-borda-tecla: #0d100e;                /* 404 · borda-do-elastomero-2 (fio escuro) */
+  --dcx-face-preta-1: #2f2d2a;               /* face preta: topo (luz de cima, quente) */
+  --dcx-face-preta-2: #1c1c1c;               /* face preta: base = preto da marca */
+  --dcx-degrau-preto: #080807;
+  /* parafuso do 404 (parafuso-assento.svg + parafuso-cabeca.svg, mesmas cores e medidas) */
+  --dcx-parafuso: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='1' x2='0' y2='19' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23B0B6B8'/%3E%3Cstop offset='.08' stop-color='%23E0E3E4'/%3E%3Cstop offset='.36' stop-color='%23BDC3C6'/%3E%3Cstop offset='.65' stop-color='%23D9DDDE'/%3E%3Cstop offset='.94' stop-color='%23B8BFC1'/%3E%3Cstop offset='1' stop-color='%23E4E6E6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='12' cy='12' r='12' fill='%23B1B7B9'/%3E%3Ccircle cx='12' cy='12' r='11.5' fill='none' stroke='%23929899'/%3E%3Cg transform='translate(2 2)'%3E%3Ccircle cx='10' cy='10' r='10' fill='%23767C7B'/%3E%3Ccircle cx='10' cy='10' r='8.5' fill='url(%23g)' stroke='%23F0F1ED'/%3E%3Ccircle cx='10' cy='10' r='5' fill='%23787F7C'/%3E%3Crect x='9' y='6' width='2' height='8' rx='.5' fill='%23313632'/%3E%3Crect x='6' y='9' width='8' height='2' rx='.5' fill='%23313632'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ============================================================ BOTÃO
+ * <button class="dcx-btn">Abrir o DCX Studio</button>
+ * variantes: (padrão) preto · .dcx-btn--claro · .dcx-btn--link   tamanho: .dcx-btn--p
+ * medidas: 48px de altura (40px no --p), padding 0 24px (0 16px), raio 4px (borda do elastômero) */
+.dcx-btn {
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--dcx-e-2);
+  min-height: 48px; padding: 0 var(--dcx-e-5); margin: 0 0 var(--dcx-degrau);
+  border: 1px solid var(--dcx-borda-tecla); border-radius: var(--dcx-r-3);
+  font: var(--dcx-peso-negrito) var(--dcx-t-base)/1 var(--dcx-fonte); letter-spacing: -.01em;
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+  color: var(--dcx-branco);
+  background: linear-gradient(to bottom, var(--dcx-face-preta-1), var(--dcx-face-preta-2) 72%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 250 235 / .13),      /* aresta de luz no topo da face */
+    inset 0 -1px 0 rgb(0 0 0 / .45),
+    0 var(--dcx-degrau) 0 var(--dcx-degrau-preto), /* degrau: a espessura da tecla */
+    0 calc(var(--dcx-degrau) + 2px) 3px 0 rgba(16, 23, 18, .28); /* 404 · alojamento-circular, deslocada pelo degrau */
+  transition: transform var(--dcx-dur-tecla) var(--dcx-ease-tecla), box-shadow var(--dcx-dur-tecla) var(--dcx-ease-tecla), background-color var(--dcx-dur-tecla-cor) var(--dcx-ease-tecla),
+    text-decoration-color var(--dcx-dur-rapido) var(--dcx-ease-saida), text-decoration-thickness var(--dcx-dur-rapido) var(--dcx-ease-saida);
+  -webkit-tap-highlight-color: transparent;
+}
+/* fosco de silicone na face (mesma camada da tecla do 404); some com --tex-intensity: 0 */
+.dcx-btn::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: var(--tx-fosco-claro) 0 0 / 160px; mix-blend-mode: screen;
+  opacity: calc(var(--tex-intensity, 1) * .22);
+}
+.dcx-btn:hover, .dcx-btn.is-hover {
+  /* a luz da sala pega a face: topo bem mais claro, aresta de luz dobrada e um fio claro na borda
+     (como a tecla do 404 sob o dedo antes de descer); o degrau continua inteiro */
+  background: linear-gradient(to bottom, #4a4741, #33312d 46%, #262523 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 250 235 / .30),
+    inset 0 0 0 1px rgb(255 250 235 / .07),
+    inset 0 -1px 0 rgb(0 0 0 / .45),
+    0 var(--dcx-degrau) 0 var(--dcx-degrau-preto),
+    0 calc(var(--dcx-degrau) + 3px) 5px 0 rgba(16, 23, 18, .34);
+}
+.dcx-btn:active, .dcx-btn.is-down {
+  transform: translateY(var(--dcx-degrau));
+  background: linear-gradient(to bottom, #252422, var(--dcx-face-preta-2) 72%);
+  box-shadow: var(--dcx-sombra-moldada), 0 0 0 var(--dcx-degrau-preto);
+}
+.dcx-btn:focus { outline: none; }
+.dcx-btn:focus-visible, .dcx-btn.is-focus { outline: 2px solid var(--dcx-foco); outline-offset: 3px; }
+.dcx-btn:disabled, .dcx-btn[aria-disabled="true"] {
+  cursor: not-allowed; transform: none;
+  color: var(--dcx-cinza-500); border-color: var(--dcx-cinza-300);
+  background: var(--dcx-cinza-200); box-shadow: none;
+}
+.dcx-btn:disabled::before, .dcx-btn[aria-disabled="true"]::before { opacity: 0; }
+
+/* claro: placa marfim com fio preto, o degrau aparece como a base preta da tecla */
+.dcx-btn--claro {
+  color: var(--dcx-preto); border-color: var(--dcx-preto);
+  background: linear-gradient(to bottom, #fbf7ec, var(--dcx-branco) 70%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / .7),
+    inset 0 -1px 0 rgb(80 60 25 / .12),
+    0 var(--dcx-degrau) 0 var(--dcx-preto),
+    0 calc(var(--dcx-degrau) + 2px) 3px 0 rgba(16, 23, 18, .2);
+}
+.dcx-btn--claro::before { background-image: var(--tx-fosco-escuro); mix-blend-mode: multiply; opacity: calc(var(--tex-intensity, 1) * .3); }
+.dcx-btn--claro:hover, .dcx-btn--claro.is-hover {
+  /* placa clara: em vez de escurecer de leve, a face fica branca-quente no topo e o fio preto engrossa
+     embaixo (a tecla "acorda"); a sombra alonga 1px */
+  background: linear-gradient(to bottom, #fffdf6, #f6f0e0 55%, #e8dfc8 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / .95),
+    inset 0 -2px 0 rgb(80 60 25 / .18),
+    0 var(--dcx-degrau) 0 var(--dcx-preto),
+    0 calc(var(--dcx-degrau) + 3px) 5px 0 rgba(16, 23, 18, .26);
+}
+.dcx-btn--claro:active, .dcx-btn--claro.is-down {
+  background: linear-gradient(to bottom, #e6dec8, #ece5d3 70%);
+  box-shadow: inset 0 2px 3px 0 rgba(23, 27, 23, .28), 0 0 0 var(--dcx-preto);
+}
+
+/* link: ação secundária ao lado de um botão ("Código"); sublinhado vinho que engrossa */
+.dcx-btn--link {
+  min-height: 48px; padding: 0 var(--dcx-e-1); margin: 0; border: 0; border-radius: var(--dcx-r-1);
+  color: var(--dcx-vinho); background: none; box-shadow: none;
+  font-weight: var(--dcx-peso-negrito);
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .28em;
+  text-decoration-color: rgb(118 35 43 / .45);
+}
+.dcx-btn--link::before { content: none; }
+.dcx-btn--link:hover, .dcx-btn--link.is-hover { background: none; text-decoration-thickness: 2px; text-decoration-color: var(--dcx-vinho); }
+.dcx-btn--link:active, .dcx-btn--link.is-down { transform: none; background: none; box-shadow: none; color: var(--dcx-vinho-tinta); }
+.dcx-btn--link:disabled, .dcx-btn--link[aria-disabled="true"] { background: none; color: var(--dcx-cinza-500); text-decoration-color: currentColor; }
+
+.dcx-btn--p { min-height: 40px; padding: 0 var(--dcx-e-4); font-size: var(--dcx-t-sm); }
+.dcx-btn--link.dcx-btn--p { min-height: 40px; padding: 0 var(--dcx-e-1); }
+
+/* sobre preto: foco marfim; o claro vira a variante de destaque */
+.dcx-escuro { --dcx-foco: var(--dcx-branco); }
+.dcx-escuro .dcx-btn--link { color: var(--dcx-branco); text-decoration-color: rgb(239 123 128 / .7); }
+.dcx-escuro .dcx-btn--link:hover, .dcx-escuro .dcx-btn--link.is-hover { text-decoration-color: var(--dcx-rosa); }
+.dcx-escuro .dcx-btn--link:active, .dcx-escuro .dcx-btn--link.is-down { color: var(--dcx-rosa); }
+
+/* ============================================================ ETIQUETA
+ * <span class="dcx-etq">b0.3</span>   variantes: --marinho · --aceso · --teste   LED: <i class="dcx-etq-led"></i>
+ * medidas: 22px de altura, 12px caixa-alta +0.08em, padding 0 8px, raio 3px (superfície da tecla).
+ * Serigrafia de painel: a etiqueta é tinta impressa, não botão; não tem hover. */
+.dcx-etq {
+  display: inline-flex; align-items: center; gap: 6px; vertical-align: middle;
+  height: 22px; padding: 0 var(--dcx-e-2) 0 calc(var(--dcx-e-2) + .08em);
+  border: 1px solid var(--dcx-preto); border-radius: var(--dcx-r-2);
+  font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1 var(--dcx-fonte);
+  letter-spacing: var(--dcx-espaco-letra-rotulo); text-transform: uppercase; white-space: nowrap;
+  color: var(--dcx-preto); background: transparent;
+}
+/* placa marinho: como SAMPLING / SAMPLE MODE no 404 */
+.dcx-etq--marinho { color: var(--dcx-branco); background: var(--dcx-marinho); border-color: var(--dcx-marinho); }
+/* acesa: superfície e borda da tecla acesa do 404 */
+.dcx-etq--aceso {
+  color: var(--dcx-vinho-tinta); border-color: var(--dcx-vinho);
+  background: linear-gradient(to bottom, var(--dcx-rosa), var(--dcx-rosa-sombra));
+  box-shadow: inset 0 0 0 .6px #f38c91;
+}
+/* em teste: contorno tracejado, como marcação a lápis */
+.dcx-etq--teste { border-style: dashed; border-color: var(--dcx-cinza-600); color: var(--dcx-cinza-700); }
+/* preta cheia */
+.dcx-etq--preto { color: var(--dcx-branco); background: var(--dcx-preto); }
+/* LED do 404 (peak): apagado = plástico vermelho, aceso = brilho + halo */
+.dcx-etq-led {
+  flex: none; width: 8px; height: 8px; border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #6a3a32 0 18%, var(--dcx-segmento-apagado) 55%, #2a1612 100%);
+  box-shadow: 0 0 0 1px #191a17, inset 0 -1px 1px rgb(0 0 0 / .4);
+}
+.dcx-etq-led.on {
+  background: radial-gradient(circle at 38% 32%, #fff3e6 0 9%, #ff7a5c 24%, var(--dcx-vermelho-display) 55%, #a8200f 100%);
+  box-shadow: 0 0 0 1px #191a17, 0 0 5px 1px rgb(245 57 37 / .55);
+}
+
+/* ============================================================ CARTÃO DE MÁQUINA
+ * <article class="dcx-maquina tx tx-papel">
+ *   <div class="dcx-maquina-foto"><img src="captura.jpg" alt="Painel do DCX 404"></div>
+ *   <div class="dcx-maquina-corpo"> etiquetas · .dcx-maquina-tipo · h3.dcx-maquina-nome ·
+ *        p.dcx-maquina-frase · .dcx-maquina-acoes (Abrir + Código) </div>
+ * </article>
+ * Folha de papel sobre a mesa: no hover ela sobe 2px e a sombra alonga (não muda de cor).
+ * A foto fica numa janela rebaixada (alojamento do 404 + sombra moldada).
+ * Estados: hover/foco-dentro · .is-breve (ainda não abre: botão apagado, foto vazia). */
+.dcx-maquina {
+  display: flex; flex-direction: column; min-width: 0;
+  border-radius: var(--dcx-r-3);
+  background-color: var(--dcx-branco);
+  box-shadow: var(--dcx-sombra-folha);
+  transition: transform var(--dcx-dur-medio) var(--dcx-ease-saida), box-shadow var(--dcx-dur-medio) var(--dcx-ease-saida);
+}
+.dcx-maquina:hover, .dcx-maquina.is-hover {
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 rgba(60, 45, 20, .10), 0 3px 2px -1px rgba(60, 45, 20, .12), 0 16px 22px -14px rgba(60, 45, 20, .42);
+}
+.dcx-maquina:focus-within { box-shadow: var(--dcx-sombra-folha), 0 0 0 1px var(--dcx-cinza-300); }
+.dcx-maquina-foto {
+  position: relative; margin: var(--dcx-e-2) var(--dcx-e-2) 0;
+  aspect-ratio: 4 / 3; overflow: hidden;
+  border-radius: var(--dcx-r-2);
+  background: var(--dcx-alojamento);
+}
+.dcx-maquina-foto img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+/* vidro da janela: sombra moldada por cima da foto + fio escuro de borda */
+.dcx-maquina-foto::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: var(--dcx-sombra-moldada), inset 0 0 0 1px rgb(13 16 14 / .55);
+}
+/* sem captura: janela vazia com o nome em serigrafia apagada */
+.dcx-maquina-foto--vazia { display: grid; place-items: center; background: var(--dcx-cinza-800); }
+.dcx-maquina-foto--vazia span {
+  font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1.3 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-letra-rotulo);
+  text-transform: uppercase; text-align: center; color: var(--dcx-cinza-400);
+  padding: var(--dcx-e-2) var(--dcx-e-3); border: 1px dashed rgb(162 157 146 / .5); border-radius: var(--dcx-r-2);
+}
+.dcx-maquina-corpo { display: flex; flex-direction: column; gap: var(--dcx-e-2); flex: 1; padding: var(--dcx-e-4) var(--dcx-e-5) var(--dcx-e-5); }
+.dcx-maquina-etqs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--dcx-e-1); }
+.dcx-maquina-tipo {
+  margin: 0; font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1.2 var(--dcx-fonte);
+  letter-spacing: var(--dcx-espaco-letra-rotulo); text-transform: uppercase; color: var(--dcx-cinza-600);
+}
+.dcx-maquina-nome {
+  margin: 0; font: var(--dcx-peso-negrito) var(--dcx-t-xl)/var(--dcx-entrelinha-titulo) var(--dcx-fonte);
+  letter-spacing: var(--dcx-espaco-letra-titulo); color: var(--dcx-preto);
+}
+.dcx-maquina-frase { margin: 0; font-size: var(--dcx-t-base); line-height: var(--dcx-entrelinha-texto); color: var(--dcx-cinza-700); }
+.dcx-maquina-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: var(--dcx-e-2) var(--dcx-e-4); margin-top: auto; padding-top: var(--dcx-e-3); }
+.dcx-maquina.is-breve:hover { transform: none; box-shadow: var(--dcx-sombra-folha); }
+.dcx-maquina.is-breve .dcx-maquina-nome { color: var(--dcx-cinza-600); }
+
+/* ============================================================ CABEÇALHO
+ * <header class="dcx-cab tx tx-papel"><div class="dcx-cab-in"> a.dcx-cab-logo · nav.dcx-cab-nav · .dcx-btn </div></header>
+ * Fio duplo de manual impresso embaixo (2px + 1px, folga de 2px). No celular a navegação
+ * desce para uma segunda linha que rola na horizontal sozinha (a página não rola). */
+.dcx-cab { position: relative; background-color: var(--dcx-branco); color: var(--dcx-preto); --tex-intensity: .6; }
+/* o fio duplo fica no .dcx-cab-in (os ::before/::after do .dcx-cab são as camadas de textura do .tx) */
+.dcx-cab-in::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; box-sizing: border-box; pointer-events: none;
+  border-top: 2px solid var(--dcx-preto); border-bottom: 1px solid var(--dcx-preto);
+}
+.dcx-cab-in {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--dcx-e-3) var(--dcx-e-6);
+  max-width: var(--dcx-largura); margin: 0 auto; padding: var(--dcx-e-4) var(--dcx-calha) calc(var(--dcx-e-4) + 5px);
+}
+.dcx-cab-logo { display: block; flex: none; color: inherit; line-height: 0; border-radius: var(--dcx-r-1); }
+.dcx-cab-logo svg { display: block; height: 18px; width: auto; }
+.dcx-cab-logo:focus-visible { outline: 2px solid var(--dcx-foco); outline-offset: 4px; }
+.dcx-cab-nav { display: flex; gap: var(--dcx-e-1); margin-left: auto; }
+.dcx-cab-nav a {
+  position: relative; display: block; padding: 10px var(--dcx-e-2);
+  font: var(--dcx-peso-medio) var(--dcx-t-sm)/1 var(--dcx-fonte); color: var(--dcx-cinza-700); text-decoration: none;
+  border-radius: var(--dcx-r-1); white-space: nowrap;
+  transition: color var(--dcx-dur-rapido) var(--dcx-ease-saida);
+}
+/* o sublinhado tem sempre 2 px de altura; o "1 px" do hover é scaleY(.5) (transform não mexe no layout, e anima) */
+.dcx-cab-nav a::after { content: ""; position: absolute; left: var(--dcx-e-2); right: var(--dcx-e-2); bottom: 4px; height: 2px; background: transparent; transform: scaleY(.5); transform-origin: bottom; transition: background-color var(--dcx-dur-rapido) var(--dcx-ease-saida), transform var(--dcx-dur-rapido) var(--dcx-ease-saida); }
+.dcx-cab-nav a:hover, .dcx-cab-nav a.is-hover { color: var(--dcx-preto); }
+.dcx-cab-nav a:hover::after, .dcx-cab-nav a.is-hover::after { background: var(--dcx-vinho); }
+.dcx-cab-nav a[aria-current] { color: var(--dcx-preto); font-weight: var(--dcx-peso-negrito); }
+.dcx-cab-nav a[aria-current]::after { background: var(--dcx-preto); transform: none; }
+.dcx-cab-nav a:focus-visible { outline: 2px solid var(--dcx-foco); outline-offset: -2px; }
+.dcx-cab .dcx-btn { margin-left: 0; }
+@media (max-width: 760px) {
+  .dcx-cab-in { padding-top: var(--dcx-e-3); padding-bottom: 5px; gap: var(--dcx-e-2) var(--dcx-e-4); justify-content: space-between; }
+  .dcx-cab-nav {
+    order: 3; flex: 1 0 100%; margin: 0 calc(-1 * var(--dcx-calha)); padding: 0 calc(var(--dcx-calha) - var(--dcx-e-2)) var(--dcx-e-1);
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    /* as pontas somem no papel para indicar que rola */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 48px), rgb(0 0 0 / .25) calc(100% - 14px), transparent);
+    mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 48px), rgb(0 0 0 / .25) calc(100% - 14px), transparent);
+  }
+  /* folga no fim: o último link consegue sair inteiro da zona do fade quando a lista rola até o fim */
+  .dcx-cab-nav::after { content: ""; flex: none; width: 36px; }
+  .dcx-cab-nav::-webkit-scrollbar { display: none; }
+}
+/* preto: chassi; logo e texto marfim */
+.dcx-cab--escuro { background-color: var(--dcx-preto); color: var(--dcx-branco); --dcx-foco: var(--dcx-branco); }
+.dcx-cab--escuro .dcx-cab-in::after { border-color: var(--dcx-cinza-700); }
+.dcx-cab--escuro .dcx-cab-nav a { color: var(--dcx-cinza-400); }
+.dcx-cab--escuro .dcx-cab-nav a:hover, .dcx-cab--escuro .dcx-cab-nav a[aria-current] { color: var(--dcx-branco); }
+.dcx-cab--escuro .dcx-cab-nav a[aria-current]::after { background: var(--dcx-branco); }
+.dcx-cab--escuro .dcx-cab-nav a:hover::after { background: var(--dcx-rosa); }
+
+/* ============================================================ RODAPÉ
+ * <footer class="dcx-rod tx tx-serigrafia dcx-escuro"> .dcx-rod-in (marca + colunas) · .dcx-rod-pe </footer>
+ * Chassi preto com tinta de serigrafia; quatro parafusos do 404 nos cantos (desktop) e a linha de pé
+ * do painel ("— SAMPLE/PATTERN —" no 404): fio, legenda, fio. */
+.dcx-rod { position: relative; background-color: var(--dcx-preto); color: var(--dcx-cinza-400); --tex-intensity: .8; }
+.dcx-rod-in {
+  display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); gap: var(--dcx-e-6) var(--dcx-e-5);
+  max-width: var(--dcx-largura); margin: 0 auto; padding: var(--dcx-e-8) calc(var(--dcx-calha) + 24px) var(--dcx-e-7);
+}
+.dcx-rod-marca svg { display: block; height: 52px; width: auto; color: var(--dcx-branco); }
+.dcx-rod-marca p { margin: var(--dcx-e-4) 0 0; max-width: 30ch; font-size: var(--dcx-t-sm); line-height: 1.5; }
+.dcx-rod h2, .dcx-rod-tit {
+  margin: 0 0 var(--dcx-e-3); font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1 var(--dcx-fonte);
+  letter-spacing: var(--dcx-espaco-letra-rotulo); text-transform: uppercase; color: var(--dcx-branco);
+}
+.dcx-rod ul { margin: 0; padding: 0; list-style: none; }
+.dcx-rod li + li { margin-top: 2px; }
+.dcx-rod a { display: inline-block; padding: 6px 0; font-size: var(--dcx-t-sm); color: var(--dcx-cinza-400); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: .28em; border-radius: var(--dcx-r-1); transition: color var(--dcx-dur-rapido) var(--dcx-ease-saida), text-decoration-color var(--dcx-dur-rapido) var(--dcx-ease-saida); }
+.dcx-rod a:hover { color: var(--dcx-branco); text-decoration-color: var(--dcx-rosa); }
+.dcx-rod a:focus-visible { outline: 2px solid var(--dcx-branco); outline-offset: 2px; color: var(--dcx-branco); }
+.dcx-rod .dcx-rod-pend { color: var(--dcx-cinza-400); font-size: var(--dcx-t-sm); padding: 6px 0; display: inline-block; }
+.dcx-rod-pe { max-width: var(--dcx-largura); margin: 0 auto; padding: 0 calc(var(--dcx-calha) + 24px) var(--dcx-e-6); }
+.dcx-rod-linha { display: flex; align-items: center; gap: var(--dcx-e-3); }
+.dcx-rod-linha::before, .dcx-rod-linha::after { content: ""; flex: 1 0 0; height: 2px; background: var(--dcx-cinza-700); }
+.dcx-rod-linha span {
+  flex: none; font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-letra-rotulo);
+  text-transform: uppercase; color: var(--dcx-cinza-400);
+}
+.dcx-rod-legal { margin: var(--dcx-e-4) 0 0; font-size: var(--dcx-t-xs); line-height: 1.5; color: var(--dcx-cinza-400); /* 6,6:1 sobre o chassi (AA mesmo a 12 px) */ text-align: center; }
+/* parafusos: 24px, a 16px dos cantos (como no painel: 39px de 660) */
+.dcx-rod-parafusos { position: absolute; inset: 16px; pointer-events: none; z-index: 1;
+  background: var(--dcx-parafuso) left top / 24px no-repeat, var(--dcx-parafuso) right top / 24px no-repeat,
+              var(--dcx-parafuso) left bottom / 24px no-repeat, var(--dcx-parafuso) right bottom / 24px no-repeat; }
+@media (max-width: 760px) {
+  .dcx-rod-in { grid-template-columns: 1fr 1fr; padding: var(--dcx-e-7) var(--dcx-calha) var(--dcx-e-6); }
+  .dcx-rod-marca { grid-column: 1 / -1; }
+  .dcx-rod-pe { padding: 0 var(--dcx-calha) var(--dcx-e-5); }
+  .dcx-rod-parafusos { display: none; }
+}
+
+/* ============================================================ BLOCO DE CÓDIGO
+ * <figure class="dcx-cod"><figcaption class="dcx-cod-cab"><span>arquivo</span> botão copiar</figcaption>
+ *   <pre tabindex="0"><code>…</code></pre></figure>
+ * Visor apagado do 404: fundo grafite quente, texto marfim, mono 14px. Sem textura (leitura).
+ * Rola na horizontal dentro do bloco; numeração opcional com .dcx-cod--num (uma <span class="l"> por linha).
+ * Cores: .k palavra-chave (marfim negrito) · .s texto (rosa, 6.3:1) · .n número (alumínio) · .c comentário (cinza-400) */
+.dcx-cod {
+  margin: 0; min-width: 0; overflow: hidden;
+  border-radius: var(--dcx-r-4); background: #1f1e1b;
+  border: 1px solid #0d0d0c;
+  box-shadow: inset 0 1px 0 rgb(255 250 235 / .06), var(--dcx-sombra-alojamento);
+}
+.dcx-cod-cab {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--dcx-e-3);
+  min-height: 40px; padding: 0 var(--dcx-e-2) 0 var(--dcx-e-4);
+  border-bottom: 1px solid #0d0d0c; box-shadow: 0 1px 0 rgb(255 250 235 / .05);
+  font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-letra-rotulo);
+  text-transform: uppercase; color: var(--dcx-cinza-400);
+}
+.dcx-cod-cab span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* botão copiar: tecla pequena escura; .on = copiado (LED aceso) */
+.dcx-cod-copiar {
+  display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; margin-bottom: 2px;
+  border: 1px solid #0d0d0c; border-radius: var(--dcx-r-2); cursor: pointer;
+  font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--dcx-cinza-200);
+  background: linear-gradient(to bottom, #3b3935, #2b2a27);
+  box-shadow: inset 0 1px 0 rgb(255 250 235 / .1), 0 2px 0 #0d0d0c;
+  transition: filter var(--dcx-dur-rapido) var(--dcx-ease-saida), transform var(--dcx-dur-tecla) var(--dcx-ease-tecla), box-shadow var(--dcx-dur-tecla) var(--dcx-ease-tecla);
+}
+/* degradê não anima: o realce do hover é brilho (filter), que anima */
+.dcx-cod-copiar:hover { filter: brightness(1.14); }
+.dcx-cod-copiar:active { transform: translateY(2px); box-shadow: inset 0 2px 3px rgba(0, 0, 0, .5), 0 0 0 #0d0d0c; }
+.dcx-cod-copiar:focus-visible { outline: 2px solid var(--dcx-branco); outline-offset: 2px; }
+.dcx-cod pre {
+  margin: 0; padding: var(--dcx-e-4) var(--dcx-e-4) var(--dcx-e-5); overflow-x: auto;
+  font: 14px/1.6 var(--dcx-fonte-mono); color: var(--dcx-branco); tab-size: 2;
+  scrollbar-color: var(--dcx-cinza-700) transparent;
+}
+.dcx-cod pre:focus-visible { outline: 2px solid var(--dcx-branco); outline-offset: -4px; }
+.dcx-cod code { font: inherit; }
+.dcx-cod .k { font-weight: 700; color: #fffaf0; }
+.dcx-cod .s { color: var(--dcx-rosa); }
+.dcx-cod .n { color: var(--dcx-aluminio-1); }
+.dcx-cod .c { color: var(--dcx-cinza-400); font-style: italic; }
+.dcx-cod--num pre { counter-reset: l; padding-left: 0; }
+.dcx-cod--num .l { display: block; min-height: 1.6em; padding-left: calc(3ch + var(--dcx-e-4) + var(--dcx-e-3)); position: relative; }
+.dcx-cod--num .l::before {
+  counter-increment: l; content: counter(l); position: absolute; left: 0; width: calc(3ch + var(--dcx-e-3));
+  text-align: right; color: var(--dcx-cinza-600); font-style: normal; font-weight: 400;
+}
+/* código na linha do texto */
+.dcx-cod-linha, :not(pre) > code.dcx-cod-linha {
+  font: .875em/1 var(--dcx-fonte-mono); padding: .14em .36em .1em; border-radius: var(--dcx-r-1);
+  background: rgb(28 28 28 / .07); box-shadow: inset 0 0 0 1px rgb(28 28 28 / .1); color: var(--dcx-preto);
+  overflow-wrap: anywhere;
+}
+
+/* ============================================================ TABELA
+ * <div class="dcx-tab-rolo" tabindex="0"><table class="dcx-tab"><caption>…</caption>…</table></div>
+ * Tabela de especificação de manual: cabeçalho em caixa-alta com fio preto de 2px, linhas com fio
+ * cinza-300, números em mono à direita (.num). Sem textura. No celular rola dentro da moldura,
+ * com sombra nas bordas só quando há mais conteúdo (fundo local/scroll). */
+.dcx-tab-rolo {
+  overflow-x: auto; max-width: 100%;
+  background:
+    linear-gradient(to right, var(--dcx-tab-fundo, var(--dcx-branco)) 30%, transparent) left / 32px 100% no-repeat local,
+    linear-gradient(to left, var(--dcx-tab-fundo, var(--dcx-branco)) 30%, transparent) right / 32px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgb(60 45 20 / .22), transparent) left / 10px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgb(60 45 20 / .22), transparent) right / 10px 100% no-repeat scroll;
+  background-color: var(--dcx-tab-fundo, var(--dcx-branco));
+}
+.dcx-tab-rolo:focus-visible { outline: 2px solid var(--dcx-foco); outline-offset: 2px; }
+.dcx-tab { width: 100%; border-collapse: collapse; font-size: var(--dcx-t-sm); line-height: 1.4; color: var(--dcx-preto); font-variant-numeric: tabular-nums; }
+.dcx-tab caption {
+  caption-side: top; text-align: left; padding: 0 0 var(--dcx-e-3);
+  font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1.2 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-letra-rotulo); text-transform: uppercase; color: var(--dcx-cinza-600);
+}
+.dcx-tab th, .dcx-tab td { padding: 11px var(--dcx-e-4) 11px 0; text-align: left; vertical-align: baseline; white-space: nowrap; }
+.dcx-tab th:last-child, .dcx-tab td:last-child { padding-right: 0; }
+.dcx-tab thead th {
+  padding-top: 0; padding-bottom: var(--dcx-e-2); border-bottom: 2px solid var(--dcx-preto);
+  font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1.2 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-letra-rotulo); text-transform: uppercase;
+}
+.dcx-tab tbody th { font-weight: var(--dcx-peso-negrito); }
+.dcx-tab tbody tr { border-bottom: 1px solid var(--dcx-cinza-300); transition: background-color var(--dcx-dur-rapido) var(--dcx-ease-saida); }
+.dcx-tab tbody tr:last-child { border-bottom: 1px solid var(--dcx-preto); }
+.dcx-tab tbody tr:hover, .dcx-tab tbody tr.is-hover { background: rgb(219 213 200 / .45); }
+.dcx-tab .num { text-align: right; font-family: var(--dcx-fonte-mono); font-size: 13px; }
+.dcx-tab .fraco { color: var(--dcx-cinza-600); }
+.dcx-tab td .dcx-etq { vertical-align: 1px; }
+.dcx-tab tfoot td { padding-top: var(--dcx-e-3); font-size: var(--dcx-t-xs); color: var(--dcx-cinza-600); white-space: normal; }
+
+
+/* ============================================================ CAPA DE CASSETE (DS-5)
+ * Peças da capa. Regra: preto + prata + UMA cor (o acento OU a cor da máquina) por superfície.
+ * Fundo: .tx .tx-capa (cartão preto). Tudo funciona sem textura (--tex-intensity: 0). */
+.dcx-capa { position: relative; overflow: hidden; background-color: var(--dcx-capa); color: var(--dcx-prata); }
+
+/* ---- selo: o ponto focal quente (desenho nosso, DS-6)
+ * etiqueta de fita inclinada (3:2, topo deslocado 14/120, canto de baixo chanfrado) com um compasso
+ * de bateria em meio-tom marfim: bumbo, chimbal, caixa, chimbal. A onda fica em pé; só o cartão inclina.
+ * Nada de quadrado, nada de anéis concêntricos, nada de ponto central (não lembrar marca de fita).
+ * Altura em --s (largura = 1,5 x). Abaixo de 28px de altura use .dcx-selo--p (desenho simplificado:
+ * 8 colunas, sem filete). Mínimo 16px de altura. Gerado por fonte/gerar-selo.py.
+ * <i class="dcx-selo" role="img" aria-label="DCX"></i> */
+:root {
+  --dcx-selo-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Cdefs%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='1' seed='4' result='n'/%3E%3CfeColorMatrix in='n' values='0 0 0 0 .32 0 0 0 0 .05 0 0 0 0 .03 2.0 0 0 0 -1.2' result='t'/%3E%3CfeComposite in='t' in2='SourceGraphic' operator='in'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M15.00 1.00 L119.00 1.00 L105.00 79.00 L10.00 79.00 L2.40 70.00 Z' fill='%23e2463f' stroke='%23e2463f' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cg fill='%23f2e6d4'%3E%3Ccircle cx='19.00' cy='41.20' r='1.33'/%3E%3Ccircle cx='19.00' cy='46.00' r='1.85'/%3E%3Ccircle cx='19.00' cy='50.80' r='1.33'/%3E%3Ccircle cx='22.70' cy='22.00' r='0.80'/%3E%3Ccircle cx='22.70' cy='26.80' r='1.81'/%3E%3Ccircle cx='22.70' cy='31.60' r='1.85'/%3E%3Ccircle cx='22.70' cy='36.40' r='1.85'/%3E%3Ccircle cx='22.70' cy='41.20' r='1.85'/%3E%3Ccircle cx='22.70' cy='46.00' r='1.85'/%3E%3Ccircle cx='22.70' cy='50.80' r='1.85'/%3E%3Ccircle cx='22.70' cy='55.60' r='1.85'/%3E%3Ccircle cx='22.70' cy='60.40' r='1.85'/%3E%3Ccircle cx='22.70' cy='65.20' r='1.81'/%3E%3Ccircle cx='22.70' cy='70.00' r='0.80'/%3E%3Ccircle cx='26.39' cy='26.80' r='1.43'/%3E%3Ccircle cx='26.39' cy='31.60' r='1.85'/%3E%3Ccircle cx='26.39' cy='36.40' r='1.85'/%3E%3Ccircle cx='26.39' cy='41.20' r='1.85'/%3E%3Ccircle cx='26.39' cy='46.00' r='1.85'/%3E%3Ccircle cx='26.39' cy='50.80' r='1.85'/%3E%3Ccircle cx='26.39' cy='55.60' r='1.85'/%3E%3Ccircle cx='26.39' cy='60.40' r='1.85'/%3E%3Ccircle cx='26.39' cy='65.20' r='1.43'/%3E%3Ccircle cx='30.09' cy='26.80' r='0.80'/%3E%3Ccircle cx='30.09' cy='31.60' r='1.81'/%3E%3Ccircle cx='30.09' cy='36.40' r='1.85'/%3E%3Ccircle cx='30.09' cy='41.20' r='1.85'/%3E%3Ccircle cx='30.09' cy='46.00' r='1.85'/%3E%3Ccircle cx='30.09' cy='50.80' r='1.85'/%3E%3Ccircle cx='30.09' cy='55.60' r='1.85'/%3E%3Ccircle cx='30.09' cy='60.40' r='1.81'/%3E%3Ccircle cx='30.09' cy='65.20' r='0.80'/%3E%3Ccircle cx='33.78' cy='31.60' r='1.13'/%3E%3Ccircle cx='33.78' cy='36.40' r='1.85'/%3E%3Ccircle cx='33.78' cy='41.20' r='1.85'/%3E%3Ccircle cx='33.78' cy='46.00' r='1.85'/%3E%3Ccircle cx='33.78' cy='50.80' r='1.85'/%3E%3Ccircle cx='33.78' cy='55.60' r='1.85'/%3E%3Ccircle cx='33.78' cy='60.40' r='1.13'/%3E%3Ccircle cx='37.48' cy='36.40' r='1.43'/%3E%3Ccircle cx='37.48' cy='41.20' r='1.85'/%3E%3Ccircle cx='37.48' cy='46.00' r='1.85'/%3E%3Ccircle cx='37.48' cy='50.80' r='1.85'/%3E%3Ccircle cx='37.48' cy='55.60' r='1.43'/%3E%3Ccircle cx='41.17' cy='36.40' r='0.80'/%3E%3Ccircle cx='41.17' cy='41.20' r='1.81'/%3E%3Ccircle cx='41.17' cy='46.00' r='1.85'/%3E%3Ccircle cx='41.17' cy='50.80' r='1.81'/%3E%3Ccircle cx='41.17' cy='55.60' r='0.80'/%3E%3Ccircle cx='44.87' cy='41.20' r='1.33'/%3E%3Ccircle cx='44.87' cy='46.00' r='1.85'/%3E%3Ccircle cx='44.87' cy='50.80' r='1.33'/%3E%3Ccircle cx='48.57' cy='41.20' r='0.91'/%3E%3Ccircle cx='48.57' cy='46.00' r='1.85'/%3E%3Ccircle cx='48.57' cy='50.80' r='0.91'/%3E%3Ccircle cx='52.26' cy='36.40' r='0.43'/%3E%3Ccircle cx='52.26' cy='41.20' r='1.53'/%3E%3Ccircle cx='52.26' cy='46.00' r='1.85'/%3E%3Ccircle cx='52.26' cy='50.80' r='1.53'/%3E%3Ccircle cx='52.26' cy='55.60' r='0.43'/%3E%3Ccircle cx='55.96' cy='41.20' r='1.13'/%3E%3Ccircle cx='55.96' cy='46.00' r='1.85'/%3E%3Ccircle cx='55.96' cy='50.80' r='1.13'/%3E%3Ccircle cx='59.65' cy='41.20' r='0.68'/%3E%3Ccircle cx='59.65' cy='46.00' r='1.72'/%3E%3Ccircle cx='59.65' cy='50.80' r='0.68'/%3E%3Ccircle cx='63.35' cy='41.20' r='0.43'/%3E%3Ccircle cx='63.35' cy='46.00' r='1.53'/%3E%3Ccircle cx='63.35' cy='50.80' r='0.43'/%3E%3Ccircle cx='67.04' cy='26.80' r='1.13'/%3E%3Ccircle cx='67.04' cy='31.60' r='1.85'/%3E%3Ccircle cx='67.04' cy='36.40' r='1.85'/%3E%3Ccircle cx='67.04' cy='41.20' r='1.85'/%3E%3Ccircle cx='67.04' cy='46.00' r='1.85'/%3E%3Ccircle cx='67.04' cy='50.80' r='1.85'/%3E%3Ccircle cx='67.04' cy='55.60' r='1.85'/%3E%3Ccircle cx='67.04' cy='60.40' r='1.85'/%3E%3Ccircle cx='67.04' cy='65.20' r='1.13'/%3E%3Ccircle cx='70.74' cy='26.80' r='0.80'/%3E%3Ccircle cx='70.74' cy='31.60' r='1.81'/%3E%3Ccircle cx='70.74' cy='36.40' r='1.85'/%3E%3Ccircle cx='70.74' cy='41.20' r='1.85'/%3E%3Ccircle cx='70.74' cy='46.00' r='1.85'/%3E%3Ccircle cx='70.74' cy='50.80' r='1.85'/%3E%3Ccircle cx='70.74' cy='55.60' r='1.85'/%3E%3Ccircle cx='70.74' cy='60.40' r='1.81'/%3E%3Ccircle cx='70.74' cy='65.20' r='0.80'/%3E%3Ccircle cx='74.43' cy='31.60' r='1.13'/%3E%3Ccircle cx='74.43' cy='36.40' r='1.85'/%3E%3Ccircle cx='74.43' cy='41.20' r='1.85'/%3E%3Ccircle cx='74.43' cy='46.00' r='1.85'/%3E%3Ccircle cx='74.43' cy='50.80' r='1.85'/%3E%3Ccircle cx='74.43' cy='55.60' r='1.85'/%3E%3Ccircle cx='74.43' cy='60.40' r='1.13'/%3E%3Ccircle cx='78.13' cy='36.40' r='1.43'/%3E%3Ccircle cx='78.13' cy='41.20' r='1.85'/%3E%3Ccircle cx='78.13' cy='46.00' r='1.85'/%3E%3Ccircle cx='78.13' cy='50.80' r='1.85'/%3E%3Ccircle cx='78.13' cy='55.60' r='1.43'/%3E%3Ccircle cx='81.83' cy='36.40' r='0.80'/%3E%3Ccircle cx='81.83' cy='41.20' r='1.81'/%3E%3Ccircle cx='81.83' cy='46.00' r='1.85'/%3E%3Ccircle cx='81.83' cy='50.80' r='1.81'/%3E%3Ccircle cx='81.83' cy='55.60' r='0.80'/%3E%3Ccircle cx='85.52' cy='41.20' r='1.33'/%3E%3Ccircle cx='85.52' cy='46.00' r='1.85'/%3E%3Ccircle cx='85.52' cy='50.80' r='1.33'/%3E%3Ccircle cx='89.22' cy='41.20' r='0.91'/%3E%3Ccircle cx='89.22' cy='46.00' r='1.85'/%3E%3Ccircle cx='89.22' cy='50.80' r='0.91'/%3E%3Ccircle cx='92.91' cy='41.20' r='1.43'/%3E%3Ccircle cx='92.91' cy='46.00' r='1.85'/%3E%3Ccircle cx='92.91' cy='50.80' r='1.43'/%3E%3Ccircle cx='96.61' cy='41.20' r='1.02'/%3E%3Ccircle cx='96.61' cy='46.00' r='1.85'/%3E%3Ccircle cx='96.61' cy='50.80' r='1.02'/%3E%3Ccircle cx='100.30' cy='41.20' r='0.56'/%3E%3Ccircle cx='100.30' cy='46.00' r='1.62'/%3E%3Ccircle cx='100.30' cy='50.80' r='0.56'/%3E%3Ccircle cx='104.00' cy='46.00' r='1.43'/%3E%3C/g%3E%3Cpath d='M19 12.6 L70 12.6' stroke='%23f2e6d4' stroke-width='1.6' stroke-linecap='square'/%3E%3Cpath d='M15.00 1.00 L119.00 1.00 L105.00 79.00 L10.00 79.00 L2.40 70.00 Z' fill='%23000' filter='url(%23g)' opacity='.5'/%3E%3C/svg%3E");
+  --dcx-selo-img-p: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Cdefs%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='1' seed='4' result='n'/%3E%3CfeColorMatrix in='n' values='0 0 0 0 .32 0 0 0 0 .05 0 0 0 0 .03 2.0 0 0 0 -1.2' result='t'/%3E%3CfeComposite in='t' in2='SourceGraphic' operator='in'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M15.00 1.00 L119.00 1.00 L105.00 79.00 L10.00 79.00 L2.40 70.00 Z' fill='%23e2463f' stroke='%23e2463f' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cg fill='%23f2e6d4'%3E%3Ccircle cx='22.00' cy='24.00' r='1.27'/%3E%3Ccircle cx='22.00' cy='35.00' r='4.20'/%3E%3Ccircle cx='22.00' cy='46.00' r='4.20'/%3E%3Ccircle cx='22.00' cy='57.00' r='4.20'/%3E%3Ccircle cx='22.00' cy='68.00' r='1.27'/%3E%3Ccircle cx='33.71' cy='35.00' r='2.98'/%3E%3Ccircle cx='33.71' cy='46.00' r='4.20'/%3E%3Ccircle cx='33.71' cy='57.00' r='2.98'/%3E%3Ccircle cx='45.43' cy='46.00' r='4.20'/%3E%3Ccircle cx='57.14' cy='46.00' r='4.20'/%3E%3Ccircle cx='68.86' cy='35.00' r='4.20'/%3E%3Ccircle cx='68.86' cy='46.00' r='4.20'/%3E%3Ccircle cx='68.86' cy='57.00' r='4.20'/%3E%3Ccircle cx='80.57' cy='35.00' r='2.32'/%3E%3Ccircle cx='80.57' cy='46.00' r='4.20'/%3E%3Ccircle cx='80.57' cy='57.00' r='2.32'/%3E%3Ccircle cx='92.29' cy='46.00' r='4.20'/%3E%3Ccircle cx='104.00' cy='46.00' r='4.03'/%3E%3C/g%3E%3Cpath d='M15.00 1.00 L119.00 1.00 L105.00 79.00 L10.00 79.00 L2.40 70.00 Z' fill='%23000' filter='url(%23g)' opacity='.5'/%3E%3C/svg%3E");
+}
+.dcx-selo { --s: 64px; position: relative; display: inline-block; flex: none; width: calc(var(--s) * 1.5); height: var(--s); vertical-align: middle;
+  background: var(--dcx-selo-img) 0 0 / 100% 100% no-repeat;
+  /* a etiqueta é impressa no cartão: uma sombra de 1px do lado de baixo, nada de brilho */
+  filter: drop-shadow(0 max(.5px, calc(var(--s) * .012)) 0 rgb(0 0 0 / .45)); }
+.dcx-selo--p { --s: 24px; background-image: var(--dcx-selo-img-p); }
+.dcx-selo--g { --s: 128px; }
+
+/* ---- palavra-marca enorme (texto) ou logo (svg) em prata */
+.dcx-marca { margin: 0; font: var(--dcx-peso-pesado) var(--dcx-t-marca)/var(--dcx-entrelinha-marca) var(--dcx-fonte); letter-spacing: var(--dcx-espaco-marca); color: var(--dcx-prata-clara); --tex-intensity: .9; }
+svg.dcx-marca { display: block; height: auto; fill: currentColor; }
+
+/* ---- numeral gigante: elemento gráfico (nome do aparelho, minutos da fita)
+ * --vazado = só o contorno (série colorida), --faixa = preto impresso sobre a faixa cinza */
+.dcx-numeral { display: block; margin: 0; font: var(--dcx-peso-pesado) var(--dcx-t-numeral)/.76 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-numeral); color: var(--dcx-prata-clara); white-space: nowrap; font-variant-numeric: lining-nums; }
+.dcx-numeral--vazado { color: transparent; -webkit-text-stroke: max(1.5px, .012em) var(--num-traco, var(--dcx-prata-clara)); }
+.dcx-numeral--faixa { color: var(--dcx-faixa-tinta); }
+
+/* ---- faixa larga cinza: atravessa a capa de borda a borda; fio de luz em cima, vinco embaixo
+ * <div class="dcx-faixa tx tx-faixa"><span class="dcx-numeral dcx-numeral--faixa">404</span></div> */
+.dcx-faixa { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: var(--dcx-e-5);
+  min-height: var(--faixa-h, 120px); padding: 0 var(--dcx-e-6); overflow: hidden;
+  box-shadow: var(--dcx-fio-de-luz), var(--dcx-dobra-sombra); }
+.dcx-faixa > .dcx-numeral { margin-bottom: -.06em; }
+
+/* ---- ficha técnica: colunas alinhadas de texto miúdo (normas, medidas, "feito em")
+ * <div class="dcx-ficha"><span>12 bits</span><span>·</span><span>26,04 kHz</span> ...</div>
+ * colunas em --ficha-cols; mínimo 11px; nunca texto corrido */
+.dcx-ficha { display: grid; grid-template-columns: var(--ficha-cols, max-content max-content max-content); gap: 1px 10px; align-items: baseline;
+  font: 400 var(--dcx-t-ficha)/1.36 var(--dcx-fonte); letter-spacing: .015em; color: var(--dcx-prata); }
+.dcx-ficha b { font-weight: 700; color: var(--dcx-prata-clara); letter-spacing: 0; }
+.dcx-ficha .sep { color: var(--dcx-prata-escura); }
+.dcx-ficha--claro { color: var(--dcx-cinza-700); }
+.dcx-ficha--claro b { color: var(--dcx-preto); }
+.dcx-ficha--claro .sep { color: var(--dcx-cinza-500); }
+
+/* ---- lombada / abas: a marca repetida em escalas menores, faixas empilhadas com dobra
+ * <div class="dcx-lombada"><div class="dcx-aba"> selo + marca + ficha </div> ... </div> */
+.dcx-lombada { display: grid; }
+.dcx-aba { position: relative; display: flex; align-items: center; gap: calc(var(--aba-t, 40px) * .4); padding: calc(var(--aba-t, 40px) * .26) var(--dcx-e-6);
+  background: var(--dcx-capa); color: var(--dcx-prata);
+  box-shadow: var(--dcx-fio-de-luz), var(--dcx-dobra-sombra); }
+.dcx-aba:nth-child(even) { background-color: var(--dcx-capa-funda); }
+.dcx-aba .dcx-selo { --s: calc(var(--aba-t, 40px) * .78); }
+.dcx-aba-marca { font: var(--dcx-peso-pesado) var(--aba-t, 40px)/.8 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-marca); color: var(--dcx-prata-clara); white-space: nowrap; }
+.dcx-aba svg.dcx-aba-marca { display: block; height: calc(var(--aba-t, 40px) * .74); width: auto; fill: currentColor; }
+.dcx-aba-txt { margin-left: auto; text-align: right; font: 400 calc(var(--aba-t, 40px) * .32)/1.15 var(--dcx-fonte); letter-spacing: -.01em; color: var(--dcx-prata); }
+
+/* ---- régua: linhas paralelas que completam a linha do título (anúncio)
+ * --linhas, --passo, --esp; cor = currentColor */
+.dcx-regua { flex: 1 1 48px; min-width: 32px; align-self: center; height: calc(var(--linhas, 4) * var(--passo, 6px) - var(--passo, 6px) + var(--esp, 2px));
+  background: repeating-linear-gradient(180deg, currentColor 0 var(--esp, 2px), transparent var(--esp, 2px) var(--passo, 6px)); }
+.dcx-regua-linha { display: flex; align-items: center; gap: var(--dcx-e-3); }
+
+/* ---- meio-tom: grade de círculos que crescem até formar uma forma (2 tintas + papel)
+ * a forma vem de --mt-forma (gradiente claro = ponto grande); o ponto máximo ocupa 70% da célula.
+ * só sobre fundo escuro (os vãos são preto puro e somem por lighten; o mosqueado da capa aparece)
+ * <div class="dcx-meiotom" style="--mt-cor:#b39a5c"><i></i></div> */
+.dcx-meiotom { --mt-passo: 14px; --mt-cor: var(--dcx-prata); position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 1; background: var(--mt-cor); mix-blend-mode: lighten; }
+.dcx-meiotom > i { position: absolute; inset: 0; mix-blend-mode: multiply; filter: contrast(40);
+  background: radial-gradient(circle closest-side, #fff, #000 142%) 50% 50% / var(--mt-passo) var(--mt-passo),
+              var(--mt-forma, radial-gradient(circle closest-side, #fff 0 18%, #595959 100%));
+  background-blend-mode: multiply; }
+
+/* ---- cor chapada por máquina (série): fundo de cor + tinta preta; use com .tx .tx-serigrafia */
+.dcx-cor-rj2000 { --dcx-maq: var(--dcx-maq-rj2000); }
+.dcx-cor-dcx404 { --dcx-maq: var(--dcx-maq-dcx404); }
+.dcx-cor-rj950 { --dcx-maq: var(--dcx-maq-rj950); }
+.dcx-cor-rj42 { --dcx-maq: var(--dcx-maq-rj42); }
+.dcx-cor-rj1202 { --dcx-maq: var(--dcx-maq-rj1202); }
+.dcx-chapado { background-color: var(--dcx-maq); color: var(--dcx-preto); --num-traco: var(--dcx-preto); --tex-intensity: .7; }
+.dcx-chapado .dcx-numeral:not(.dcx-numeral--vazado), .dcx-chapado .dcx-marca { color: var(--dcx-preto); }
+
+/* ---- anúncio: título fino enorme + régua, colunas justificadas com marcador, produto sob luz forte */
+.dcx-anuncio { position: relative; color: var(--dcx-prata); }
+.dcx-anuncio-tit { margin: 0; font: 300 clamp(36px, 6.2vw, 88px)/.98 var(--dcx-fonte); letter-spacing: -.04em; color: var(--dcx-prata-clara); }
+.dcx-anuncio-tit b { font-weight: var(--dcx-peso-pesado); letter-spacing: var(--dcx-espaco-marca); }
+.dcx-anuncio-cols { columns: 3 200px; column-gap: var(--dcx-e-5); margin: 0; padding: 0; list-style: none; font-size: var(--dcx-t-sm); line-height: 1.38; text-align: left; hyphens: manual; }
+.dcx-anuncio-cols li { break-inside: avoid; position: relative; padding-left: 12px; margin-bottom: 4px; }
+.dcx-anuncio-cols li::before { content: ""; position: absolute; left: 1px; top: .55em; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.dcx-anuncio-leg { font: 400 var(--dcx-t-ficha)/1.35 var(--dcx-fonte); letter-spacing: .015em; color: var(--dcx-prata-escura); }
+
+/* luz forte de estúdio sobre o aparelho: cone quente por trás, chão que reflete, sombra dura.
+ * O brilho (.dcx-brilho) só vai em aparelho cromado/vidro, nunca em texto ou fundo de site. */
+.dcx-luz { position: relative; isolation: isolate; margin: 0; }
+.dcx-luz::before { content: ""; position: absolute; inset: -18% -14% -6%; z-index: -1; pointer-events: none;
+  background: var(--dcx-luz-forte), radial-gradient(ellipse 46% 9% at 50% 96%, rgb(0 0 0 / .55), rgb(0 0 0 / 0) 100%); }
+.dcx-luz img { display: block; width: 100%; height: auto; filter: drop-shadow(0 2px 1px rgb(0 0 0 / .6)) drop-shadow(0 26px 24px rgb(0 0 0 / .62)) contrast(1.04); }
+.dcx-brilho { position: absolute; left: var(--x, 50%); top: var(--y, 20%); width: var(--b, 30px); aspect-ratio: 1; transform: translate(-50%, -50%) rotate(var(--r, 12deg)); pointer-events: none; mix-blend-mode: screen; z-index: 2;
+  background: linear-gradient(90deg, transparent, rgb(255 250 238 / .95) 50%, transparent) 50% 50% / 100% 1.2px no-repeat,
+              linear-gradient(180deg, transparent, rgb(255 250 238 / .95) 50%, transparent) 50% 50% / 1.2px 100% no-repeat,
+              radial-gradient(circle closest-side, rgb(255 250 238 / .9) 0 7%, rgb(255 240 220 / .22) 22%, transparent 48%); }
+
+/* ============================================================ desligar movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+  .dcx-btn, .dcx-maquina { transition: none; }
+  .dcx-maquina:hover, .dcx-maquina.is-hover { transform: none; }
+}
+@media (prefers-contrast: more) {
+  .dcx-ficha, .dcx-aba-txt { color: var(--dcx-prata-clara); }
+  .dcx-brilho { display: none; }
+  .dcx-btn { background: var(--dcx-preto); }
+  .dcx-btn--claro { background: var(--dcx-branco); }
+  .dcx-cod .c { color: var(--dcx-cinza-300); }
+}
+@media print {
+  .dcx-brilho, .dcx-luz::before { display: none; }
+  .dcx-btn, .dcx-maquina { box-shadow: none; transform: none; }
+  .dcx-rod, .dcx-cod { background: none; color: var(--dcx-preto); }
+  .dcx-cod pre { color: var(--dcx-preto); white-space: pre-wrap; }
+}

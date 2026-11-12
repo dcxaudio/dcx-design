@@ -1,0 +1,7 @@
+TeX Gyre Heros, versao 2.004 (OpenType, qhv2.004otf.zip)
+Origem: https://www.gust.org.pl/projects/e-foundry/tex-gyre/heros/qhv2.004otf.zip
+Autores: B. Jackowski e J.M. Nowacki (GUST, grupo polones de usuarios de TeX). Copyright 2006, 2009.
+Licenca: GUST Font License 1.0 (arquivo GUST-FONT-LICENSE-TeXGyreHeros.txt, baixado de tug.org/fonts/licenses; o zip nao traz o texto).
+Arquivos: tex-gyre-heros-regular.woff2 (400) e tex-gyre-heros-bold.woff2 (700), convertidos de texgyreheros-regular/bold.otf.
+Modificacao: subset latino (U+0020-007E, U+00A0-00FF, OE, travessoes, aspas, bullet, reticencias, euro; kern e liga), pyftsubset do fontTools, saida woff2.
+Uso: reserva da pilha "Helvetica Neue", Helvetica, "TeX Gyre Heros", Arial, sans-serif.

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DCX Audio · texturas</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="textures.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; font-family: var(--dcx-fonte); color: var(--dcx-preto); background: var(--dcx-cinza-200); line-height: var(--dcx-entrelinha-texto); }
+  .pg { min-height: 100vh; }
+  .wrap { max-width: var(--dcx-largura); margin: 0 auto; padding: var(--dcx-e-7) var(--dcx-calha) var(--dcx-e-9); }
+  header { display: grid; gap: var(--dcx-e-5); grid-template-columns: 1fr auto; align-items: end; padding-bottom: var(--dcx-e-6); border-bottom: var(--dcx-fio-forte); }
+  h1 { margin: 0; font-size: clamp(39px, 7vw, var(--dcx-t-5xl)); line-height: var(--dcx-entrelinha-titulo); letter-spacing: var(--dcx-espaco-letra-titulo); font-weight: 700; }
+  .rot { font-size: var(--dcx-t-xs); font-weight: 700; letter-spacing: var(--dcx-espaco-letra-rotulo); text-transform: uppercase; color: var(--dcx-cinza-600); }
+  .lead { margin: var(--dcx-e-3) 0 0; max-width: var(--dcx-medida); color: var(--dcx-cinza-700); }
+  .ctrl { display: grid; gap: var(--dcx-e-3); justify-items: start; }
+  .ctrl label { display: flex; gap: var(--dcx-e-2); align-items: center; font-size: var(--dcx-t-sm); }
+  .ctrl input[type=range] { width: 180px; accent-color: var(--dcx-vinho); }
+  .seg { display: inline-flex; border: var(--dcx-fio-forte); }
+  .seg button { font: 700 var(--dcx-t-xs)/1 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-letra-rotulo); text-transform: uppercase; padding: 9px 12px; border: 0; background: transparent; color: var(--dcx-preto); cursor: pointer; }
+  .seg button + button { border-left: var(--dcx-fio-forte); }
+  .seg button[aria-pressed=true] { background: var(--dcx-preto); color: var(--dcx-branco); }
+  .num { font-variant-numeric: tabular-nums; font-family: var(--dcx-fonte-mono); font-size: var(--dcx-t-sm); min-width: 3ch; }
+
+  section { padding: var(--dcx-e-7) 0 var(--dcx-e-4); border-bottom: var(--dcx-fio); }
+  h2 { margin: 0 0 var(--dcx-e-1); font-size: var(--dcx-t-xl); line-height: 1.1; letter-spacing: var(--dcx-espaco-letra-titulo); }
+  .nota { margin: 0 0 var(--dcx-e-5); max-width: var(--dcx-medida); font-size: var(--dcx-t-sm); color: var(--dcx-cinza-700); }
+  .par { display: grid; grid-template-columns: 1fr 1fr; gap: var(--dcx-e-4); }
+  .par > figure { margin: 0; min-width: 0; }
+  .par figcaption { margin-top: var(--dcx-e-2); }
+  .amostra { min-height: 220px; padding: var(--dcx-e-5); display: flex; flex-direction: column; justify-content: space-between; gap: var(--dcx-e-4); }
+  @media (max-width: 720px) { header { grid-template-columns: 1fr; } .par { grid-template-columns: 1fr; } }
+
+  /* brancos */
+  .brancos { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--dcx-e-4); }
+  @media (max-width: 720px) { .brancos { grid-template-columns: 1fr; } }
+  .branco { min-height: 200px; padding: var(--dcx-e-5); display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--dcx-sombra-folha); }
+  .branco b { font-size: var(--dcx-t-lg); letter-spacing: var(--dcx-espaco-letra-titulo); }
+  .branco code { font-family: var(--dcx-fonte-mono); font-size: var(--dcx-t-sm); }
+  .branco dl { display: grid; grid-template-columns: auto 1fr; gap: 2px var(--dcx-e-3); margin: 0; font-size: var(--dcx-t-sm); }
+  .branco dd { margin: 0; font-family: var(--dcx-fonte-mono); }
+
+  /* amostras especificas */
+  .papel-tit { font-size: var(--dcx-t-3xl); font-weight: 700; line-height: 1; letter-spacing: var(--dcx-espaco-letra-titulo); }
+  .logo { width: min(100%, 340px); height: auto; display: block; filter: invert(.89); }
+  .cartaz { background: var(--dcx-vinho); color: var(--dcx-branco); }
+  .cartaz .grande { font-size: clamp(49px, 9vw, 76px); font-weight: 700; line-height: .9; letter-spacing: -.03em; }
+  .placa { color: var(--dcx-marinho); border-radius: var(--dcx-r-3); }
+  .placa .nome { font: 800 var(--dcx-t-lg)/1 var(--dcx-fonte-painel); letter-spacing: -.4px; }
+  .placa .linha { display: flex; gap: var(--dcx-e-5); align-items: center; }
+  .knob { width: 72px; height: 72px; flex: none; }
+  .knob-liso { border-radius: 50%; background: #a9adb4; box-shadow: var(--dcx-sombra-alojamento); }
+  .teclas { display: flex; flex-wrap: wrap; gap: var(--dcx-e-4) var(--dcx-e-5); align-items: flex-end; padding: var(--dcx-e-5); border-radius: var(--dcx-r-5); }
+  .teclas figure { margin: 0; display: grid; gap: var(--dcx-e-2); justify-items: center; }
+  .teclas .rot { color: var(--dcx-marinho); }
+  .tecla-lisa .a, .tecla-lisa .s, .tecla-lisa .b { }
+  .liso { --tex-intensity: 0; }
+  .visores { display: flex; flex-wrap: wrap; gap: var(--dcx-e-5); align-items: center; padding: var(--dcx-e-5); background: var(--dcx-alojamento); border-radius: var(--dcx-r-4); }
+  .visores .rot { color: var(--dcx-cinza-400); }
+  .lcd { padding: 10px 14px; font: 700 18px/1.2 var(--dcx-fonte-mono); letter-spacing: .06em; border-radius: 2px; }
+  .gasto { background: var(--dcx-branco-papel); }
+  .ret { background: var(--dcx-marinho); color: var(--dcx-branco); }
+  .ret .grande { font-size: var(--dcx-t-3xl); font-weight: 700; line-height: 1; letter-spacing: var(--dcx-espaco-letra-titulo); }
+
+  .naousar .amostra p { margin: 0; font-size: 13px; line-height: 1.45; }
+  .forte { --tex-intensity: 1.6; }
+  .regras { margin: var(--dcx-e-5) 0 0; padding-left: 1.2em; max-width: var(--dcx-medida); }
+  .regras li { margin-bottom: var(--dcx-e-2); }
+  .bom { color: #2f5a2f; } .ruim { color: var(--dcx-vermelho-escuro); }
+</style>
+</head>
+<body>
+<div class="pg tx tx-papel" id="pg">
+<div class="wrap">
+  <header>
+    <div>
+      <div class="rot">DCX Audio · design system · DS-1</div>
+      <h1 class="tx-tinta">Texturas</h1>
+      <p class="lead">Cada material é uma pilha de camadas físicas, como as peças do 404: cor de base, camada escura (fibra, mancha, sujeira) e camada clara (grão, estria de luz, poeira). Tudo em SVG gerado, sem imagem externa. À esquerda, liso; à direita, com textura.</p>
+    </div>
+    <div class="ctrl">
+      <label>Intensidade <input type="range" id="int" min="0" max="1.6" step="0.1" value="1"> <span class="num" id="intv">1.0</span></label>
+      <div class="seg" role="group" aria-label="Branco">
+        <button type="button" data-b="papel" aria-pressed="false">Papel</button>
+        <button type="button" data-b="marfim" aria-pressed="true">Marfim</button>
+        <button type="button" data-b="creme" aria-pressed="false">Creme</button>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Três brancos</h2>
+    <p class="nota">Contraste WCAG calculado contra os tokens. Recomendado: marfim (o mais claro e quente, 14.45 com o preto).</p>
+    <div class="brancos">
+      <div class="branco tx tx-papel" style="background-color:var(--dcx-branco-papel)"><div><div class="rot">papel</div><b>#ebe8df</b></div>
+        <dl><dt>1c1c1c</dt><dd>13.91 AAA</dd><dt>cinza-600</dt><dd>5.61 AA</dd><dt>vinho</dt><dd>8.38 AAA</dd><dt>vermelho</dt><dd>3.12 só grande</dd></dl></div>
+      <div class="branco tx tx-papel tx-v2" style="background-color:var(--dcx-branco-marfim)"><div><div class="rot">marfim · recomendado</div><b>#f2ecdc</b></div>
+        <dl><dt>1c1c1c</dt><dd>14.45 AAA</dd><dt>cinza-600</dt><dd>5.83 AA</dd><dt>vinho</dt><dd>8.71 AAA</dd><dt>vermelho</dt><dd>3.24 só grande</dd></dl></div>
+      <div class="branco tx tx-papel tx-v3" style="background-color:var(--dcx-branco-creme)"><div><div class="rot">creme</div><b>#ebe0c8</b></div>
+        <dl><dt>1c1c1c</dt><dd>13.01 AAA</dd><dt>cinza-600</dt><dd>5.25 AA</dd><dt>vinho</dt><dd>7.84 AAA</dd><dt>vermelho</dt><dd>2.92 decoração</dd></dl></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Papel e cartão envelhecidos</h2>
+    <p class="nota">Papel: fibras curtas nas duas direções, grão, manchas de oxidação raras e beirada amarelada. Cartão: mais grosso, linhas vergê tortas e logo impresso em serigrafia com falhas de tinta.</p>
+    <div class="par">
+      <figure><div class="amostra" style="background:var(--dcx-branco)"><div class="papel-tit">Manual de operação</div><div class="rot">RJ-2000 · página 3</div></div><figcaption class="rot">antes</figcaption></figure>
+      <figure><div class="amostra tx tx-papel tx-v2"><div class="papel-tit">Manual de operação</div><div class="rot">RJ-2000 · página 3</div></div><figcaption class="rot">depois · .tx .tx-papel</figcaption></figure>
+      <figure><div class="amostra" style="background:var(--dcx-branco-creme)"><img class="logo" src="../Images/logos/dcx-audio.svg" alt="DCX Audio"><div class="rot">Duque de Caxias · RJ</div></div><figcaption class="rot">antes</figcaption></figure>
+      <figure><div class="amostra tx tx-cartao tx-v3"><img class="logo tx-tinta" src="../Images/logos/dcx-audio.svg" alt="DCX Audio"><div class="rot">Duque de Caxias · RJ</div></div><figcaption class="rot">depois · .tx .tx-cartao + .tx-tinta no logo</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Serigrafia</h2>
+    <p class="nota">Bloco de cor com densidade irregular do rodo e grão; título com falhas onde a tela não passou tinta e segunda passada meio pixel fora de registro.</p>
+    <div class="par">
+      <figure><div class="amostra cartaz"><div class="grande">Equipamentos clássicos</div><div class="rot" style="color:inherit">abertos no navegador</div></div><figcaption class="rot">antes</figcaption></figure>
+      <figure><div class="amostra cartaz tx tx-serigrafia"><div class="grande tx-tinta tx-registro" style="--tx-registro-cor:rgb(239 123 128 / .5)">Equipamentos clássicos</div><div class="rot" style="color:inherit">abertos no navegador</div></div><figcaption class="rot">depois · .tx-serigrafia, .tx-tinta, .tx-registro</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Metal escovado e girado</h2>
+    <p class="nota">Alumínio do painel do 404 (mesmas cores do Figma): estrias longas escuras e claras, faixa de reflexo irregular ao longo da escovação, riscos finos, fio de luz na aresta. Tampa girada: anéis de torno e dois reflexos opostos.</p>
+    <div class="par">
+      <figure><div class="amostra placa" style="background:linear-gradient(155.9deg,var(--dcx-aluminio-1) 9%,var(--dcx-aluminio-2) 113%)"><div class="nome">RJ-1202 · MIXER</div><div class="linha"><div class="knob knob-liso"></div><div class="knob knob-liso"></div><span class="rot" style="color:inherit">GAIN · LEVEL</span></div></div><figcaption class="rot">antes</figcaption></figure>
+      <figure><div class="amostra placa tx tx-metal"><div class="nome">RJ-1202 · MIXER</div><div class="linha"><div class="knob tx tx-metal-girado"></div><div class="knob tx tx-metal-girado tx-v2"></div><span class="rot" style="color:inherit">GAIN · LEVEL</span></div></div><figcaption class="rot">depois · .tx-metal, .tx-metal-girado</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Borracha de tecla</h2>
+    <p class="nota">Peças e estados do 404 (alojamento, borda, superfície moldada; solto, pressionado, aceso). A textura soma o fosco de silicone na superfície e poeira presa no vão. Clique para pressionar; duplo clique acende.</p>
+    <div class="par">
+      <figure><div class="teclas liso" style="background:linear-gradient(155.9deg,var(--dcx-aluminio-1) 9%,var(--dcx-aluminio-2) 113%)">
+        <figure><button class="tx-tecla" type="button" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption class="rot">solto</figcaption></figure>
+        <figure><button class="tx-tecla down" type="button" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption class="rot">press.</figcaption></figure>
+        <figure><button class="tx-tecla lit" type="button" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption class="rot">aceso</figcaption></figure>
+        <figure><button class="tx-tecla lit" type="button" style="--w:86px;--h:74px;font:400 30px/.98 var(--dcx-fonte-painel-num)"><i class="a"></i><i class="b"></i><i class="s"></i><span>7</span></button><figcaption class="rot">pad</figcaption></figure>
+      </div><figcaption class="rot">antes (intensidade 0)</figcaption></figure>
+      <figure><div class="teclas tx tx-metal">
+        <figure><button class="tx-tecla" type="button" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption class="rot">solto</figcaption></figure>
+        <figure><button class="tx-tecla down tx-v2" type="button" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption class="rot">press.</figcaption></figure>
+        <figure><button class="tx-tecla lit tx-v3" type="button" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption class="rot">aceso</figcaption></figure>
+        <figure><button class="tx-tecla lit" type="button" style="--w:86px;--h:74px;font:400 30px/.98 var(--dcx-fonte-painel-num)"><i class="a"></i><i class="b"></i><i class="s"></i><span>7</span></button><figcaption class="rot">pad</figcaption></figure>
+      </div><figcaption class="rot">depois · .tx-tecla sobre .tx-metal</figcaption></figure>
+    </div>
+    <div class="par" style="margin-top:var(--dcx-e-4)">
+      <figure><div class="amostra" style="min-height:120px;background:var(--dcx-elastomero-1)"><span class="rot" style="color:var(--dcx-cinza-700)">plástico injetado · tecla de função</span></div><figcaption class="rot">antes</figcaption></figure>
+      <figure><div class="amostra tx tx-plastico" style="min-height:120px"><span class="rot" style="color:var(--dcx-cinza-700)">plástico injetado · tecla de função</span></div><figcaption class="rot">depois · .tx-plastico</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Visor LED e LCD</h2>
+    <p class="nota">Dígito de 7 segmentos com o desenho e as cores do visor do 404. Apagado: segmentos fantasma sob vidro fumê. Textura: grão do vidro, reflexo diagonal de janela, poeira por cima, halo do segmento aceso.</p>
+    <div class="par">
+      <figure><div class="visores liso">
+        <div class="tx-visor"><div class="vidro" data-num="   "></div></div>
+        <div class="tx-visor"><div class="vidro" data-num="120"></div></div>
+        <span class="tx-led"></span><span class="tx-led on"></span>
+        <div class="tx-lcd lcd">PGM 07 · 45.0</div>
+      </div><figcaption class="rot">antes (intensidade 0)</figcaption></figure>
+      <figure><div class="visores">
+        <div class="tx-visor"><div class="vidro" data-num="   "></div></div>
+        <div class="tx-visor"><div class="vidro" data-num="120"></div></div>
+        <span class="tx-led"></span><span class="tx-led on"></span>
+        <div class="tx-lcd lcd">PGM 07 · 45.0</div>
+      </div><figcaption class="rot">depois · .tx-visor apagado / aceso, .tx-led, .tx-lcd</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Desgaste, poeira e impressão</h2>
+    <p class="nota">Modificadores que somam sobre qualquer material: sujeira em nuvens e base escurecida onde a mão encosta, riscos, poeira; retícula de offset com ponto que cresce e encolhe (não é padrão fixo).</p>
+    <div class="par">
+      <figure><div class="amostra gasto"><div class="papel-tit">Caixa nº 404</div><div class="rot">frágil · este lado para cima</div></div><figcaption class="rot">antes</figcaption></figure>
+      <figure><div class="amostra tx tx-cartao tx-desgaste tx-poeira gasto"><div class="papel-tit tx-tinta">Caixa nº 404</div><div class="rot">frágil · este lado para cima</div></div><figcaption class="rot">depois · .tx-cartao .tx-desgaste .tx-poeira</figcaption></figure>
+      <figure><div class="amostra ret"><div class="grande">Classic gear, open in your browser.</div><div class="rot" style="color:inherit">dcxaudio.github.io</div></div><figcaption class="rot">antes</figcaption></figure>
+      <figure><div class="amostra ret tx tx-serigrafia tx-reticula"><div class="grande">Classic gear, open in your browser.</div><div class="rot" style="color:inherit">dcxaudio.github.io</div></div><figcaption class="rot">depois · .tx-serigrafia .tx-reticula</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="naousar">
+    <h2>Onde não usar</h2>
+    <p class="nota">Texto pequeno e áreas de leitura ficam lisos ou com papel leve. Textura forte come a borda das letras e cansa a leitura.</p>
+    <div class="par">
+      <figure><div class="amostra tx tx-cartao tx-desgaste tx-reticula forte"><p>Para gravar, segure REC e toque um pad. O LED pisca até o som passar do limiar; solte REC para parar. O tempo máximo depende da taxa escolhida em SETUP.</p></div><figcaption class="rot ruim">ruim · cartão + desgaste + retícula, intensidade 1.6, 13px</figcaption></figure>
+      <figure><div class="amostra tx tx-papel" style="--tex-intensity:.5"><p>Para gravar, segure REC e toque um pad. O LED pisca até o som passar do limiar; solte REC para parar. O tempo máximo depende da taxa escolhida em SETUP.</p></div><figcaption class="rot bom">bom · papel, intensidade 0.5</figcaption></figure>
+    </div>
+    <ul class="regras">
+      <li>Texto corrido e abaixo de 16px: só <code>.tx-papel</code> com intensidade até 0.6, ou liso.</li>
+      <li><code>.tx-tinta</code> e <code>.tx-registro</code> só em título de 32px para cima, numeral e logo. Nunca em link, botão de interface ou campo.</li>
+      <li><code>.tx-reticula</code> só em bloco de cor ou imagem, nunca atrás de texto.</li>
+      <li>Sem textura em foco de teclado, erro, gráfico de dados e tabela.</li>
+      <li>Os painéis das máquinas já têm acabamento próprio: não aplicar por cima.</li>
+      <li>Impressão e alto contraste desligam tudo; "reduzir transparência" baixa para 0.4.</li>
+    </ul>
+  </section>
+</div>
+</div>
+<script>
+  // desenho do digito do visor do 404 (assets/svg/visor-digito-off.svg): a, b, c, d, e, f, g
+  var SEG = {
+    a: 'M8 0H31L34 3L31 6H8L5 3L8 0Z', b: 'M35 5L38 8V26L35 29L32 26V8L35 5Z', c: 'M33 34L36 37V55L33 58L30 55V37L33 34Z',
+    d: 'M5 57H28L31 60L28 63H5L2 60L5 57Z', e: 'M3 34L6 37V55L3 58L0 55V37L3 34Z', f: 'M5 5L8 8V26L5 29L2 26V8L5 5Z', g: 'M6 29H29L32 32L29 35H6L3 32L6 29Z'
+  };
+  var DIG = { '0': 'abcdef', '1': 'bc', '2': 'abdeg', '3': 'abcdg', '4': 'bcfg', '5': 'acdfg', '6': 'acdefg', '7': 'abc', '8': 'abcdefg', '9': 'abcdfg', ' ': '' };
+  document.querySelectorAll('.tx-visor .vidro').forEach(function (v) {
+    var s = v.getAttribute('data-num'), w = 39 * 0.62, h = 63 * 0.62, gap = 7 * 0.62;
+    var html = '<svg width="' + (s.length * w + (s.length - 1) * gap) + '" height="' + h + '" viewBox="0 0 ' + (s.length * 46 - 7) + ' 63" aria-hidden="true">';
+    for (var i = 0; i < s.length; i++) {
+      html += '<g transform="translate(' + (i * 46) + ' 0)">';
+      for (var k in SEG) html += '<path class="sg' + (DIG[s[i]].indexOf(k) >= 0 ? ' on' : '') + '" d="' + SEG[k] + '"/>';
+      html += '</g>';
+    }
+    v.innerHTML = html + '</svg>';
+    v.setAttribute('role', 'img'); v.setAttribute('aria-label', s.trim() ? 'visor ' + s.trim() : 'visor apagado');
+  });
+  var r = document.documentElement, inp = document.getElementById('int'), out = document.getElementById('intv');
+  inp.addEventListener('input', function () { r.style.setProperty('--tex-intensity', inp.value); out.textContent = Number(inp.value).toFixed(1); });
+  document.querySelectorAll('[data-b]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      r.style.setProperty('--dcx-branco', 'var(--dcx-branco-' + b.dataset.b + ')');
+      document.querySelectorAll('[data-b]').forEach(function (o) { o.setAttribute('aria-pressed', o === b); });
+    });
+  });
+  document.querySelectorAll('.tx-tecla').forEach(function (t) {
+    t.addEventListener('pointerdown', function () { t.classList.add('down'); });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (e) { t.addEventListener(e, function () { if (!t.dataset.fixo) t.classList.remove('down'); }); });
+    t.addEventListener('dblclick', function () { t.classList.toggle('lit'); });
+  });
+  document.querySelectorAll('.tx-tecla.down').forEach(function (t) { t.dataset.fixo = '1'; });
+</script>
+</body>
+</html>

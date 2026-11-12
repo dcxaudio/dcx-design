@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DCX Audio · guia da marca</title>
+<meta name="description" content="Guia da marca DCX Audio: princípios, cores, tipografia, texturas, componentes, logo, tom de voz e checklist para novas telas.">
+<meta name="theme-color" content="#1c1c1c">
+<link rel="stylesheet" href="fonts/tex-gyre-heros.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="textures.css">
+<link rel="stylesheet" href="components.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 120px; }
+  body { margin: 0; font-family: var(--dcx-fonte); font-size: var(--dcx-t-base); line-height: var(--dcx-entrelinha-texto); color: var(--dcx-preto); background: var(--dcx-branco); }
+  img, svg { max-width: 100%; }
+  a { color: var(--dcx-vinho); text-underline-offset: .22em; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible { outline: 2px solid var(--dcx-foco); outline-offset: 2px; border-radius: 2px; }
+  .g-pagina { --tex-intensity: .5; min-height: 100vh; }
+  .g-wrap { max-width: var(--dcx-largura); margin: 0 auto; padding: 0 var(--dcx-calha); }
+  @media (min-width: 761px) { .g-wrap { padding: 0 var(--dcx-e-6); } }
+  .g-cab { position: sticky; top: 0; z-index: 10; }
+  .g-rot { font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1.3 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-letra-rotulo); text-transform: uppercase; color: var(--dcx-cinza-600); }
+  .g-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* capa */
+  .g-capa { padding: var(--dcx-e-8) 0 var(--dcx-e-7); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: var(--dcx-e-7); align-items: end; }
+  .g-capa h1 { margin: var(--dcx-e-3) 0 0; font-size: clamp(49px, 9vw, 96px); line-height: .94; letter-spacing: -.035em; font-weight: 700; --tex-intensity: .75; }
+  .g-capa .g-lead { margin: var(--dcx-e-5) 0 0; max-width: 52ch; font-size: var(--dcx-t-md); line-height: 1.45; color: var(--dcx-cinza-700); }
+  .g-ficha { margin: 0; display: grid; grid-template-columns: auto 1fr; border-top: 2px solid var(--dcx-preto); font-size: var(--dcx-t-sm); }
+  .g-ficha dt, .g-ficha dd { margin: 0; padding: 9px 0; border-bottom: 1px solid var(--dcx-cinza-300); }
+  .g-ficha dt { padding-right: var(--dcx-e-4); }
+  .g-ficha dd { font-family: var(--dcx-fonte-mono); font-size: 13px; text-align: right; }
+  .g-sumario { margin: 0 0 var(--dcx-e-7); padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--dcx-preto); counter-reset: s; }
+  .g-sumario li { counter-increment: s; border-bottom: 1px solid var(--dcx-cinza-300); }
+  .g-sumario a { display: flex; gap: var(--dcx-e-3); align-items: baseline; padding: 12px var(--dcx-e-3) 12px 0; color: var(--dcx-preto); text-decoration: none; font-weight: var(--dcx-peso-medio); }
+  .g-sumario a::before { content: counter(s, decimal-leading-zero); font: 13px/1 var(--dcx-fonte-mono); color: var(--dcx-cinza-600); }
+  .g-sumario a:hover { color: var(--dcx-vinho); }
+  @media (max-width: 760px) { .g-capa { grid-template-columns: 1fr; gap: var(--dcx-e-5); padding: var(--dcx-e-7) 0 var(--dcx-e-6); } .g-capa .g-lead { font-size: var(--dcx-t-base); } .g-sumario { grid-template-columns: 1fr 1fr; } }
+
+  /* seções */
+  .g-sec { padding: var(--dcx-e-8) 0 var(--dcx-e-7); border-top: 2px solid var(--dcx-preto); }
+  .g-sec-cab { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 0 var(--dcx-e-4); margin-bottom: var(--dcx-e-6); }
+  .g-sec-num { font: 700 var(--dcx-t-2xl)/1 var(--dcx-fonte); letter-spacing: -.04em; color: var(--dcx-preto); --tex-intensity: .8; }
+  .g-sec h2 { margin: 0; font-size: var(--dcx-t-2xl); line-height: 1; letter-spacing: var(--dcx-espaco-letra-titulo); }
+  .g-sec-cab p { grid-column: 2; margin: var(--dcx-e-3) 0 0; max-width: var(--dcx-medida); color: var(--dcx-cinza-700); }
+  .g-sub { margin: var(--dcx-e-7) 0 var(--dcx-e-4); padding-top: var(--dcx-e-3); border-top: 1px solid var(--dcx-preto); display: flex; flex-wrap: wrap; gap: var(--dcx-e-2) var(--dcx-e-4); align-items: baseline; justify-content: space-between; }
+  .g-sub h3 { margin: 0; font-size: var(--dcx-t-lg); line-height: 1.1; letter-spacing: var(--dcx-espaco-letra-titulo); }
+  .g-sub code { font: 13px/1 var(--dcx-fonte-mono); color: var(--dcx-cinza-600); }
+  .g-txt { max-width: var(--dcx-medida); margin: 0 0 var(--dcx-e-4); color: var(--dcx-cinza-700); }
+  @media (max-width: 760px) { .g-sec { padding: var(--dcx-e-7) 0 var(--dcx-e-6); } .g-sec-cab { grid-template-columns: 1fr; } .g-sec-cab p { grid-column: 1; } .g-sec-num { font-size: var(--dcx-t-lg); margin-bottom: var(--dcx-e-2); } .g-sec h2 { font-size: var(--dcx-t-xl); } }
+
+  /* princípios */
+  .g-princ { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0; border-top: 1px solid var(--dcx-preto); }
+  .g-princ li { padding: var(--dcx-e-5) var(--dcx-e-5) var(--dcx-e-5) 0; border-bottom: 1px solid var(--dcx-cinza-300); }
+  .g-princ b { display: block; font-size: var(--dcx-t-md); line-height: 1.15; letter-spacing: -.01em; margin-bottom: var(--dcx-e-2); }
+  .g-princ span { display: block; font-size: var(--dcx-t-sm); color: var(--dcx-cinza-700); }
+  .g-princ i { display: block; font: 13px/1 var(--dcx-fonte-mono); font-style: normal; color: var(--dcx-cinza-600); margin-bottom: var(--dcx-e-4); }
+
+  /* cores: lascas de tinta */
+  .g-cores { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: var(--dcx-e-4); }
+  .g-cor { margin: 0; background: var(--dcx-branco); box-shadow: var(--dcx-sombra-folha); border-radius: var(--dcx-r-2); overflow: hidden; }
+  .g-cor-tinta { position: relative; height: 104px; display: flex; align-items: flex-end; padding: var(--dcx-e-2) var(--dcx-e-3); font: 700 var(--dcx-t-md)/1 var(--dcx-fonte); letter-spacing: -.01em; box-shadow: inset 0 -1px 0 rgb(0 0 0 / .12); }
+  .g-cor figcaption { padding: var(--dcx-e-3); font-size: 13px; line-height: 1.35; }
+  .g-cor figcaption b { display: block; font-size: var(--dcx-t-sm); }
+  .g-cor code { font: 12px/1.4 var(--dcx-fonte-mono); color: var(--dcx-cinza-600); }
+  .g-cor .g-uso { display: block; margin-top: 6px; color: var(--dcx-cinza-700); }
+  .g-cor .g-ctr { display: flex; gap: 6px; margin-top: var(--dcx-e-2); flex-wrap: wrap; }
+  .g-ctr span { font: 11px/1 var(--dcx-fonte-mono); padding: 4px 5px; border-radius: 2px; border: 1px solid var(--dcx-cinza-300); white-space: nowrap; }
+  .g-ctr span.ok { border-color: var(--dcx-preto); }
+  .g-ctr span.x { color: var(--dcx-cinza-500); border-style: dashed; }
+  .g-cor.rec .g-cor-tinta::after { content: "recomendado"; position: absolute; top: var(--dcx-e-2); right: var(--dcx-e-2); font: 700 10px/1 var(--dcx-fonte); letter-spacing: .08em; text-transform: uppercase; padding: 4px 6px; border: 1px solid currentColor; border-radius: 2px; }
+  .g-proporcao { display: flex; height: 56px; border-radius: var(--dcx-r-2); overflow: hidden; box-shadow: var(--dcx-sombra-folha); }
+  .g-proporcao div { display: flex; align-items: flex-end; padding: 8px 10px; font: 700 var(--dcx-t-xs)/1 var(--dcx-fonte); letter-spacing: .06em; text-transform: uppercase; min-width: 0; white-space: nowrap; overflow: hidden; }
+  .g-escala { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); border-radius: var(--dcx-r-2); overflow: hidden; box-shadow: var(--dcx-sombra-folha); }
+  .g-escala div { height: 88px; padding: 8px; display: flex; flex-direction: column; justify-content: flex-end; font: 11px/1.3 var(--dcx-fonte-mono); }
+  @media (max-width: 760px) { .g-escala { grid-template-columns: repeat(4, minmax(0, 1fr)); } .g-cores { grid-template-columns: 1fr 1fr; gap: var(--dcx-e-3); } .g-cor-tinta { height: 80px; } }
+
+  /* tipografia */
+  .g-specimen { font-size: clamp(39px, 7.4vw, var(--dcx-t-5xl)); font-weight: 700; line-height: var(--dcx-entrelinha-titulo); letter-spacing: var(--dcx-espaco-letra-titulo); margin: 0 0 var(--dcx-e-6); max-width: 15ch; }
+  .g-tipos { border-top: 1px solid var(--dcx-preto); }
+  .g-tipo { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: var(--dcx-e-4); align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--dcx-cinza-300); }
+  .g-tipo code { font: 12px/1.4 var(--dcx-fonte-mono); color: var(--dcx-cinza-600); }
+  .g-tipo div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: var(--dcx-espaco-letra-titulo); line-height: 1.1; }
+  .g-duas { display: grid; grid-template-columns: 1fr 1fr; gap: var(--dcx-e-5); }
+  .g-quadro { padding: var(--dcx-e-5); border: 1px solid var(--dcx-preto); border-radius: var(--dcx-r-2); }
+  .g-quadro h4 { margin: 0 0 var(--dcx-e-2); font-size: var(--dcx-t-md); }
+  .g-quadro p { margin: 0; font-size: var(--dcx-t-sm); color: var(--dcx-cinza-700); }
+  .g-recorte { display: block; width: 100%; height: 132px; object-fit: cover; object-position: 50% 6%; margin-top: var(--dcx-e-4); border-radius: var(--dcx-r-2); box-shadow: var(--dcx-sombra-moldada); background: var(--dcx-alojamento); }
+  .g-regras { margin: var(--dcx-e-5) 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 var(--dcx-e-5); }
+  .g-regras li { padding: 10px 0; border-bottom: 1px solid var(--dcx-cinza-300); font-size: var(--dcx-t-sm); }
+  .g-regras b { display: block; font-size: var(--dcx-t-base); }
+  @media (max-width: 760px) { .g-duas { grid-template-columns: 1fr; } .g-tipo { grid-template-columns: 96px minmax(0, 1fr); } }
+
+  /* texturas */
+  .g-mats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--dcx-e-4); }
+  .g-mat { margin: 0; }
+  .g-mat > div { --tex-intensity: 1; height: 150px; padding: var(--dcx-e-4); border-radius: var(--dcx-r-2); display: flex; align-items: flex-end; font: 700 var(--dcx-t-lg)/1 var(--dcx-fonte); letter-spacing: -.02em; }
+  .g-mat figcaption { margin-top: var(--dcx-e-2); font-size: 13px; color: var(--dcx-cinza-700); }
+  .g-mat figcaption code { font: 12px/1.4 var(--dcx-fonte-mono); color: var(--dcx-preto); }
+  .g-teclas { --tex-intensity: 1; display: flex; flex-wrap: wrap; gap: var(--dcx-e-4) var(--dcx-e-6); align-items: flex-end; padding: var(--dcx-e-5) var(--dcx-e-6); border-radius: var(--dcx-r-5); }
+  .g-teclas figure { margin: 0; display: grid; gap: var(--dcx-e-2); justify-items: center; }
+  .g-teclas figcaption { font: 700 11px/1 var(--dcx-fonte); letter-spacing: .08em; text-transform: uppercase; color: var(--dcx-marinho); }
+  @media (max-width: 760px) { .g-mats { grid-template-columns: 1fr 1fr; gap: var(--dcx-e-3); } .g-mat > div { height: 110px; font-size: var(--dcx-t-md); } .g-teclas { padding: var(--dcx-e-4); gap: var(--dcx-e-4); } }
+
+  /* componentes */
+  .g-palco { position: relative; padding: var(--dcx-e-6) var(--dcx-e-5); border-radius: var(--dcx-r-2); background: var(--dcx-branco); box-shadow: inset 0 0 0 1px var(--dcx-cinza-300); }
+  .g-palco--preto { background: var(--dcx-preto); box-shadow: none; color: var(--dcx-branco); }
+  .g-palco--cinza { background: var(--dcx-cinza-200); box-shadow: none; }
+  .g-estados { display: grid; grid-template-columns: repeat(5, minmax(0, max-content)); gap: var(--dcx-e-5) var(--dcx-e-6); align-items: end; }
+  .g-estados figure { margin: 0; display: grid; gap: var(--dcx-e-3); justify-items: start; }
+  .g-estados figcaption { font: 700 11px/1 var(--dcx-fonte); letter-spacing: .08em; text-transform: uppercase; color: var(--dcx-cinza-600); }
+  .g-palco--preto .g-estados figcaption { color: var(--dcx-cinza-400); }
+  .g-linha { display: flex; flex-wrap: wrap; gap: var(--dcx-e-3) var(--dcx-e-4); align-items: center; }
+  .g-pecas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--dcx-e-5); margin-top: var(--dcx-e-4); }
+  .g-medidas { margin: 0; padding: 0; list-style: none; font-size: var(--dcx-t-sm); border-top: 1px solid var(--dcx-preto); align-self: start; }
+  .g-medidas li { display: flex; justify-content: space-between; gap: var(--dcx-e-4); padding: 8px 0; border-bottom: 1px solid var(--dcx-cinza-300); }
+  .g-medidas span:last-child { font: 13px/1.4 var(--dcx-fonte-mono); text-align: right; color: var(--dcx-cinza-700); }
+  /* cotas: desenho técnico do botão */
+  .g-cotado { position: relative; display: inline-block; margin: 8px 0 26px 56px; }
+  .g-cota { position: absolute; font: 11px/1 var(--dcx-fonte-mono); color: var(--dcx-vinho); white-space: nowrap; }
+  .g-cota--v { left: -22px; top: 0; bottom: 2px; width: 9px; border-top: 1px solid currentColor; border-bottom: 1px solid currentColor; }
+  .g-cota--v::before { content: ""; position: absolute; left: 4px; top: 0; bottom: 0; border-left: 1px solid currentColor; }
+  .g-cota--v span { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); }
+  .g-cota--h { left: 0; right: 0; bottom: -18px; height: 9px; border-left: 1px solid currentColor; border-right: 1px solid currentColor; }
+  .g-cota--h::before { content: ""; position: absolute; top: 4px; left: 0; right: 0; border-top: 1px solid currentColor; }
+  .g-cota--h span { position: absolute; left: 50%; top: 4px; transform: translate(-50%, -50%); background: var(--dcx-branco); padding: 0 4px; }
+  .g-cota--d { left: calc(100% + 8px); bottom: -3px; border-top: 1px solid currentColor; padding: 3px 0 0 8px; }
+  .g-cota--d::before { content: ""; position: absolute; left: 0; top: -3px; height: 6px; border-left: 1px solid currentColor; }
+  .g-maquinas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--dcx-e-5); }
+  .g-maquinas > figure { margin: 0; display: grid; gap: var(--dcx-e-3); grid-template-rows: 1fr auto; }
+  .g-maquinas > figure > figcaption { font: 700 11px/1.3 var(--dcx-fonte); letter-spacing: .08em; text-transform: uppercase; color: var(--dcx-cinza-600); }
+  .g-cab-demo { border-radius: var(--dcx-r-2); overflow: hidden; box-shadow: inset 0 0 0 1px var(--dcx-cinza-300); }
+  .g-cab-demo + .g-cab-demo { margin-top: var(--dcx-e-4); }
+  .g-cab-demo .dcx-cab { position: relative; }
+  @media (max-width: 960px) { .g-maquinas { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) {
+    .g-estados { display: flex; flex-wrap: wrap; gap: var(--dcx-e-5) var(--dcx-e-5); }
+    .g-pecas { grid-template-columns: 1fr; }
+    .g-maquinas { grid-template-columns: 1fr; }
+    .g-palco { padding: var(--dcx-e-5) var(--dcx-e-4); }
+    .g-cota--d { display: none; }
+  }
+
+  /* logo */
+  .g-logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--dcx-e-4); }
+  .g-logo { margin: 0; }
+  .g-logo > div { height: 200px; display: grid; place-items: center; padding: var(--dcx-e-6); border-radius: var(--dcx-r-2); }
+  .g-logo svg { display: block; width: auto; max-width: 100%; }
+  .g-logo figcaption { margin-top: var(--dcx-e-2); font-size: 13px; color: var(--dcx-cinza-700); }
+  .g-claro { background: var(--dcx-branco); color: var(--dcx-preto); box-shadow: inset 0 0 0 1px var(--dcx-cinza-300); }
+  .g-escuro { background: var(--dcx-preto); color: var(--dcx-branco); }
+  .g-area-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: var(--dcx-e-6); align-items: center; }
+  .g-area-palco { padding: var(--dcx-e-6) var(--dcx-e-4); display: grid; place-items: center; overflow: hidden; }
+  .g-area { --x: 34px; position: relative; padding: var(--x); outline: 1px dashed var(--dcx-vinho); outline-offset: 0; background: repeating-linear-gradient(-45deg, rgb(118 35 43 / .07) 0 1px, transparent 1px 6px); }
+  .g-area svg { display: block; height: var(--x); width: auto; position: relative; background: var(--dcx-branco); box-shadow: 0 0 0 0 var(--dcx-branco); }
+  .g-area i { position: absolute; display: grid; place-items: center; width: var(--x); height: var(--x); font: italic 700 13px/1 var(--dcx-fonte); color: var(--dcx-vinho); }
+  .g-area i::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgb(118 35 43 / .5); }
+  .g-area i:nth-of-type(1) { left: 0; top: 0; } .g-area i:nth-of-type(2) { right: 0; top: 0; }
+  .g-area i:nth-of-type(3) { left: 0; bottom: 0; } .g-area i:nth-of-type(4) { right: 0; bottom: 0; }
+  .g-minimos { display: flex; flex-wrap: wrap; gap: var(--dcx-e-6); align-items: flex-end; margin-top: var(--dcx-e-5); }
+  .g-minimos figure { margin: 0; }
+  .g-minimos figcaption { margin-top: var(--dcx-e-2); font: 12px/1.3 var(--dcx-fonte-mono); color: var(--dcx-cinza-600); }
+  .g-naos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--dcx-e-4); }
+  .g-nao { margin: 0; }
+  .g-nao > div { position: relative; height: 140px; display: grid; place-items: center; padding: var(--dcx-e-5); border-radius: var(--dcx-r-2); overflow: hidden; }
+  .g-nao svg { display: block; height: 24px; width: auto; }
+  .g-nao > div::after { /* risco vermelho de revisão, à mão */
+    content: ""; position: absolute; left: 10%; right: 10%; top: 50%; height: 2px; background: var(--dcx-vermelho-escuro); transform: rotate(-9deg); opacity: .85; border-radius: 2px;
+  }
+  .g-nao figcaption { margin-top: var(--dcx-e-2); font-size: var(--dcx-t-sm); }
+  .g-nao figcaption b { color: var(--dcx-vermelho-escuro); }
+  .g-falso { font: 400 26px/1 Arial, sans-serif; letter-spacing: .12em; }
+  @media (max-width: 760px) { .g-logos { grid-template-columns: 1fr; } .g-logo > div { height: 150px; } .g-area-wrap { grid-template-columns: 1fr; } .g-area { --x: 22px; } .g-naos { grid-template-columns: 1fr 1fr; gap: var(--dcx-e-3); } .g-nao > div { height: 110px; padding: var(--dcx-e-3); } .g-nao svg { height: 16px; } .g-falso { font-size: 17px; } }
+
+  /* selo (DS-6) */
+  .g-selo-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: var(--dcx-e-6); align-items: start; }
+  .g-selo-palco { display: grid; place-items: center; padding: var(--dcx-e-7) var(--dcx-e-4); border-radius: var(--dcx-r-2); overflow: hidden; }
+  .g-selo-par { --s: 72px; position: relative; display: flex; align-items: center; gap: calc(var(--s) * .4); padding: calc(var(--s) * .25);
+    outline: 1px dashed rgb(239 123 128 / .75); background: repeating-linear-gradient(-45deg, rgb(239 123 128 / .10) 0 1px, transparent 1px 6px); }
+  .g-selo-par .dcx-selo { --s: inherit; }
+  .g-selo-par svg { display: block; height: calc(var(--s) * .62); width: auto; color: var(--dcx-prata-clara); background: var(--dcx-capa); box-shadow: 0 0 0 calc(var(--s) * .08) var(--dcx-capa); }
+  .g-selo-par .dcx-selo { box-shadow: 0 0 0 calc(var(--s) * .08) var(--dcx-capa); background-color: var(--dcx-capa); }
+  .g-selo-cota { position: absolute; font: italic 700 12px/1 var(--dcx-fonte); color: var(--dcx-rosa); }
+  .g-selo-cota--a { left: 4px; top: 4px; } .g-selo-cota--b { left: calc(var(--s) * 1.75); bottom: calc(var(--s) * .25 + 2px); transform: translateX(-10%); font-size: 11px; }
+  .g-selo-tam { display: flex; flex-wrap: wrap; gap: var(--dcx-e-5); align-items: flex-end; margin-top: var(--dcx-e-5); }
+  .g-selo-tam figure { margin: 0; }
+  .g-selo-tam figcaption { margin-top: var(--dcx-e-2); font: 12px/1.3 var(--dcx-fonte-mono); color: var(--dcx-cinza-600); }
+  .g-selo-tam .g-escuro { padding: var(--dcx-e-3); border-radius: var(--dcx-r-2); line-height: 0; }
+  .g-naos--selo .g-nao > div { background: var(--dcx-capa); }
+  @media (max-width: 760px) { .g-selo-wrap { grid-template-columns: 1fr; } .g-selo-par { --s: 48px; } }
+
+  /* voz */
+  .g-tagline { margin: 0 0 var(--dcx-e-6); padding: var(--dcx-e-6) var(--dcx-e-5); border-radius: var(--dcx-r-2); background: var(--dcx-vinho); color: var(--dcx-branco); --tex-intensity: 1; }
+  .g-tagline p { margin: 0; font-size: clamp(31px, 5.4vw, var(--dcx-t-4xl)); font-weight: 700; line-height: 1; letter-spacing: -.03em; max-width: 16ch; }
+  .g-tagline small { display: block; margin-top: var(--dcx-e-4); font-size: var(--dcx-t-md); opacity: .85; }
+  .g-pares { display: grid; gap: 0; border-top: 1px solid var(--dcx-preto); }
+  .g-par { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--dcx-e-5); padding: 14px 0; border-bottom: 1px solid var(--dcx-cinza-300); }
+  .g-par p { margin: 0; }
+  .g-par p::before { display: block; margin-bottom: 4px; font: 700 11px/1 var(--dcx-fonte); letter-spacing: .08em; text-transform: uppercase; }
+  .g-par p:first-child::before { content: "diga"; color: var(--dcx-preto); }
+  .g-par p:last-child { color: var(--dcx-cinza-600); text-decoration: line-through; text-decoration-color: rgb(179 38 30 / .6); }
+  .g-par p:last-child::before { content: "evite"; color: var(--dcx-vermelho-escuro); text-decoration: none; }
+  @media (max-width: 760px) { .g-par { grid-template-columns: 1fr; gap: var(--dcx-e-2); } }
+
+  /* checklist */
+  .g-check-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: var(--dcx-e-6); align-items: start; }
+  .g-check { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--dcx-preto); counter-reset: c; }
+  .g-check li { border-bottom: 1px solid var(--dcx-cinza-300); }
+  .g-check label { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: var(--dcx-e-3); align-items: start; padding: 12px 0; cursor: pointer; }
+  .g-check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .g-check b { display: block; font-weight: var(--dcx-peso-negrito); }
+  .g-check small { display: block; font-size: var(--dcx-t-sm); color: var(--dcx-cinza-700); }
+  /* caixinha = tecla do 404 em miniatura: alojamento, borda, superfície; marcada = acesa */
+  .g-caixa { position: relative; width: 26px; height: 24px; margin-top: 1px; border-radius: 5px; background: var(--dcx-alojamento); box-shadow: var(--dcx-sombra-alojamento); }
+  .g-caixa::before { content: ""; position: absolute; left: 2px; top: 2px; right: 2px; bottom: 3px; border-radius: 3px; background: var(--dcx-elastomero-borda); border: 1px solid var(--dcx-borda-tecla); }
+  .g-caixa::after { content: ""; position: absolute; left: 4px; top: 3px; right: 4px; bottom: 4px; border-radius: 2px; border: .6px solid #b9bdc1; background: linear-gradient(to bottom, var(--dcx-elastomero-1), var(--dcx-elastomero-2)); }
+  .g-check input:checked + .g-caixa::before { background: var(--dcx-vinho); }
+  .g-check input:checked + .g-caixa::after { border-color: #f38c91; background: linear-gradient(to bottom, var(--dcx-rosa), var(--dcx-rosa-sombra)); }
+  .g-check label:active .g-caixa { box-shadow: none; }
+  .g-check label:active .g-caixa::after { box-shadow: var(--dcx-sombra-moldada); }
+  .g-check input:focus-visible + .g-caixa { outline: 2px solid var(--dcx-foco); outline-offset: 3px; }
+  .g-check input:checked ~ span b { text-decoration: line-through; text-decoration-color: rgb(118 35 43 / .5); }
+  .g-placar { position: sticky; top: 140px; display: grid; gap: var(--dcx-e-3); justify-items: start; }
+  .g-placar .tx-visor { --tex-intensity: 1; }
+  .g-zerar { margin-top: var(--dcx-e-2); }
+  @media (max-width: 760px) { .g-check-wrap { grid-template-columns: 1fr; } .g-placar { position: static; grid-row: 1; grid-auto-flow: column; align-items: center; } }
+
+  /* capa de cassete (DS-5) */
+  .g-cas-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--dcx-e-6); align-items: start; }
+  .g-capa-demo { --tex-intensity: 1; max-width: 760px; color: var(--dcx-prata); border-radius: 2px; box-shadow: 0 1px 1px rgb(40 30 10 / .3), 0 22px 30px -18px rgb(40 30 10 / .6); --dobra: 71%; }
+  .g-capa-topo { display: flex; align-items: flex-start; gap: 4%; padding: 5% 5% 3.4%; }
+  .g-capa-topo .dcx-selo { --s: clamp(56px, 13vw, 116px); }
+  .g-capa-topo svg { flex: 1; min-width: 0; height: auto; color: var(--dcx-prata-clara); margin-top: -.6%; }
+  .g-capa-demo .dcx-faixa { --faixa-h: clamp(92px, 21vw, 168px); --tex-intensity: .9; }
+  .g-capa-demo .dcx-faixa .dcx-numeral { font-size: clamp(96px, 23vw, 196px); }
+  .g-capa-meio { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--dcx-e-4); padding: 4% 5% 3.6%; }
+  .g-capa-meio p { margin: 0; font: 400 clamp(25px, 5vw, 46px)/.98 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-regular-grande); color: var(--dcx-prata); }
+  .g-capa-meio p b { font-weight: 700; color: var(--dcx-prata-clara); letter-spacing: -.045em; }
+  .g-capa-meio .g-capa-med { flex: none; text-align: right; font: 400 var(--dcx-t-sm)/1.2 var(--dcx-fonte); }
+  .g-capa-meio .g-capa-med b { font: 700 clamp(20px, 3.4vw, 30px)/1 var(--dcx-fonte); letter-spacing: -.03em; color: var(--dcx-prata-clara); margin-left: 6px; }
+  .g-capa-demo .dcx-aba { --aba-t: clamp(28px, 6vw, 52px); }
+  .g-capa-demo .dcx-aba + .dcx-aba { --aba-t: clamp(24px, 5vw, 44px); }
+  .g-capa-pe { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--dcx-e-4); padding: 3.4% 5% 4%; }
+  .g-capa-pe .dcx-selo { --s: 34px; }
+  .g-fitas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--dcx-e-3); }
+  .g-fita { margin: 0; }
+  .g-fita-capa { --tex-intensity: 1; position: relative; aspect-ratio: 5 / 6.4; display: grid; grid-template-rows: auto 1fr auto; border-radius: 2px; overflow: hidden; box-shadow: var(--dcx-sombra-folha); }
+  .g-fita-capa .g-fita-cor { display: flex; align-items: flex-end; padding: 10px 10px 8px; min-height: 0; }
+  .g-fita-capa .dcx-numeral { font-size: clamp(36px, 5.6vw, 74px); }
+  .g-fita-capa .g-fita-cab { display: flex; align-items: center; gap: 8px; padding: 10px; }
+  .g-fita-capa .g-fita-cab .dcx-selo { --s: 18px; background-image: var(--dcx-selo-img-p); }
+  .g-fita-capa .g-fita-cab span { font: 700 clamp(13px, 1.6vw, 18px)/1 var(--dcx-fonte); letter-spacing: -.04em; color: var(--dcx-prata-clara); }
+  .g-fita-capa .g-fita-pe { padding: 7px 10px 9px; font: 400 10px/1.3 var(--dcx-fonte); letter-spacing: .02em; color: var(--dcx-prata); box-shadow: var(--dcx-fio-de-luz); }
+  .g-fita figcaption { margin-top: var(--dcx-e-2); font-size: 13px; line-height: 1.35; }
+  .g-fita figcaption b { display: block; font-size: var(--dcx-t-sm); }
+  .g-fita figcaption code { font: 12px/1.4 var(--dcx-fonte-mono); color: var(--dcx-cinza-600); }
+  .g-pecas-capa { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--dcx-e-4); }
+  .g-peca { margin: 0; }
+  .g-peca > div { --tex-intensity: 1; position: relative; min-height: 200px; padding: var(--dcx-e-5); border-radius: 2px; display: flex; align-items: center; justify-content: center; gap: var(--dcx-e-4); overflow: hidden; }
+  .g-peca figcaption { margin-top: var(--dcx-e-2); font-size: 13px; color: var(--dcx-cinza-700); }
+  .g-peca figcaption code { font: 12px/1.4 var(--dcx-fonte-mono); color: var(--dcx-preto); }
+  .g-peca .dcx-meiotom { width: 168px; }
+  /* o selo é 3:2: o grande (192 px de largura) encolhe no celular para a fila caber */
+  .g-peca .dcx-selo--g { --s: clamp(64px, 20vw, 128px); }
+  .g-peca > div:has(.dcx-selo) { flex-wrap: wrap; }
+  .g-anuncio-demo { --tex-intensity: .9; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--dcx-e-6); padding: var(--dcx-e-7) var(--dcx-e-6); border-radius: 2px; align-items: center; }
+  .g-anuncio-demo .dcx-regua-linha { margin-bottom: var(--dcx-e-3); color: var(--dcx-prata-clara); }
+  .g-anuncio-demo .dcx-regua-linha svg { height: 30px; width: auto; flex: none; }
+  .g-anuncio-demo .dcx-anuncio-cols { margin-top: var(--dcx-e-5); columns: 2 180px; }
+  .g-anuncio-demo .dcx-luz { max-width: 320px; justify-self: center; }
+  .g-decisoes { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--dcx-e-6); border-top: 2px solid var(--dcx-preto); }
+  .g-decisoes li { padding: var(--dcx-e-4) 0; border-bottom: 1px solid var(--dcx-cinza-300); font-size: var(--dcx-t-sm); color: var(--dcx-cinza-700); }
+  .g-decisoes b { display: block; font-size: var(--dcx-t-md); color: var(--dcx-preto); letter-spacing: -.01em; margin-bottom: 4px; }
+  .g-aprovado { background: var(--dcx-preto); color: var(--dcx-prata-clara) !important; border-color: var(--dcx-preto) !important; }
+  p .g-escolha { display: inline-block; margin-right: 8px; font: 700 11px/1 var(--dcx-fonte); letter-spacing: .08em; text-transform: uppercase; padding: 4px 6px; border: 1px solid var(--dcx-preto); border-radius: 2px; vertical-align: 2px; }
+  .g-decisoes .g-escolha { display: inline-block; margin-top: 6px; font: 700 11px/1 var(--dcx-fonte); letter-spacing: .08em; text-transform: uppercase; padding: 4px 6px; border: 1px solid var(--dcx-preto); border-radius: 2px; color: var(--dcx-preto); }
+  .g-tab-cor td:first-child i { display: inline-block; width: 22px; height: 22px; vertical-align: -6px; margin-right: 8px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .18); }
+  @media (max-width: 960px) { .g-fitas { grid-template-columns: repeat(3, minmax(0, 1fr)); } .g-pecas-capa { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) {
+    .g-cas-intro, .g-anuncio-demo, .g-decisoes { grid-template-columns: 1fr; }
+    .g-fitas { grid-template-columns: 1fr 1fr; }
+    .g-pecas-capa { grid-template-columns: 1fr; }
+    .g-anuncio-demo { padding: var(--dcx-e-6) var(--dcx-e-4); }
+    .g-capa-meio { flex-direction: column; align-items: flex-start; }
+    .g-capa-meio .g-capa-med { text-align: left; }
+    .g-capa-pe { flex-direction: column; align-items: flex-start; }
+    .g-capa-demo .dcx-faixa { padding: 0 var(--dcx-e-4); }
+    .g-capa-demo .dcx-aba { padding-left: var(--dcx-e-4); padding-right: var(--dcx-e-4); }
+    .g-capa-demo .dcx-aba-txt { display: none; }
+  }
+
+  .g-fim { padding-bottom: var(--dcx-e-8); }
+</style>
+</head>
+<body>
+<!-- logos de Images/logos/ como símbolos (fill="currentColor"): recolorir com color -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<symbol id="logo-dcx-audio" viewBox="0 0 647 98" fill="currentColor"><path d="M602.77 97.5C589.603 97.5 579.541 93.9167 572.583 86.75C563.249 77.9583 558.583 65.2917 558.583 48.75C558.583 31.875 563.249 19.2083 572.583 10.75C579.541 3.58333 589.603 0 602.77 0C615.937 0 625.999 3.58333 632.958 10.75C642.249 19.2083 646.895 31.875 646.895 48.75C646.895 65.2917 642.249 77.9583 632.958 86.75C625.999 93.9167 615.937 97.5 602.77 97.5ZM620.958 72.75C625.416 67.125 627.645 59.125 627.645 48.75C627.645 38.4167 625.395 30.4375 620.895 24.8125C616.437 19.1458 610.395 16.3125 602.77 16.3125C595.145 16.3125 589.062 19.125 584.52 24.75C579.978 30.375 577.708 38.375 577.708 48.75C577.708 59.125 579.978 67.125 584.52 72.75C589.062 78.375 595.145 81.1875 602.77 81.1875C610.395 81.1875 616.458 78.375 620.958 72.75Z" /><path d="M532.575 2.8125H551.7V94.9375H532.575V2.8125Z" /><path d="M487.662 94.9375H447.975V2.8125H487.662C493.371 2.89583 498.121 3.5625 501.912 4.8125C508.371 6.9375 513.6 10.8333 517.6 16.5C520.808 21.0833 522.996 26.0417 524.162 31.375C525.329 36.7083 525.912 41.7917 525.912 46.625C525.912 58.875 523.454 69.25 518.537 77.75C511.871 89.2083 501.579 94.9375 487.662 94.9375ZM501.975 26.3125C499.017 21.3125 493.162 18.8125 484.412 18.8125H466.662V78.9375H484.412C493.496 78.9375 499.829 74.4583 503.412 65.5C505.371 60.5833 506.35 54.7292 506.35 47.9375C506.35 38.5625 504.892 31.3542 501.975 26.3125Z" /><path d="M418.935 59.4375V2.8125H438.498V59.4375C438.498 69.2292 436.977 76.8542 433.935 82.3125C428.268 92.3125 417.456 97.3125 401.498 97.3125C385.539 97.3125 374.706 92.3125 368.998 82.3125C365.956 76.8542 364.435 69.2292 364.435 59.4375V2.8125H383.998V59.4375C383.998 65.7708 384.748 70.3958 386.248 73.3125C388.581 78.4792 393.664 81.0625 401.498 81.0625C409.289 81.0625 414.352 78.4792 416.685 73.3125C418.185 70.3958 418.935 65.7708 418.935 59.4375Z" /><path d="M337.392 76H303.455L297.08 94.9375H276.955L309.83 2.8125H331.58L364.205 94.9375H343.33L337.392 76ZM332.017 60.125L320.517 23.875L308.642 60.125H332.017Z" /><path d="M241.142 94.9375H217.767L200.267 63.5625L181.767 94.9375H159.392L189.017 48L160.83 2.8125H183.83L200.267 32.75L217.142 2.8125H239.392L211.205 47.25L241.142 94.9375Z" /><path d="M152.38 88.0625C145.505 94.3542 136.713 97.5 126.005 97.5C112.755 97.5 102.338 93.25 94.755 84.75C87.1717 76.2083 83.38 64.5 83.38 49.625C83.38 33.5417 87.6925 21.1458 96.3175 12.4375C103.818 4.85417 113.359 1.0625 124.943 1.0625C140.443 1.0625 151.776 6.14583 158.943 16.3125C162.901 22.0208 165.026 27.75 165.318 33.5H146.068C144.818 29.0833 143.213 25.75 141.255 23.5C137.755 19.5 132.568 17.5 125.693 17.5C118.693 17.5 113.172 20.3333 109.13 26C105.088 31.625 103.068 39.6042 103.068 49.9375C103.068 60.2708 105.193 68.0208 109.443 73.1875C113.734 78.3125 119.172 80.875 125.755 80.875C132.505 80.875 137.651 78.6667 141.193 74.25C143.151 71.875 144.776 68.3125 146.068 63.5625H165.13C163.463 73.6042 159.213 81.7708 152.38 88.0625Z" /><path d="M39.6875 94.9375H0V2.8125H39.6875C45.3958 2.89583 50.1458 3.5625 53.9375 4.8125C60.3958 6.9375 65.625 10.8333 69.625 16.5C72.8333 21.0833 75.0208 26.0417 76.1875 31.375C77.3542 36.7083 77.9375 41.7917 77.9375 46.625C77.9375 58.875 75.4792 69.25 70.5625 77.75C63.8958 89.2083 53.6042 94.9375 39.6875 94.9375ZM54 26.3125C51.0417 21.3125 45.1875 18.8125 36.4375 18.8125H18.6875V78.9375H36.4375C45.5208 78.9375 51.8542 74.4583 55.4375 65.5C57.3958 60.5833 58.375 54.7292 58.375 47.9375C58.375 38.5625 56.9167 31.3542 54 26.3125Z" /></symbol>
+<symbol id="logo-dcx-audio-empilhado" viewBox="0 0 370 244" fill="currentColor"><path d="M325.815 243.438C312.648 243.438 302.586 239.854 295.627 232.688C286.294 223.896 281.627 211.229 281.627 194.688C281.627 177.812 286.294 165.146 295.627 156.688C302.586 149.521 312.648 145.938 325.815 145.938C338.982 145.938 349.044 149.521 356.002 156.688C365.294 165.146 369.94 177.812 369.94 194.688C369.94 211.229 365.294 223.896 356.002 232.688C349.044 239.854 338.982 243.438 325.815 243.438ZM344.002 218.688C348.461 213.062 350.69 205.062 350.69 194.688C350.69 184.354 348.44 176.375 343.94 170.75C339.482 165.083 333.44 162.25 325.815 162.25C318.19 162.25 312.107 165.062 307.565 170.688C303.023 176.312 300.752 184.312 300.752 194.688C300.752 205.062 303.023 213.062 307.565 218.688C312.107 224.312 318.19 227.125 325.815 227.125C333.44 227.125 339.502 224.312 344.002 218.688Z" /><path d="M255.62 148.75H274.745V240.875H255.62V148.75Z" /><path d="M210.708 240.875H171.02V148.75H210.708C216.416 148.833 221.166 149.5 224.958 150.75C231.416 152.875 236.645 156.771 240.645 162.438C243.853 167.021 246.041 171.979 247.208 177.312C248.374 182.646 248.958 187.729 248.958 192.562C248.958 204.812 246.499 215.188 241.583 223.688C234.916 235.146 224.624 240.875 210.708 240.875ZM225.02 172.25C222.062 167.25 216.208 164.75 207.458 164.75H189.708V224.875H207.458C216.541 224.875 222.874 220.396 226.458 211.438C228.416 206.521 229.395 200.667 229.395 193.875C229.395 184.5 227.937 177.292 225.02 172.25Z" /><path d="M141.98 205.375V148.75H161.542V205.375C161.542 215.167 160.022 222.792 156.98 228.25C151.313 238.25 140.501 243.25 124.542 243.25C108.584 243.25 97.7508 238.25 92.0425 228.25C89.0008 222.792 87.48 215.167 87.48 205.375V148.75H107.042V205.375C107.042 211.708 107.792 216.333 109.292 219.25C111.626 224.417 116.709 227 124.542 227C132.334 227 137.397 224.417 139.73 219.25C141.23 216.333 141.98 211.708 141.98 205.375Z" /><path d="M60.4375 221.938H26.5L20.125 240.875H0L32.875 148.75H54.625L87.25 240.875H66.375L60.4375 221.938ZM55.0625 206.062L43.5625 169.812L31.6875 206.062H55.0625Z" /><path d="M247.642 93.875H224.267L206.767 62.5L188.267 93.875H165.892L195.517 46.9375L167.33 1.75H190.33L206.767 31.6875L223.642 1.75H245.892L217.705 46.1875L247.642 93.875Z" /><path d="M158.88 87C152.005 93.2917 143.213 96.4375 132.505 96.4375C119.255 96.4375 108.838 92.1875 101.255 83.6875C93.6717 75.1458 89.88 63.4375 89.88 48.5625C89.88 32.4792 94.1925 20.0833 102.818 11.375C110.318 3.79167 119.859 0 131.443 0C146.943 0 158.276 5.08333 165.443 15.25C169.401 20.9583 171.526 26.6875 171.818 32.4375H152.568C151.318 28.0208 149.713 24.6875 147.755 22.4375C144.255 18.4375 139.068 16.4375 132.193 16.4375C125.193 16.4375 119.672 19.2708 115.63 24.9375C111.588 30.5625 109.568 38.5417 109.568 48.875C109.568 59.2083 111.693 66.9583 115.943 72.125C120.234 77.25 125.672 79.8125 132.255 79.8125C139.005 79.8125 144.151 77.6042 147.693 73.1875C149.651 70.8125 151.276 67.25 152.568 62.5H171.63C169.963 72.5417 165.713 80.7083 158.88 87Z" /><path d="M46.1875 93.875H6.5V1.75H46.1875C51.8958 1.83333 56.6458 2.5 60.4375 3.75C66.8958 5.875 72.125 9.77083 76.125 15.4375C79.3333 20.0208 81.5208 24.9792 82.6875 30.3125C83.8542 35.6458 84.4375 40.7292 84.4375 45.5625C84.4375 57.8125 81.9792 68.1875 77.0625 76.6875C70.3958 88.1458 60.1042 93.875 46.1875 93.875ZM60.5 25.25C57.5417 20.25 51.6875 17.75 42.9375 17.75H25.1875V77.875H42.9375C52.0208 77.875 58.3542 73.3958 61.9375 64.4375C63.8958 59.5208 64.875 53.6667 64.875 46.875C64.875 37.5 63.4167 30.2917 60.5 25.25Z" /></symbol>
+<symbol id="logo-dcx-studio" viewBox="0 0 741 98" fill="currentColor"><path d="M654.864 48.64C654.864 41.8987 655.76 35.584 657.552 29.696C659.429 23.808 662.16 18.688 665.744 14.336C669.328 9.89867 673.765 6.4 679.056 3.84C684.347 1.28 690.448 0 697.36 0C704.528 0 710.8 1.28 716.176 3.84C721.637 6.31467 726.16 9.77067 729.744 14.208C733.413 18.56 736.144 23.7227 737.936 29.696C739.813 35.584 740.752 41.8987 740.752 48.64C740.752 55.296 739.813 61.568 737.936 67.456C736.144 73.2587 733.456 78.3787 729.872 82.816C726.288 87.168 721.808 90.624 716.432 93.184C711.056 95.744 704.827 97.024 697.744 97.024C690.661 97.024 684.432 95.744 679.056 93.184C673.68 90.624 669.2 87.168 665.616 82.816C662.032 78.3787 659.344 73.2587 657.552 67.456C655.76 61.568 654.864 55.296 654.864 48.64ZM697.872 89.6C703.845 89.6 708.965 88.4907 713.232 86.272C717.584 83.968 721.125 80.9387 723.856 77.184C726.672 73.4293 728.72 69.0773 730 64.128C731.365 59.1787 732.048 54.016 732.048 48.64C732.048 42.24 731.237 36.5227 729.616 31.488C728.08 26.368 725.819 22.016 722.832 18.432C719.845 14.848 716.219 12.1173 711.952 10.24C707.685 8.36266 702.907 7.424 697.616 7.424C691.728 7.424 686.608 8.576 682.256 10.88C677.989 13.184 674.448 16.256 671.632 20.096C668.901 23.8507 666.853 28.2027 665.488 33.152C664.208 38.1013 663.568 43.264 663.568 48.64C663.568 54.1013 664.208 59.3067 665.488 64.256C666.853 69.2053 668.901 73.5573 671.632 77.312C674.448 81.0667 677.989 84.0533 682.256 86.272C686.608 88.4907 691.813 89.6 697.872 89.6Z" /><path d="M625.895 94.592V2.43201H634.599V94.592H625.895Z" /><path d="M530.448 94.592V2.43201H561.936C564.496 2.43201 567.013 2.51734 569.488 2.688C571.963 2.77334 574.395 3.07201 576.784 3.58401C579.173 4.01067 581.477 4.69334 583.696 5.632C586 6.57067 588.219 7.80801 590.352 9.34401C593.424 11.5627 595.941 14.2933 597.904 17.536C599.867 20.6933 601.403 24.064 602.512 27.648C603.707 31.1467 604.517 34.7307 604.944 38.4C605.456 41.984 605.712 45.312 605.712 48.384C605.712 51.456 605.499 54.5707 605.072 57.728C604.731 60.8853 604.133 64 603.28 67.072C602.427 70.0587 601.275 72.96 599.824 75.776C598.459 78.5067 596.709 81.024 594.576 83.328C592.443 85.7173 590.096 87.6373 587.536 89.088C585.061 90.5387 582.416 91.6907 579.6 92.544C576.869 93.312 574.011 93.8667 571.024 94.208C568.037 94.464 565.008 94.592 561.936 94.592H530.448ZM539.152 87.168H560.016C563.941 87.168 567.611 86.9547 571.024 86.528C574.523 86.016 578.064 84.8213 581.648 82.944C584.72 81.408 587.237 79.3173 589.2 76.672C591.163 74.0267 592.699 71.168 593.808 68.096C595.003 64.9387 595.813 61.6533 596.24 58.24C596.752 54.8267 597.008 51.5413 597.008 48.384C597.008 45.056 596.795 41.6853 596.368 38.272C595.941 34.7733 595.131 31.488 593.936 28.416C592.741 25.2587 591.12 22.4 589.072 19.84C587.024 17.1947 584.379 15.0187 581.136 13.312C578.405 11.8613 575.163 10.9227 571.408 10.496C567.653 10.0693 563.856 9.856 560.016 9.856H539.152V87.168Z" /><path d="M438.201 2.43201H446.905V57.344C446.905 68.7787 449.038 77.0133 453.305 82.048C457.572 87.0827 464.441 89.6 473.913 89.6C478.862 89.6 483.044 88.96 486.457 87.68C489.956 86.3147 492.772 84.3093 494.905 81.664C497.038 78.9333 498.574 75.5627 499.513 71.552C500.452 67.5413 500.921 62.8053 500.921 57.344V2.43201H509.625V59.904C509.625 71.936 506.638 81.152 500.665 87.552C494.777 93.8667 485.86 97.024 473.913 97.024C461.881 97.024 452.921 93.7813 447.033 87.296C441.145 80.8107 438.201 71.68 438.201 59.904V2.43201Z" /><path d="M358.628 2.43201H425.7V9.856H396.516V94.592H387.812V9.856H358.628V2.43201Z" /><path d="M292.282 67.072C292.623 71.168 293.519 74.6667 294.97 77.568C296.506 80.384 298.426 82.688 300.73 84.48C303.119 86.272 305.85 87.5947 308.922 88.448C311.994 89.216 315.279 89.6 318.778 89.6C322.874 89.6 326.415 89.088 329.402 88.064C332.389 87.04 334.821 85.6747 336.698 83.968C338.575 82.176 339.941 80.128 340.794 77.824C341.733 75.52 342.202 73.088 342.202 70.528C342.202 66.944 341.391 64.0427 339.77 61.824C338.149 59.6053 336.015 57.8133 333.37 56.448C330.81 54.9973 327.823 53.8453 324.41 52.992C321.082 52.1387 317.626 51.328 314.042 50.56C310.543 49.7067 307.087 48.7253 303.674 47.616C300.346 46.5067 297.359 45.0133 294.714 43.136C292.154 41.2587 290.063 38.8693 288.442 35.968C286.821 32.9813 286.01 29.2267 286.01 24.704C286.01 21.5467 286.65 18.4747 287.93 15.488C289.295 12.5013 291.258 9.856 293.818 7.552C296.463 5.248 299.749 3.41333 303.674 2.048C307.599 0.682665 312.122 0 317.242 0C322.447 0 326.97 0.725332 330.81 2.17599C334.735 3.62666 337.978 5.632 340.538 8.192C343.098 10.6667 345.018 13.568 346.298 16.896C347.578 20.224 348.218 23.7653 348.218 27.52H339.898C339.898 24.0213 339.258 20.992 337.978 18.432C336.783 15.872 335.119 13.7813 332.986 12.16C330.853 10.5387 328.421 9.344 325.69 8.576C322.959 7.808 320.143 7.424 317.242 7.424C312.805 7.424 309.05 8.064 305.978 9.344C302.991 10.5387 300.602 12.1173 298.81 14.08C297.018 16.0427 295.781 18.2187 295.098 20.608C294.415 22.9973 294.287 25.3867 294.714 27.776C295.226 30.7627 296.421 33.152 298.298 34.944C300.175 36.736 302.479 38.2293 305.21 39.424C307.941 40.5333 310.927 41.472 314.17 42.24C317.498 42.9227 320.869 43.6907 324.282 44.544C327.695 45.312 330.981 46.2507 334.138 47.36C337.381 48.4693 340.239 49.9627 342.714 51.84C345.189 53.7173 347.151 56.1493 348.602 59.136C350.138 62.0373 350.906 65.7067 350.906 70.144C350.906 78.6773 347.962 85.2907 342.074 89.984C336.186 94.6773 327.909 97.024 317.242 97.024C312.463 97.024 308.026 96.384 303.93 95.104C299.834 93.9093 296.293 92.0747 293.306 89.6C290.319 87.04 287.973 83.9253 286.266 80.256C284.645 76.5013 283.834 72.1067 283.834 67.072H292.282Z" /><path d="M241.142 94.592H217.767L200.267 63.217L181.767 94.592H159.392L189.017 47.6545L160.83 2.46704H183.83L200.267 32.4045L217.142 2.46704H239.392L211.205 46.9045L241.142 94.592Z" /><path d="M152.38 87.717C145.505 94.0087 136.713 97.1545 126.005 97.1545C112.755 97.1545 102.338 92.9045 94.755 84.4045C87.1717 75.8629 83.38 64.1545 83.38 49.2795C83.38 33.1962 87.6925 20.8004 96.3175 12.092C103.818 4.50871 113.359 0.717041 124.943 0.717041C140.443 0.717041 151.776 5.80037 158.943 15.967C162.901 21.6754 165.026 27.4045 165.318 33.1545H146.068C144.818 28.7379 143.213 25.4045 141.255 23.1545C137.755 19.1545 132.568 17.1545 125.693 17.1545C118.693 17.1545 113.172 19.9879 109.13 25.6545C105.088 31.2795 103.068 39.2587 103.068 49.592C103.068 59.9254 105.193 67.6754 109.443 72.842C113.734 77.967 119.172 80.5295 125.755 80.5295C132.505 80.5295 137.651 78.3212 141.193 73.9045C143.151 71.5295 144.776 67.967 146.068 63.217H165.13C163.463 73.2587 159.213 81.4254 152.38 87.717Z" /><path d="M39.6875 94.592H0V2.46704H39.6875C45.3958 2.55037 50.1458 3.21704 53.9375 4.46704C60.3958 6.59204 65.625 10.4879 69.625 16.1545C72.8333 20.7379 75.0208 25.6962 76.1875 31.0295C77.3542 36.3629 77.9375 41.4462 77.9375 46.2795C77.9375 58.5295 75.4792 68.9045 70.5625 77.4045C63.8958 88.8629 53.6042 94.592 39.6875 94.592ZM54 25.967C51.0417 20.967 45.1875 18.467 36.4375 18.467H18.6875V78.592H36.4375C45.5208 78.592 51.8542 74.1129 55.4375 65.1545C57.3958 60.2379 58.375 54.3837 58.375 47.592C58.375 38.217 56.9167 31.0087 54 25.967Z" /></symbol>
+</svg>
+<div class="g-pagina tx tx-papel">
+
+<header class="dcx-cab tx tx-papel g-cab">
+  <div class="dcx-cab-in">
+    <a class="dcx-cab-logo" href="#topo" aria-label="DCX Audio, início do guia"><svg viewBox="0 0 647 98" aria-hidden="true"><use href="#logo-dcx-audio"/></svg></a>
+    <nav class="dcx-cab-nav" aria-label="Seções do guia">
+      <a href="#principios">Princípios</a><a href="#cores">Cores</a><a href="#tipografia">Tipografia</a><a href="#texturas">Texturas</a><a href="#componentes">Componentes</a><a href="#logo">Logo</a><a href="#voz">Voz</a><a href="#cassete">Cassete</a><a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</header>
+
+<main class="g-wrap" id="topo">
+  <section class="g-capa" aria-labelledby="t-capa">
+    <div>
+      <div class="g-rot">DCX Audio · design system · DS-5</div>
+      <h1 id="t-capa" class="tx-tinta tx-registro">Guia da marca</h1>
+      <p class="g-lead">Máquinas de áudio clássicas que abrem no navegador, de graça e com código aberto, feitas em Duque de Caxias, RJ. Este guia diz como a marca fala, que cor tem, de que é feita e como cada peça se comporta.</p>
+    </div>
+    <dl class="g-ficha">
+      <dt>Versão</dt><dd>0.2 · 09/11/2026</dd>
+      <dt>Tokens</dt><dd>tokens.css</dd>
+      <dt>Materiais</dt><dd>textures.css</dd>
+      <dt>Peças</dt><dd>components.css</dd>
+      <dt>Referência</dt><dd>DCX-404 face nova</dd>
+      <dt>Direção</dt><dd>capa de cassete</dd>
+    </dl>
+  </section>
+  <ol class="g-sumario">
+    <li><a href="#principios">Princípios</a></li><li><a href="#cores">Cores</a></li><li><a href="#tipografia">Tipografia</a></li><li><a href="#texturas">Texturas</a></li>
+    <li><a href="#componentes">Componentes</a></li><li><a href="#logo">Uso da logo</a></li><li><a href="#voz">Tom de voz</a></li><li><a href="#cassete">Capa de cassete</a></li><li><a href="#checklist">Checklist</a></li>
+  </ol>
+
+  <!-- ===================================================== 01 PRINCÍPIOS -->
+  <section class="g-sec" id="principios" aria-labelledby="t-princ">
+    <div class="g-sec-cab"><div class="g-sec-num tx-tinta">01</div><h2 id="t-princ">Princípios</h2>
+      <p>Cinco regras que decidem os casos que o guia não cobre.</p></div>
+    <ol class="g-princ">
+      <li><i>01</i><b>O objeto vem primeiro</b><span>Cada controle é uma peça com alojamento, borda e superfície, medida no painel real. Nada de enfeite que não exista num aparelho.</span></li>
+      <li><i>02</i><b>Textura com motivo</b><span>Papel, tinta, metal e borracha, cada um com a sua camada. Sem gradiente genérico, sem sombra padrão, sem ícone de biblioteca.</span></li>
+      <li><i>03</i><b>Preto, marfim e pouco acento</b><span>Preto #1c1c1c e marfim fazem quase tudo. Rosa, vinho e vermelho vêm dos painéis e aparecem como luz ou tinta, não como fundo.</span></li>
+      <li><i>04</i><b>Direto, de oficina</b><span>Frase curta, verbo de ação, sem exagero. "Inspirado em", nunca "igual a" ou "melhor que".</span></li>
+      <li><i>05</i><b>Abre em um clique</b><span>Toda tela leva para tocar: botão grande, sem conta, sem instalação. Funciona em 375 px tão bem quanto no desktop.</span></li>
+    </ol>
+  </section>
+
+  <!-- ===================================================== 02 CORES -->
+  <section class="g-sec" id="cores" aria-labelledby="t-cores">
+    <div class="g-sec-cab"><div class="g-sec-num tx-tinta">02</div><h2 id="t-cores">Cores</h2>
+      <p>Base preta e marfim; cinzas quentes interpolados entre os dois; acentos tirados das variáveis do Figma do 404 e do CSS dos painéis. O contraste de cada lasca é calculado na hora (WCAG 2.x) contra o preto e o marfim.</p></div>
+
+    <div class="g-sub"><h3>Proporção de uso</h3><code>marfim 62 · preto 30 · acento 8</code></div>
+    <div class="g-proporcao" aria-label="Proporção de uso: marfim 62%, preto 30%, acentos 8%">
+      <div class="tx tx-papel" style="flex:62;color:var(--dcx-cinza-600)">marfim · fundo</div>
+      <div style="flex:30;background:var(--dcx-preto);color:var(--dcx-cinza-400)">preto · texto, chassi</div>
+      <div style="flex:4;background:var(--dcx-vinho)"></div><div style="flex:2;background:var(--dcx-rosa)"></div><div style="flex:2;background:var(--dcx-marinho)"></div>
+    </div>
+
+    <div class="g-sub"><h3>Base</h3><code>--dcx-preto · --dcx-branco</code></div>
+    <div class="g-cores" data-cores>
+      <figure class="g-cor" data-hex="#1c1c1c"><div class="g-cor-tinta" style="background:#1c1c1c;color:var(--dcx-branco)">Aa</div><figcaption><b>Preto</b><code>--dcx-preto · #1c1c1c</code><span class="g-uso">Texto, chassi, botão principal.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor rec" data-hex="#f2ecdc"><div class="g-cor-tinta tx tx-papel" style="background-color:#f2ecdc">Aa</div><figcaption><b>Marfim</b><code>--dcx-branco-marfim · #f2ecdc</code><span class="g-uso">Fundo principal da marca.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor" data-hex="#ebe8df"><div class="g-cor-tinta tx tx-papel tx-v2" style="background-color:#ebe8df">Aa</div><figcaption><b>Papel</b><code>--dcx-branco-papel · #ebe8df</code><span class="g-uso">Manual, documentação longa.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor" data-hex="#ebe0c8"><div class="g-cor-tinta tx tx-papel tx-v3" style="background-color:#ebe0c8">Aa</div><figcaption><b>Creme</b><code>--dcx-branco-creme · #ebe0c8</code><span class="g-uso">Cartão, caixa, embalagem.</span><span class="g-ctr"></span></figcaption></figure>
+    </div>
+
+    <div class="g-sub"><h3>Cinzas quentes</h3><code>--dcx-cinza-900 … 200</code></div>
+    <div class="g-escala">
+      <div style="background:#1c1c1c;color:#a29d92">900<br>1c1c1c</div><div style="background:#2b2a27;color:#a29d92">800<br>2b2a27</div><div style="background:#3b3935;color:#c6c0b3">700<br>3b3935</div><div style="background:#5d5a53;color:#dbd5c8">600<br>5d5a53</div>
+      <div style="background:#7b776e;color:#1c1c1c">500<br>7b776e</div><div style="background:#a29d92;color:#1c1c1c">400<br>a29d92</div><div style="background:#c6c0b3;color:#3b3935">300<br>c6c0b3</div><div style="background:#dbd5c8;color:#3b3935">200<br>dbd5c8</div>
+    </div>
+    <p class="g-txt" style="margin-top:var(--dcx-e-3);font-size:var(--dcx-t-sm)">Texto corrido sobre claro: no mínimo cinza-600 (5.8:1). Cinza-500 só em texto grande, fio e ícone. Sobre preto: cinza-400 para texto secundário.</p>
+
+    <div class="g-sub"><h3>Acentos dos painéis</h3><code>do Figma do 404 e do CSS do RJ-2000</code></div>
+    <div class="g-cores" data-cores>
+      <figure class="g-cor" data-hex="#76232b"><div class="g-cor-tinta" style="background:#76232b;color:var(--dcx-branco)">Aa</div><figcaption><b>Vinho</b><code>--dcx-vinho · #76232b</code><span class="g-uso">Link e ênfase sobre claro. Borda do elastômero aceso.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor" data-hex="#ef7b80"><div class="g-cor-tinta" style="background:linear-gradient(#ef7b80,#cc626e);color:#5f262b">Aa</div><figcaption><b>Rosa</b><code>--dcx-rosa · #ef7b80</code><span class="g-uso">Tecla acesa. Texto só sobre preto.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor" data-hex="#f53925"><div class="g-cor-tinta" style="background:#1d1915;color:#f53925;text-shadow:0 0 2.5px rgba(255,36,28,.533),0 0 7px rgb(245 57 37 / .25)">888</div><figcaption><b>Vermelho de display</b><code>--dcx-vermelho-display · #f53925</code><span class="g-uso">Segmento aceso e LED. Cor de luz, nunca de texto sobre claro.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor" data-hex="#292c4d"><div class="g-cor-tinta" style="background:#292c4d;color:var(--dcx-branco)">Aa</div><figcaption><b>Marinho</b><code>--dcx-marinho · #292c4d</code><span class="g-uso">Placas e legendas do painel. Anel de foco.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor" data-hex="#5f262b"><div class="g-cor-tinta" style="background:#5f262b;color:var(--dcx-rosa)">Aa</div><figcaption><b>Vinho-tinta</b><code>--dcx-vinho-tinta · #5f262b</code><span class="g-uso">Texto sobre tecla acesa.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor" data-hex="#929899"><div class="g-cor-tinta" style="background:#929899;color:#1c1c1c">Aa</div><figcaption><b>Cinza de painel</b><code>--dcx-cinza-painel · #929899</code><span class="g-uso">Superfície do painel. Decoração sobre claro.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor" data-hex="#d1d6e0"><div class="g-cor-tinta tx tx-metal" style="color:#292c4d">Aa</div><figcaption><b>Alumínio</b><code>--dcx-aluminio-1/2 · #d1d6e0 → #aeb1b8</code><span class="g-uso">Face das máquinas. Só com .tx-metal.</span><span class="g-ctr"></span></figcaption></figure>
+      <figure class="g-cor" data-hex="#b3261e"><div class="g-cor-tinta" style="background:#b3261e;color:var(--dcx-branco)">Aa</div><figcaption><b>Vermelho de erro</b><code>--dcx-vermelho-escuro · #b3261e</code><span class="g-uso">Erro e "evite". O único vermelho legível sobre claro.</span><span class="g-ctr"></span></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ===================================================== 03 TIPOGRAFIA -->
+  <section class="g-sec" id="tipografia" aria-labelledby="t-tipo">
+    <div class="g-sec-cab"><div class="g-sec-num tx-tinta">03</div><h2 id="t-tipo">Tipografia</h2>
+      <p>Helvetica na marca, na home e na documentação. Helvetica é proprietária: usamos a do sistema e, onde não existe, a TeX Gyre Heros (livre, mesmo desenho, GUST Font License), que vem embutida em fonts/ (400 e 700, ~29 KB). Nenhum arquivo da Helvetica é embutido.</p></div>
+    <p class="g-specimen">Equipamentos clássicos, abertos no navegador.</p>
+    <div class="g-tipos">
+      <div class="g-tipo"><code>5xl · 76/1.02</code><div style="font-size:var(--dcx-t-5xl);font-weight:700">Título da home</div></div>
+      <div class="g-tipo"><code>3xl · 49/1.02</code><div style="font-size:var(--dcx-t-3xl);font-weight:700">DCX Studio</div></div>
+      <div class="g-tipo"><code>xl · 31/1.1</code><div style="font-size:var(--dcx-t-xl);font-weight:700">Sampler de performance</div></div>
+      <div class="g-tipo"><code>md · 20/1.45</code><div style="font-size:var(--dcx-t-md);letter-spacing:0">Abra, solte um som e toque.</div></div>
+      <div class="g-tipo"><code>base · 16/1.5</code><div style="font-size:var(--dcx-t-base);letter-spacing:0">Texto corrido: nunca menor que isto.</div></div>
+      <div class="g-tipo"><code>xs · 12 caixa-alta</code><div class="g-rot" style="color:var(--dcx-preto)">Rótulo · legenda · etiqueta</div></div>
+    </div>
+    <ul class="g-regras">
+      <li><b>Título fecha</b>−0.02em a partir de 25 px; peso 700.</li>
+      <li><b>Rótulo abre</b>Caixa-alta 12 px, +0.08em, como serigrafia de painel.</li>
+      <li><b>Leitura</b>16 px, entrelinha 1.5, no máximo 64 caracteres por linha.</li>
+      <li><b>Números</b>Mono tabular em especificação e tabela.</li>
+    </ul>
+    <div class="g-sub"><h3>Marca e máquina não se misturam</h3></div>
+    <div class="g-duas">
+      <div class="g-quadro"><h4>Marca · Helvetica</h4><p>Home, guia, documentação, cartão de compartilhamento, README.</p>
+        <p style="margin-top:var(--dcx-e-4);font-size:var(--dcx-t-2xl);font-weight:700;letter-spacing:-.02em;color:var(--dcx-preto);line-height:1">DCX Audio</p></div>
+      <div class="g-quadro"><h4>Máquina · fontes do hardware</h4><p>O painel é um objeto: mantém Roboto Condensed, Inter e Russo One, embutidas (OFL). A marca não reveste o painel.</p>
+        <img class="g-recorte" src="img/dcx-404-face.jpg" alt="Recorte do painel do DCX-404: nome em Russo One e legendas VOLUME, CTRL 1 e CTRL 2 em Inter" width="760" height="1137" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== 04 TEXTURAS -->
+  <section class="g-sec" id="texturas" aria-labelledby="t-tex">
+    <div class="g-sec-cab"><div class="g-sec-num tx-tinta">04</div><h2 id="t-tex">Texturas</h2>
+      <p>Cada material é uma pilha de camadas físicas: cor de base, camada escura (fibra, mancha, sujeira) e camada clara (grão, estria de luz, poeira). Intensidade 1.0 em superfície de marca; 0.5 atrás de texto. Antes e depois de cada um em <a href="textures-demo.html">textures-demo.html</a>.</p></div>
+    <div class="g-mats">
+      <figure class="g-mat"><div class="tx tx-papel">Papel</div><figcaption><code>.tx .tx-papel</code> · fundo de página, manual.</figcaption></figure>
+      <figure class="g-mat"><div class="tx tx-cartao tx-v2">Cartão</div><figcaption><code>.tx-cartao</code> · capa, caixa, cartão de visita.</figcaption></figure>
+      <figure class="g-mat"><div class="tx tx-serigrafia" style="background-color:var(--dcx-vinho);color:var(--dcx-branco)"><span class="tx-tinta">Serigrafia</span></div><figcaption><code>.tx-serigrafia</code> + <code>.tx-tinta</code> · cartaz, faixa.</figcaption></figure>
+      <figure class="g-mat"><div class="tx tx-metal">Alumínio</div><figcaption><code>.tx-metal</code> · placa, face de aparelho.</figcaption></figure>
+      <figure class="g-mat"><div class="tx tx-plastico" style="color:var(--dcx-cinza-800)">Plástico</div><figcaption><code>.tx-plastico</code> · tecla de função.</figcaption></figure>
+      <figure class="g-mat"><div class="tx tx-cartao tx-desgaste tx-poeira tx-v3">Gasto</div><figcaption><code>.tx-desgaste .tx-poeira</code> · somam sobre qualquer material.</figcaption></figure>
+    </div>
+    <div class="g-sub"><h3>Tecla de elastômero</h3><code>.tx-tecla · .down · .lit</code></div>
+    <p class="g-txt">As peças e as cores da tecla do 404: alojamento #222321, borda #5a5d61, superfície #adb1b7 → #979ba2. Clique para pressionar; duplo clique acende.</p>
+    <div class="g-teclas tx tx-metal">
+      <figure><button class="tx-tecla" type="button" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption>solto</figcaption></figure>
+      <figure><button class="tx-tecla down tx-v2" type="button" data-fixo="1" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption>pressionado</figcaption></figure>
+      <figure><button class="tx-tecla lit tx-v3" type="button" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption>aceso</figcaption></figure>
+      <figure><button class="tx-tecla lit down" type="button" data-fixo="1" style="--w:64px;--h:42px"><i class="a"></i><i class="b"></i><i class="s"></i><span>REC</span></button><figcaption>aceso e press.</figcaption></figure>
+      <figure><button class="tx-tecla" type="button" style="--w:86px;--h:74px;font:400 30px/.98 var(--dcx-fonte-painel-num)"><i class="a"></i><i class="b"></i><i class="s"></i><span>7</span></button><figcaption>pad</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ===================================================== 05 COMPONENTES -->
+  <section class="g-sec" id="componentes" aria-labelledby="t-comp">
+    <div class="g-sec-cab"><div class="g-sec-num tx-tinta">05</div><h2 id="t-comp">Componentes</h2>
+      <p>HTML e CSS puro, em components.css. Mesma física das peças do 404: solto tem degrau de 2 px e a sombra do alojamento; pressionado desce os 2 px e ganha a sombra moldada por dentro; aceso usa as cores da tecla acesa. Os estados abaixo estão forçados com <code class="dcx-cod-linha">.is-hover</code>, <code class="dcx-cod-linha">.is-down</code> e <code class="dcx-cod-linha">.is-focus</code> para comparar lado a lado.</p></div>
+
+    <!-- botão -->
+    <div class="g-sub"><h3>Botão</h3><code>.dcx-btn · --claro · --link · --p</code></div>
+    <div class="g-palco">
+      <div class="g-estados">
+        <figure><button class="dcx-btn" type="button">Abrir o DCX Studio</button><figcaption>solto</figcaption></figure>
+        <figure><button class="dcx-btn is-hover" type="button">Abrir o DCX Studio</button><figcaption>hover</figcaption></figure>
+        <figure><button class="dcx-btn is-down" type="button">Abrir o DCX Studio</button><figcaption>pressionado</figcaption></figure>
+        <figure><button class="dcx-btn is-focus" type="button">Abrir o DCX Studio</button><figcaption>foco (teclado)</figcaption></figure>
+        <figure><button class="dcx-btn" type="button" disabled>Abrir o DCX Studio</button><figcaption>apagado</figcaption></figure>
+        <figure><button class="dcx-btn dcx-btn--claro" type="button">Ver manuais</button><figcaption>claro</figcaption></figure>
+        <figure><button class="dcx-btn dcx-btn--claro is-hover" type="button">Ver manuais</button><figcaption>hover</figcaption></figure>
+        <figure><button class="dcx-btn dcx-btn--claro is-down" type="button">Ver manuais</button><figcaption>pressionado</figcaption></figure>
+        <figure><button class="dcx-btn dcx-btn--claro is-focus" type="button">Ver manuais</button><figcaption>foco</figcaption></figure>
+        <figure><button class="dcx-btn dcx-btn--claro" type="button" disabled>Ver manuais</button><figcaption>apagado</figcaption></figure>
+        <figure><a class="dcx-btn dcx-btn--link" href="#componentes">Código</a><figcaption>link</figcaption></figure>
+        <figure><a class="dcx-btn dcx-btn--link is-hover" href="#componentes">Código</a><figcaption>hover</figcaption></figure>
+        <figure><a class="dcx-btn dcx-btn--link is-down" href="#componentes">Código</a><figcaption>pressionado</figcaption></figure>
+        <figure><a class="dcx-btn dcx-btn--link is-focus" href="#componentes">Código</a><figcaption>foco</figcaption></figure>
+        <figure><button class="dcx-btn dcx-btn--p" type="button">Abrir</button><figcaption>pequeno</figcaption></figure>
+      </div>
+    </div>
+    <div class="g-palco g-palco--preto dcx-escuro" style="margin-top:var(--dcx-e-3)">
+      <div class="g-linha"><button class="dcx-btn dcx-btn--claro" type="button">Abrir o DCX Studio</button><button class="dcx-btn dcx-btn--claro is-focus" type="button">foco sobre preto</button><a class="dcx-btn dcx-btn--link" href="#componentes">Código no GitHub</a></div>
+    </div>
+    <div class="g-pecas">
+      <div class="g-palco" style="display:grid;place-items:center">
+        <div class="g-cotado"><button class="dcx-btn" type="button">Abrir o DCX Studio</button><span class="g-cota g-cota--v"><span>48</span></span><span class="g-cota g-cota--h"><span>24 · texto · 24</span></span><span class="g-cota g-cota--d">degrau 2 · raio 4</span></div>
+      </div>
+      <ul class="g-medidas">
+        <li><span>Altura</span><span>48 px (40 no --p)</span></li>
+        <li><span>Laterais</span><span>24 px (16 no --p)</span></li>
+        <li><span>Raio</span><span>4 px · borda do elastômero</span></li>
+        <li><span>Degrau</span><span>2 px · desce ao pressionar</span></li>
+        <li><span>Sombra</span><span>0 2px 3px rgba(16,23,18,.2) · 404</span></li>
+        <li><span>Pressionado</span><span>inset 0 2px 3px rgba(23,27,23,.5)</span></li>
+        <li><span>Foco</span><span>2 px marinho, folga 3 px</span></li>
+        <li><span>Texto</span><span>Helvetica 700 16 px, −0.01em</span></li>
+      </ul>
+    </div>
+    <figure class="dcx-cod" style="margin-top:var(--dcx-e-4)"><figcaption class="dcx-cod-cab"><span>botão · html</span><button class="dcx-cod-copiar" type="button"><i class="dcx-etq-led"></i>Copiar</button></figcaption><pre tabindex="0"><code><span class="c">&lt;!-- principal, claro, link, pequeno --&gt;</span>
+&lt;<span class="k">a</span> class=<span class="s">"dcx-btn"</span> href=<span class="s">"studio/"</span>&gt;Abrir o DCX Studio&lt;/<span class="k">a</span>&gt;
+&lt;<span class="k">button</span> class=<span class="s">"dcx-btn dcx-btn--claro"</span> type=<span class="s">"button"</span>&gt;Ver manuais&lt;/<span class="k">button</span>&gt;
+&lt;<span class="k">a</span> class=<span class="s">"dcx-btn dcx-btn--link"</span> href=<span class="s">"https://github.com/dcxaudio"</span>&gt;Código&lt;/<span class="k">a</span>&gt;
+&lt;<span class="k">button</span> class=<span class="s">"dcx-btn dcx-btn--p"</span> disabled&gt;Abrir&lt;/<span class="k">button</span>&gt;</code></pre></figure>
+
+    <!-- etiqueta -->
+    <div class="g-sub"><h3>Etiqueta</h3><code>.dcx-etq · --marinho · --aceso · --teste · --preto · .dcx-etq-led</code></div>
+    <p class="g-txt">Tinta impressa, não botão: não tem hover nem cursor. 22 px de altura, caixa-alta 12 px.</p>
+    <div class="g-palco">
+      <div class="g-linha">
+        <span class="dcx-etq">b0.3</span>
+        <span class="dcx-etq dcx-etq--preto">GPL-3.0</span>
+        <span class="dcx-etq dcx-etq--marinho">Sampler</span>
+        <span class="dcx-etq dcx-etq--aceso">Novo</span>
+        <span class="dcx-etq dcx-etq--teste">Em teste</span>
+        <span class="dcx-etq"><i class="dcx-etq-led on"></i>No ar</span>
+        <span class="dcx-etq"><i class="dcx-etq-led"></i>Parado</span>
+      </div>
+    </div>
+
+    <!-- cartão de máquina -->
+    <div class="g-sub"><h3>Cartão de máquina</h3><code>.dcx-maquina · .is-breve · .dcx-maquina-foto--vazia</code></div>
+    <p class="g-txt">Folha de papel sobre a mesa: no hover sobe 2 px e a sombra alonga. A captura do painel fica numa janela rebaixada, com a sombra moldada do 404 por cima.</p>
+    <div class="g-maquinas">
+      <figure>
+        <article class="dcx-maquina tx tx-papel" aria-labelledby="m-404">
+          <div class="dcx-maquina-foto"><img src="img/dcx-404-face.jpg" alt="Painel do DCX-404 (face nova)" width="760" height="1137" loading="lazy"></div>
+          <div class="dcx-maquina-corpo">
+            <div class="dcx-maquina-etqs"><span class="dcx-etq dcx-etq--marinho">Performance</span><span class="dcx-etq">b0.3</span><span class="dcx-etq dcx-etq--teste">face nova</span></div>
+            <h3 class="dcx-maquina-nome" id="m-404">DCX 404</h3>
+            <p class="dcx-maquina-frase">Sampler de performance com 24 efeitos, inspirado no SP-404.</p>
+            <div class="dcx-maquina-acoes"><a class="dcx-btn dcx-btn--p" href="#componentes">Abrir</a><a class="dcx-btn dcx-btn--link dcx-btn--p" href="#componentes">Código</a></div>
+          </div>
+        </article>
+        <figcaption>com captura · passe o mouse</figcaption>
+      </figure>
+      <figure>
+        <article class="dcx-maquina tx tx-papel tx-v2" aria-labelledby="m-2000">
+          <div class="dcx-maquina-foto dcx-maquina-foto--vazia"><span>captura do painel<br>pendente</span></div>
+          <div class="dcx-maquina-corpo">
+            <div class="dcx-maquina-etqs"><span class="dcx-etq dcx-etq--marinho">Sampler</span><span class="dcx-etq"><i class="dcx-etq-led on"></i>No ar</span></div>
+            <h3 class="dcx-maquina-nome" id="m-2000">RJ-2000</h3>
+            <p class="dcx-maquina-frase">Sampler e sequenciador de 12 bits, inspirado no SP-1200.</p>
+            <div class="dcx-maquina-acoes"><a class="dcx-btn dcx-btn--p" href="#componentes">Abrir</a><a class="dcx-btn dcx-btn--link dcx-btn--p" href="#componentes">Código</a></div>
+          </div>
+        </article>
+        <figcaption>sem captura</figcaption>
+      </figure>
+      <figure>
+        <article class="dcx-maquina tx tx-papel tx-v3 is-breve" aria-labelledby="m-1202">
+          <div class="dcx-maquina-foto dcx-maquina-foto--vazia"><span>em obra</span></div>
+          <div class="dcx-maquina-corpo">
+            <div class="dcx-maquina-etqs"><span class="dcx-etq dcx-etq--marinho">Mixer</span><span class="dcx-etq"><i class="dcx-etq-led"></i>Parado</span></div>
+            <h3 class="dcx-maquina-nome" id="m-1202">RJ-1202</h3>
+            <p class="dcx-maquina-frase">Mixer de estilo clássico, inspirado no 1202.</p>
+            <div class="dcx-maquina-acoes"><button class="dcx-btn dcx-btn--p" type="button" disabled>Abrir</button><a class="dcx-btn dcx-btn--link dcx-btn--p" href="#componentes">Código</a></div>
+          </div>
+        </article>
+        <figcaption>ainda não abre · .is-breve (exemplo de estado)</figcaption>
+      </figure>
+    </div>
+
+    <!-- cabeçalho -->
+    <div class="g-sub"><h3>Cabeçalho</h3><code>.dcx-cab · --escuro</code></div>
+    <p class="g-txt">Fio duplo de manual impresso embaixo (2 px, folga, 1 px). Página atual em negrito com fio de 2 px; hover com fio vinho de 1 px. No celular a navegação desce para uma segunda linha que rola sozinha; o cabeçalho do topo desta página é o mesmo componente.</p>
+    <div class="g-cab-demo">
+      <header class="dcx-cab tx tx-papel">
+        <div class="dcx-cab-in">
+          <a class="dcx-cab-logo" href="#componentes" aria-label="DCX Audio"><svg viewBox="0 0 647 98" aria-hidden="true"><use href="#logo-dcx-audio"/></svg></a>
+          <nav class="dcx-cab-nav" aria-label="Exemplo de navegação"><a href="#componentes" aria-current="page">Máquinas</a><a href="#componentes" class="is-hover">Studio</a><a href="#componentes">Manuais</a><a href="#componentes">Código</a></nav>
+          <a class="dcx-btn dcx-btn--p" href="#componentes">Abrir o DCX Studio</a>
+        </div>
+      </header>
+    </div>
+    <div class="g-cab-demo">
+      <header class="dcx-cab dcx-cab--escuro tx tx-serigrafia">
+        <div class="dcx-cab-in">
+          <a class="dcx-cab-logo" href="#componentes" aria-label="DCX Studio"><svg viewBox="0 0 741 98" aria-hidden="true"><use href="#logo-dcx-studio"/></svg></a>
+          <nav class="dcx-cab-nav" aria-label="Exemplo de navegação escura"><a href="#componentes" aria-current="page">Rack</a><a href="#componentes">Projetos</a><a href="#componentes">Ajuda</a></nav>
+          <a class="dcx-btn dcx-btn--claro dcx-btn--p" href="#componentes">Salvar disquete</a>
+        </div>
+      </header>
+    </div>
+
+    <!-- rodapé -->
+    <div class="g-sub"><h3>Rodapé</h3><code>.dcx-rod</code></div>
+    <p class="g-txt">Chassi preto com tinta de serigrafia, os quatro parafusos do 404 nos cantos (desenho e cores do parafuso-cabeca.svg e parafuso-assento.svg) e a linha de pé do painel: fio, legenda, fio. É o rodapé do fim desta página.</p>
+
+    <!-- bloco de código -->
+    <div class="g-sub"><h3>Bloco de código</h3><code>.dcx-cod · --num · .dcx-cod-linha</code></div>
+    <p class="g-txt">Grafite quente do visor apagado, texto marfim em mono 14 px, sem textura. Rola na horizontal dentro do bloco. Copiar acende o LED por 1,6 s. Na linha do texto: <code class="dcx-cod-linha">--tex-intensity: .5</code>.</p>
+    <figure class="dcx-cod dcx-cod--num"><figcaption class="dcx-cod-cab"><span>nova-tela.html</span><button class="dcx-cod-copiar" type="button"><i class="dcx-etq-led"></i>Copiar</button></figcaption><pre tabindex="0"><code><span class="l">&lt;<span class="k">link</span> rel=<span class="s">"stylesheet"</span> href=<span class="s">"design-system/tokens.css"</span>&gt;</span><span class="l">&lt;<span class="k">link</span> rel=<span class="s">"stylesheet"</span> href=<span class="s">"design-system/textures.css"</span>&gt;</span><span class="l">&lt;<span class="k">link</span> rel=<span class="s">"stylesheet"</span> href=<span class="s">"design-system/components.css"</span>&gt;</span><span class="l"></span><span class="l"><span class="c">&lt;!-- fundo de página: papel leve, porque tem texto por cima --&gt;</span></span><span class="l">&lt;<span class="k">body</span> class=<span class="s">"tx tx-papel"</span> style=<span class="s">"--tex-intensity: <span class="num">.5</span>"</span>&gt;</span></code></pre></figure>
+
+    <!-- tabela -->
+    <div class="g-sub"><h3>Tabela</h3><code>.dcx-tab · .dcx-tab-rolo · .num</code></div>
+    <p class="g-txt">Ficha técnica de manual: cabeçalho caixa-alta com fio preto de 2 px, linhas com fio cinza-300, números em mono à direita. Sem textura. No celular rola dentro da moldura e mostra sombra só do lado que tem mais conteúdo.</p>
+    <div class="dcx-tab-rolo" tabindex="0" role="region" aria-label="Tabela de máquinas">
+      <table class="dcx-tab">
+        <caption>Máquinas DCX Audio</caption>
+        <thead><tr><th scope="col">Máquina</th><th scope="col">Tipo</th><th scope="col">Inspirado em</th><th scope="col" class="num">Versão</th><th scope="col">Estado</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">RJ-2000</th><td>Sampler e sequenciador</td><td class="fraco">SP-1200</td><td class="num">—</td><td><span class="dcx-etq"><i class="dcx-etq-led on"></i>No ar</span></td></tr>
+          <tr class="is-hover"><th scope="row">DCX 404</th><td>Sampler de performance</td><td class="fraco">SP-404</td><td class="num">b0.3</td><td><span class="dcx-etq dcx-etq--teste">Em teste</span></td></tr>
+          <tr><th scope="row">RJ-950</th><td>Sampler de rack</td><td class="fraco">S950</td><td class="num">—</td><td><span class="dcx-etq"><i class="dcx-etq-led on"></i>No ar</span></td></tr>
+          <tr><th scope="row">RJ-42</th><td>Looper</td><td class="fraco">—</td><td class="num">—</td><td><span class="dcx-etq"><i class="dcx-etq-led on"></i>No ar</span></td></tr>
+          <tr><th scope="row">RJ-1202</th><td>Mixer</td><td class="fraco">1202</td><td class="num">—</td><td><span class="dcx-etq"><i class="dcx-etq-led"></i>Em obra</span></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="5">Exemplo de layout: versões e estados ilustrativos, conferir antes de publicar. Nomes de terceiros só como "inspirado em".</td></tr></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================================================== 06 LOGO -->
+  <section class="g-sec" id="logo" aria-labelledby="t-logo">
+    <div class="g-sec-cab"><div class="g-sec-num tx-tinta">06</div><h2 id="t-logo">Uso da logo</h2>
+      <p>Três versões e o selo. A logo sempre em uma cor só: preto sobre claro, marfim sobre preto. Arquivos em <code class="dcx-cod-linha">Images/logos/</code> (brancos; recolorir só para preto #1c1c1c ou marfim).</p></div>
+    <div class="g-logos">
+      <figure class="g-logo"><div class="g-claro tx tx-papel"><svg viewBox="0 0 647 98" style="height:44px" role="img" aria-label="DCX Audio"><use href="#logo-dcx-audio"/></svg></div><figcaption>Horizontal · preto sobre marfim · dcx-audio.svg</figcaption></figure>
+      <figure class="g-logo"><div class="g-escuro tx tx-serigrafia"><svg viewBox="0 0 647 98" style="height:44px" role="img" aria-label="DCX Audio"><use href="#logo-dcx-audio"/></svg></div><figcaption>Horizontal · marfim sobre preto</figcaption></figure>
+      <figure class="g-logo"><div class="g-claro tx tx-papel tx-v2"><svg viewBox="0 0 370 244" style="height:112px" role="img" aria-label="DCX Audio, empilhada"><use href="#logo-dcx-audio-empilhado"/></svg></div><figcaption>Empilhada · avatar, ícone, espaço quadrado · dcx-audio-empilhado.svg</figcaption></figure>
+      <figure class="g-logo"><div class="g-escuro tx tx-serigrafia tx-v2"><svg viewBox="0 0 741 98" style="height:40px" role="img" aria-label="DCX Studio"><use href="#logo-dcx-studio"/></svg></div><figcaption>DCX Studio · só no rack e na página do Studio · dcx-studio.svg</figcaption></figure>
+    </div>
+
+    <div class="g-sub"><h3>Área livre e tamanho mínimo</h3><code>x = altura das letras</code></div>
+    <div class="g-area-wrap">
+      <div class="g-area-palco g-claro" style="border-radius:var(--dcx-r-2)">
+        <div class="g-area"><i>x</i><i>x</i><i>x</i><i>x</i><svg viewBox="0 0 647 98" role="img" aria-label="DCX Audio com a área livre marcada"><use href="#logo-dcx-audio"/></svg></div>
+      </div>
+      <div>
+        <p class="g-txt">Em volta da logo, nada (texto, borda, outra marca) entra numa faixa de <b>x</b>, a altura das letras. Em cabeçalho estreito, o mínimo é <b>x/2</b>.</p>
+        <div class="g-minimos">
+          <figure><svg viewBox="0 0 647 98" style="width:100px;display:block" role="img" aria-label="DCX Audio, 100 px"><use href="#logo-dcx-audio"/></svg><figcaption>horizontal ≥ 100 px</figcaption></figure>
+          <figure><svg viewBox="0 0 370 244" style="width:56px;display:block" role="img" aria-label="DCX Audio empilhada, 56 px"><use href="#logo-dcx-audio-empilhado"/></svg><figcaption>empilhada ≥ 56 px</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-sub"><h3>O selo</h3><code>.dcx-selo · s = altura do selo</code></div>
+    <div class="g-selo-wrap">
+      <div class="g-selo-palco g-escuro tx tx-capa">
+        <div class="g-selo-par" role="img" aria-label="Selo ao lado da logo DCX Audio, com a área livre marcada"><span class="g-selo-cota g-selo-cota--a">s/4</span><span class="g-selo-cota g-selo-cota--b">0,4 s</span><i class="dcx-selo"></i><svg viewBox="0 0 647 98" aria-hidden="true"><use href="#logo-dcx-audio"/></svg></div>
+      </div>
+      <div>
+        <p class="g-txt">O selo é o único ponto quente da capa: uma etiqueta de fita inclinada, em acento <code class="dcx-cod-linha">#e2463f</code>, com um compasso de bateria em meio-tom marfim (bumbo, chimbal, caixa, chimbal). Desenho nosso, gerado por <code class="dcx-cod-linha">fonte/gerar-selo.py</code>. Proporção fixa 3:2.</p>
+        <p class="g-txt">Ao lado da logo: folga de <b>0,4 s</b> entre os dois; logo com <b>0,62 s</b> de altura; área livre de <b>s/4</b> em volta do conjunto. Sozinho, também <b>s/4</b> de área livre.</p>
+        <div class="g-selo-tam">
+          <figure><div class="g-escuro"><i class="dcx-selo" style="--s:64px"></i></div><figcaption>64 px · padrão</figcaption></figure>
+          <figure><div class="g-escuro"><i class="dcx-selo" style="--s:28px"></i></div><figcaption>≥ 28 px · completo</figcaption></figure>
+          <figure><div class="g-escuro"><i class="dcx-selo dcx-selo--p" style="--s:16px"></i></div><figcaption>16–27 px · --p</figcaption></figure>
+        </div>
+      </div>
+    </div>
+    <div class="g-naos g-naos--selo" style="margin-top:var(--dcx-e-5)">
+      <figure class="g-nao"><div><i class="dcx-selo" style="--s:56px;transform:scaleX(-1)"></i></div><figcaption><b>Não</b> espelhar, girar nem endireitar a inclinação.</figcaption></figure>
+      <figure class="g-nao"><div><i class="dcx-selo" style="--s:56px;filter:hue-rotate(160deg)"></i></div><figcaption><b>Não</b> recolorir: só o acento, mesmo na capa de uma máquina.</figcaption></figure>
+      <figure class="g-nao"><div><span style="display:block;width:56px;height:56px;border-radius:2px;background:radial-gradient(circle,var(--dcx-acento-papel) 0 8%,var(--dcx-acento) 9% 20%,var(--dcx-acento-papel) 21% 30%,var(--dcx-acento) 31% 42%,var(--dcx-acento-papel) 43% 50%,var(--dcx-acento) 51%)"></span></div><figcaption><b>Não</b> trocar por quadrado com anéis ou alvo: lembra marca de fita de terceiros.</figcaption></figure>
+    </div>
+
+    <div class="g-sub"><h3>O que não fazer</h3></div>
+    <div class="g-naos">
+      <figure class="g-nao"><div class="g-claro"><svg viewBox="0 0 647 98" aria-hidden="true" style="transform:scaleX(1.45)"><use href="#logo-dcx-audio"/></svg></div><figcaption><b>Não</b> esticar nem achatar.</figcaption></figure>
+      <figure class="g-nao"><div class="g-claro"><svg viewBox="0 0 647 98" aria-hidden="true" style="transform:rotate(-12deg)"><use href="#logo-dcx-audio"/></svg></div><figcaption><b>Não</b> girar nem inclinar.</figcaption></figure>
+      <figure class="g-nao"><div class="g-claro" style="color:var(--dcx-rosa)"><svg viewBox="0 0 647 98" aria-hidden="true"><use href="#logo-dcx-audio"/></svg></div><figcaption><b>Não</b> recolorir com acento.</figcaption></figure>
+      <figure class="g-nao"><div class="g-claro"><svg viewBox="0 0 647 98" aria-hidden="true" style="filter:drop-shadow(3px 4px 3px rgb(0 0 0 / .5))"><use href="#logo-dcx-audio"/></svg></div><figcaption><b>Não</b> pôr sombra, contorno ou brilho.</figcaption></figure>
+      <figure class="g-nao"><div class="tx tx-metal" style="--tex-intensity:1.6;color:#8e939b"><svg viewBox="0 0 647 98" aria-hidden="true"><use href="#logo-dcx-audio"/></svg></div><figcaption><b>Não</b> usar sobre fundo sem contraste.</figcaption></figure>
+      <figure class="g-nao"><div class="g-claro"><span class="g-falso">DCX AUDIO</span></div><figcaption><b>Não</b> redigitar em outra fonte.</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ===================================================== 07 VOZ -->
+  <section class="g-sec" id="voz" aria-labelledby="t-voz">
+    <div class="g-sec-cab"><div class="g-sec-num tx-tinta">07</div><h2 id="t-voz">Tom de voz</h2>
+      <p>Direto, de oficina, sem exagero. Fala com beatmaker e produtor que gosta de hardware clássico, e com quem quer aprender fuçando no código. Vitrine em inglês curto + português.</p></div>
+    <div class="g-tagline tx tx-serigrafia"><p class="tx-tinta">Equipamentos clássicos, abertos no navegador.</p><small>Classic gear, open in your browser.</small></div>
+    <div class="g-pares">
+      <div class="g-par"><p>Inspirado no SP-1200.</p><p>Igual ao SP-1200.</p></div>
+      <div class="g-par"><p>Abra, solte um som e toque.</p><p>Experimente agora a nossa solução inovadora!</p></div>
+      <div class="g-par"><p>Roda no navegador, sem instalar nem criar conta.</p><p>A revolução da produção musical chegou.</p></div>
+      <div class="g-par"><p>Código aberto (GPLv3), feito em Duque de Caxias, RJ.</p><p>Melhor que o hardware original.</p></div>
+      <div class="g-par"><p>Abrir · Código · Manual</p><p>Clique aqui para saber mais</p></div>
+    </div>
+    <ul class="g-regras">
+      <li><b>Frase curta</b>Uma ideia por frase. Verbo no começo nos botões.</li>
+      <li><b>Só o que é verdade hoje</b>Sem comparação que não provamos.</li>
+      <li><b>Nomes de terceiros</b>Só em texto, como "inspirado em", nunca com logo.</li>
+      <li><b>Lugar</b>Duque de Caxias aparece com orgulho, sem folclore.</li>
+    </ul>
+  </section>
+
+  <!-- ===================================================== 08 CAPA DE CASSETE (DS-5) -->
+  <section class="g-sec" id="cassete" aria-labelledby="t-cas">
+    <div class="g-sec-cab"><div class="g-sec-num tx-tinta">08</div><h2 id="t-cas">Capa de cassete</h2>
+      <p>A direção visual da marca para capa, compartilhamento, cartaz e anúncio. Vem das capas de fita e dos anúncios de gravador dos anos 70 e 80: cartão preto, tinta prata, uma faixa cinza larga, palavra-marca enorme, numeral gigante, ficha técnica miúda e um só ponto quente. Só a linguagem: nenhuma marca, logo ou texto de fabricante.</p></div>
+
+    <div class="g-cas-intro">
+      <div class="g-capa-demo dcx-capa tx tx-capa tx-dobra" role="img" aria-label="Exemplo de capa: selo vermelho (etiqueta inclinada com onda em meio-tom), logo DCX Audio em prata, faixa cinza com o numeral 404, a frase sampler de performance e duas abas com a marca em escala menor">
+        <div class="g-capa-topo"><i class="dcx-selo"></i><svg viewBox="0 0 647 98" aria-hidden="true"><use href="#logo-dcx-audio"/></svg></div>
+        <div class="dcx-faixa tx tx-faixa"><span class="dcx-numeral dcx-numeral--faixa">404</span></div>
+        <div class="g-capa-meio"><p>sampler de<br><b>performance</b></p><div class="g-capa-med">12 pads<b>4 bancos</b></div></div>
+        <div class="dcx-lombada">
+          <div class="dcx-aba"><i class="dcx-selo"></i><svg class="dcx-aba-marca" viewBox="0 0 647 98" aria-hidden="true"><use href="#logo-dcx-audio"/></svg><div class="dcx-aba-txt">sampler de performance<br>DCX 404</div></div>
+          <div class="dcx-aba"><i class="dcx-selo"></i><svg class="dcx-aba-marca" viewBox="0 0 647 98" aria-hidden="true"><use href="#logo-dcx-audio"/></svg><div class="dcx-aba-txt">Duque de Caxias, RJ<br>feito no Brasil</div></div>
+        </div>
+        <div class="g-capa-pe">
+          <div class="dcx-ficha"><span>abre no navegador</span><span class="sep">·</span><span>sem instalar</span><span>código aberto</span><span class="sep">·</span><span>GPL-3.0</span><span>grátis</span><span class="sep">·</span><span>sem conta</span></div>
+          <div class="dcx-ficha" style="--ficha-cols:max-content"><span><b>DCX Audio</b></span><span>Duque de Caxias · RJ</span><span>feito no Brasil</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="g-sub" style="margin-top:0"><h3>Anatomia</h3><code>.dcx-capa .tx-capa</code></div>
+        <ul class="g-medidas">
+          <li><span>Cartão preto, tinta mosqueada</span><span>.tx-capa · 1.0</span></li>
+          <li><span>Selo: o único ponto quente</span><span>.dcx-selo · acento</span></li>
+          <li><span>Palavra-marca em prata, não branco</span><span>#d3cdbf</span></li>
+          <li><span>Faixa larga de borda a borda</span><span>.dcx-faixa · #8d8980</span></li>
+          <li><span>Numeral gigante impresso na faixa</span><span>.dcx-numeral--faixa</span></li>
+          <li><span>Frase em regular grande + bold</span><span>−0.03em / −0.045em</span></li>
+          <li><span>Abas: marca repetida menor</span><span>.dcx-lombada .dcx-aba</span></li>
+          <li><span>Fio de luz em cima, vinco embaixo</span><span>--dcx-fio-de-luz</span></li>
+          <li><span>Dobra do cartão</span><span>.tx-dobra · --dobra 71%</span></li>
+          <li><span>Ficha técnica em colunas</span><span>.dcx-ficha · 11 px</span></li>
+        </ul>
+        <p class="g-txt" style="margin-top:var(--dcx-e-4);font-size:var(--dcx-t-sm)">Tintas por superfície: preto + prata + <b>uma</b> cor. Na capa da marca, a cor é o acento do selo; na capa de uma máquina, é a cor da máquina e o selo continua sendo o único vermelho.</p>
+      </div>
+    </div>
+
+    <div class="g-sub"><h3>Cor por máquina</h3><code>.dcx-chapado .dcx-cor-*</code></div>
+    <p class="g-txt"><span class="g-escolha g-aprovado">aprovado</span> Tokens finais, aprovados por Igor em 10/11/2026: as cinco cores abaixo (incluindo o amarelo #e7b23a do RJ-1202) e a prata #d3cdbf no lugar do branco da capa. Os nomes são estáveis; os valores só mudam com nova aprovação.</p>
+    <p class="g-txt">Como uma série de fitas: cada aparelho tem uma cor chapada tirada do próprio painel. A cor é bloco de tinta com texto preto por cima, nunca texto colorido sobre claro.</p>
+    <div class="g-fitas">
+      <figure class="g-fita"><div class="g-fita-capa tx tx-capa"><div class="g-fita-cab"><i class="dcx-selo"></i><span>RJ-2000</span></div><div class="g-fita-cor dcx-chapado dcx-cor-rj2000 tx tx-serigrafia"><span class="dcx-numeral">2000</span></div><div class="g-fita-pe">sampler de 12 bits</div></div><figcaption><b>RJ-2000</b><code>#4b8ad0</code> · régua azul das seções</figcaption></figure>
+      <figure class="g-fita"><div class="g-fita-capa tx tx-capa tx-v2"><div class="g-fita-cab"><i class="dcx-selo"></i><span>DCX 404</span></div><div class="g-fita-cor dcx-chapado dcx-cor-dcx404 tx tx-serigrafia tx-v2"><span class="dcx-numeral">404</span></div><div class="g-fita-pe">sampler de performance</div></div><figcaption><b>DCX 404</b><code>#ef7b80</code> · tecla acesa</figcaption></figure>
+      <figure class="g-fita"><div class="g-fita-capa tx tx-capa tx-v3"><div class="g-fita-cab"><i class="dcx-selo"></i><span>RJ-950</span></div><div class="g-fita-cor dcx-chapado dcx-cor-rj950 tx tx-serigrafia tx-v3"><span class="dcx-numeral">950</span></div><div class="g-fita-pe">sampler de rack</div></div><figcaption><b>RJ-950</b><code>#b3c25c</code> · vidro do LCD</figcaption></figure>
+      <figure class="g-fita"><div class="g-fita-capa tx tx-capa"><div class="g-fita-cab"><i class="dcx-selo"></i><span>RJ-42</span></div><div class="g-fita-cor dcx-chapado dcx-cor-rj42 tx tx-serigrafia tx-v2"><span class="dcx-numeral dcx-numeral--vazado">42</span></div><div class="g-fita-pe">looper de frases</div></div><figcaption><b>RJ-42</b><code>#ec6a2c</code> · display de BPM</figcaption></figure>
+      <figure class="g-fita"><div class="g-fita-capa tx tx-capa tx-v2"><div class="g-fita-cab"><i class="dcx-selo"></i><span>RJ-1202</span></div><div class="g-fita-cor dcx-chapado dcx-cor-rj1202 tx tx-serigrafia tx-v3"><span class="dcx-numeral">1202</span></div><div class="g-fita-pe">mixer de mesa</div></div><figcaption><b>RJ-1202</b><code>#e7b23a</code> · medidor de LED</figcaption></figure>
+    </div>
+    <div class="dcx-tab-rolo" style="margin-top:var(--dcx-e-5)" tabindex="0" role="region" aria-label="Tabela de cor por máquina">
+      <table class="dcx-tab g-tab-cor">
+        <thead><tr><th>Máquina</th><th>Cor</th><th>Token</th><th>De onde vem</th><th class="num">Preto sobre a cor</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><i style="background:#4b8ad0"></i>RJ-2000</td><td class="num">#4b8ad0</td><td><code>--dcx-maq-rj2000</code></td><td>régua azul das seções do painel</td><td class="num" data-ctr="#4b8ad0"></td><td>aprovado</td></tr>
+          <tr><td><i style="background:#ef7b80"></i>DCX 404</td><td class="num">#ef7b80</td><td><code>--dcx-maq-dcx404</code></td><td>superfície da tecla acesa (Figma)</td><td class="num" data-ctr="#ef7b80"></td><td>aprovado</td></tr>
+          <tr><td><i style="background:#b3c25c"></i>RJ-950</td><td class="num">#b3c25c</td><td><code>--dcx-maq-rj950</code></td><td>vidro do LCD verde</td><td class="num" data-ctr="#b3c25c"></td><td>aprovado</td></tr>
+          <tr><td><i style="background:#ec6a2c"></i>RJ-42</td><td class="num">#ec6a2c</td><td><code>--dcx-maq-rj42</code></td><td>display de BPM, baixado para laranja de tinta</td><td class="num" data-ctr="#ec6a2c"></td><td>aprovado</td></tr>
+          <tr><td><i style="background:#e7b23a"></i>RJ-1202</td><td class="num">#e7b23a</td><td><code>--dcx-maq-rj1202</code></td><td>degrau amarelo do medidor de LED</td><td class="num" data-ctr="#e7b23a"></td><td>aprovado</td></tr>
+          <tr><td><i style="background:#e2463f"></i>Marca / Studio</td><td class="num">#e2463f</td><td><code>--dcx-acento</code></td><td>acento do mockup e dos LEDs do RJ-42/1202; só no selo</td><td class="num" data-ctr="#e2463f"></td><td>—</td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="6">Contraste calculado na hora (WCAG 2.x). Acento: só elemento gráfico ou texto ≥ 24 px.</td></tr></tfoot>
+      </table>
+    </div>
+
+    <div class="g-sub"><h3>Peças da capa</h3><code>components.css · DS-5</code></div>
+    <div class="g-pecas-capa">
+      <figure class="g-peca"><div class="dcx-capa tx tx-capa"><i class="dcx-selo dcx-selo--g"></i><i class="dcx-selo"></i><i class="dcx-selo dcx-selo--p"></i></div><figcaption><code>.dcx-selo</code> · etiqueta de fita inclinada com a onda de um compasso em meio-tom. 128 / 64 px e 24 px (--p).</figcaption></figure>
+      <figure class="g-peca"><div class="dcx-capa tx tx-capa tx-v2" style="justify-content:flex-start;align-items:flex-end"><span class="dcx-numeral" style="font-size:132px">950</span></div><figcaption><code>.dcx-numeral</code> · 700, −0.07em, entrelinha .76. Prata sobre preto.</figcaption></figure>
+      <figure class="g-peca"><div class="dcx-chapado dcx-cor-rj42 tx tx-serigrafia" style="justify-content:flex-start;align-items:flex-end"><span class="dcx-numeral dcx-numeral--vazado" style="font-size:150px">42</span></div><figcaption><code>--vazado</code> · contorno em preto sobre a cor da máquina.</figcaption></figure>
+      <figure class="g-peca"><div class="dcx-capa tx tx-capa tx-v3"><div class="dcx-meiotom" aria-hidden="true"><i></i></div></div><figcaption><code>.dcx-meiotom</code> · círculos que crescem até formar a forma (2 tintas + papel).</figcaption></figure>
+      <figure class="g-peca"><div class="dcx-capa tx tx-capa"><div class="dcx-meiotom" style="--mt-cor:var(--dcx-maq-rj950);--mt-passo:12px;--mt-forma:linear-gradient(135deg,#fff 8%,#575757 82%)" aria-hidden="true"><i></i></div></div><figcaption><code>--mt-forma</code> · mesma grade em degradê, na cor da máquina.</figcaption></figure>
+      <figure class="g-peca"><div class="dcx-capa tx tx-capa tx-dobra tx-dobra-h" style="--dobra:46%;flex-direction:column;align-items:stretch;gap:12px;color:var(--dcx-prata)"><div class="dcx-regua-linha"><b style="font:700 30px/.8 var(--dcx-fonte);letter-spacing:-.055em;color:var(--dcx-prata-clara)">RJ-42</b><i class="dcx-regua"></i></div><div class="dcx-ficha"><span>loop</span><span class="sep">·</span><span>até 8 compassos</span><span>BPM</span><span class="sep">·</span><span>detecção automática</span><span>entrada</span><span class="sep">·</span><span>arquivo ou microfone</span></div></div><figcaption><code>.dcx-regua</code> + <code>.dcx-ficha</code> + <code>.tx-dobra-h</code> (vinco a 46%).</figcaption></figure>
+    </div>
+
+    <div class="g-sub"><h3>Anúncio</h3><code>.dcx-anuncio · .dcx-luz · .dcx-brilho</code></div>
+    <div class="g-anuncio-demo dcx-anuncio dcx-capa tx tx-capa tx-v2">
+      <div>
+        <div class="dcx-regua-linha"><svg viewBox="0 0 647 98" role="img" aria-label="DCX Audio"><use href="#logo-dcx-audio"/></svg><i class="dcx-regua" style="--linhas:5;--passo:6px;--esp:2px"></i></div>
+        <h4 class="dcx-anuncio-tit">O 404 abre no navegador e toca <b>na hora.</b></h4>
+        <ul class="dcx-anuncio-cols">
+          <li>12 pads em 4 bancos, com efeitos por cima.</li>
+          <li>Solte um arquivo e toque pelo teclado ou MIDI.</li>
+          <li>Visor de sete segmentos e teclas que acendem.</li>
+          <li>Salva o projeto num arquivo seu, sem conta.</li>
+          <li>Código aberto (GPL-3.0): dá para ler e mudar.</li>
+          <li>Feito em Duque de Caxias, RJ.</li>
+        </ul>
+        <p class="dcx-anuncio-leg" style="margin-top:var(--dcx-e-5)">Título em Helvetica fina (300) com a palavra final em bold; régua de 5 linhas completa a linha da marca.</p>
+      </div>
+      <figure class="dcx-luz"><img src="img/dcx-404-face.jpg" width="760" height="1137" alt="DCX 404 sob luz forte de estúdio"><i class="dcx-brilho" style="--x:83%;--y:4%;--b:34px"></i><i class="dcx-brilho" style="--x:9%;--y:58%;--b:22px;--r:-8deg"></i></figure>
+    </div>
+
+    <div class="g-sub"><h3>Decisões para Igor</h3></div>
+    <ul class="g-decisoes">
+      <li><b>Branco da capa</b>Na capa não existe branco: a tinta clara é prata (#d3cdbf, 10.8:1 no preto). Alternativa: creme #ebe0c8 na palavra-marca, mais próximo da capa de fita com tinta creme. Página e home seguem no marfim #f2ecdc.<span class="g-escolha g-aprovado">aprovado por Igor · 10/11/2026: prata #d3cdbf</span></li>
+      <li><b>Textura</b>Capa e cartaz em 1.0 (mosqueado visível de perto, liso de longe); faixa em 0.9; página em 0.5; atrás de texto corrido no máximo 0.6.<span class="g-escolha">recomendado: 1.0 · 0.9 · 0.5</span></li>
+      <li><b>Acento</b>Um só: vermelho-alaranjado #e2463f, já presente no mockup e nos LEDs dos painéis, desenhado como selo próprio.<span class="g-escolha">recomendado: #e2463f</span></li>
+      <li><b>Cor por máquina</b>Cinco cores tiradas dos painéis (tabela acima), todas aprovadas, incluindo o amarelo #e7b23a do RJ-1202. Tokens finais <code>--dcx-maq-*</code> em tokens.css.<span class="g-escolha g-aprovado">aprovado por Igor · 10/11/2026</span></li>
+    </ul>
+  </section>
+
+  <!-- ===================================================== 09 CHECKLIST -->
+  <section class="g-sec g-fim" id="checklist" aria-labelledby="t-check">
+    <div class="g-sec-cab"><div class="g-sec-num tx-tinta">09</div><h2 id="t-check">Checklist para novas telas</h2>
+      <p>Antes de mostrar uma tela nova, passe por aqui. As marcações ficam guardadas só neste navegador.</p></div>
+    <div class="g-check-wrap">
+      <ul class="g-check" id="check">
+        <li><label><input type="checkbox" data-k="tokens"><span class="g-caixa" aria-hidden="true"></span><span><b>Usa tokens.css</b><small>Nenhuma cor, raio ou sombra escrita à mão fora dos tokens.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="base"><span class="g-caixa" aria-hidden="true"></span><span><b>Preto, marfim e pouco acento</b><small>Rosa e vermelho só como luz ou sobre preto; vinho para link.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="fonte"><span class="g-caixa" aria-hidden="true"></span><span><b>Helvetica na marca, fontes do hardware só no painel</b><small>Nada de Inter ou Roboto Condensed fora da máquina.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="leitura"><span class="g-caixa" aria-hidden="true"></span><span><b>Texto corrido ≥ 16 px, cinza-600 no mínimo</b><small>Medida até 64 caracteres; contraste AA conferido.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="textura"><span class="g-caixa" aria-hidden="true"></span><span><b>Textura com motivo</b><small>1.0 em superfície de marca, até 0.6 atrás de texto; nada em tabela, código, foco ou erro.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="estados"><span class="g-caixa" aria-hidden="true"></span><span><b>Cada controle tem os estados</b><small>Solto, hover, pressionado, foco visível e apagado (e aceso, se alterna).</small></span></label></li>
+        <li><label><input type="checkbox" data-k="medidas"><span class="g-caixa" aria-hidden="true"></span><span><b>Medidas em múltiplos de 4</b><small>Raios do 404 (2, 3, 4, 6, 16); alinhamentos conferidos.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="celular"><span class="g-caixa" aria-hidden="true"></span><span><b>375 px sem rolagem lateral</b><small>Calha de 16 px; alvos de toque ≥ 40 px.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="logo"><span class="g-caixa" aria-hidden="true"></span><span><b>Logo com área livre, preto ou marfim</b><small>Sem esticar, girar, recolorir ou redigitar.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="voz"><span class="g-caixa" aria-hidden="true"></span><span><b>Texto no tom da casa</b><small>"Inspirado em"; nenhum logo de terceiros.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="capturas"><span class="g-caixa" aria-hidden="true"></span><span><b>Capturas 2x lado a lado com a referência</b><small>Em 1440 e 375 px, console sem erro.</small></span></label></li>
+        <li><label><input type="checkbox" data-k="acess"><span class="g-caixa" aria-hidden="true"></span><span><b>Impressão, alto contraste e movimento reduzido</b><small>Textura desliga, movimento para, foco continua visível.</small></span></label></li>
+      </ul>
+      <div class="g-placar" aria-live="polite">
+        <div class="g-rot">conferido</div>
+        <div class="tx-visor"><div class="vidro" id="placar" role="img" aria-label="0 de 12"></div></div>
+        <button class="dcx-btn dcx-btn--claro dcx-btn--p g-zerar" type="button" id="zerar">Zerar</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="dcx-rod tx tx-serigrafia dcx-escuro">
+  <i class="dcx-rod-parafusos" aria-hidden="true"></i>
+  <div class="dcx-rod-in">
+    <div class="dcx-rod-marca"><svg viewBox="0 0 370 244" role="img" aria-label="DCX Audio"><use href="#logo-dcx-audio-empilhado"/></svg><p>Equipamentos clássicos, abertos no navegador. Feito em Duque de Caxias, RJ.</p></div>
+    <div><h2>Máquinas</h2><ul><li><a href="#componentes">RJ-2000</a></li><li><a href="#componentes">DCX 404</a></li><li><a href="#componentes">RJ-950</a></li><li><a href="#componentes">RJ-42</a></li></ul></div>
+    <div><h2>Para mexer</h2><ul><li><a href="#componentes">dcx-core</a></li><li><a href="#componentes">Manuais</a></li><li><a href="#checklist">Como contribuir</a></li></ul></div>
+    <div><h2>Casa</h2><ul><li><a href="#componentes">GitHub</a></li><li><a href="#componentes">Licença GPL-3.0</a></li><li><span class="dcx-rod-pend">Contato (a definir)</span></li></ul></div>
+  </div>
+  <div class="dcx-rod-pe">
+    <div class="dcx-rod-linha"><span>DCX Audio · Duque de Caxias</span></div>
+    <p class="dcx-rod-legal">Código aberto (GPL-3.0). Nomes de outros fabricantes aparecem só como referência ("inspirado em"). Fonte de reserva: TeX Gyre Heros (GUST Font License).</p>
+  </div>
+</footer>
+</div>
+
+<script>
+(function () {
+  // contraste WCAG 2.x calculado na hora para cada lasca de cor
+  function lum(hex) {
+    var c = hex.replace('#', ''), v = [0, 2, 4].map(function (i) { var x = parseInt(c.substr(i, 2), 16) / 255; return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+    return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+  }
+  function ratio(a, b) { var l1 = lum(a), l2 = lum(b); return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); }
+  function nota(r) { return r >= 7 ? 'AAA' : r >= 4.5 ? 'AA' : r >= 3 ? 'grande' : 'decor.'; }
+  document.querySelectorAll('[data-hex]').forEach(function (f) {
+    var hex = f.getAttribute('data-hex'), alvo = f.querySelector('.g-ctr'); if (!alvo) return;
+    [['#1c1c1c', 'preto'], ['#f2ecdc', 'marfim']].forEach(function (p) {
+      if (p[0] === hex) return;
+      var r = ratio(hex, p[0]), s = document.createElement('span');
+      s.className = r >= 4.5 ? 'ok' : r < 3 ? 'x' : '';
+      s.textContent = p[1] + ' ' + r.toFixed(2) + ' ' + nota(r);
+      alvo.appendChild(s);
+    });
+  });
+
+  // DS-5: preto sobre a cor de cada máquina
+  document.querySelectorAll('[data-ctr]').forEach(function (td) { var r = ratio(td.getAttribute('data-ctr'), '#1c1c1c'); td.textContent = r.toFixed(2) + ' ' + nota(r); });
+
+  // tecla do 404: pressiona no clique, acende no duplo clique
+  document.querySelectorAll('.tx-tecla').forEach(function (t) {
+    t.addEventListener('pointerdown', function () { t.classList.add('down'); });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (e) { t.addEventListener(e, function () { if (!t.dataset.fixo) t.classList.remove('down'); }); });
+    t.addEventListener('dblclick', function () { t.classList.toggle('lit'); });
+  });
+
+  // copiar código: LED acende por 1,6 s
+  document.querySelectorAll('.dcx-cod-copiar').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var txt = b.closest('.dcx-cod').querySelector('pre').innerText, led = b.querySelector('.dcx-etq-led');
+      function ok() { led.classList.add('on'); b.lastChild.textContent = 'Copiado'; setTimeout(function () { led.classList.remove('on'); b.lastChild.textContent = 'Copiar'; }, 1600); }
+      try { navigator.clipboard.writeText(txt).then(ok, ok); } catch (e) { ok(); }
+    });
+  });
+
+  // checklist: placar no visor de 7 segmentos do 404 (desenho de visor-digito-off.svg)
+  var SEG = { a: 'M8 0H31L34 3L31 6H8L5 3L8 0Z', b: 'M35 5L38 8V26L35 29L32 26V8L35 5Z', c: 'M33 34L36 37V55L33 58L30 55V37L33 34Z', d: 'M5 57H28L31 60L28 63H5L2 60L5 57Z', e: 'M3 34L6 37V55L3 58L0 55V37L3 34Z', f: 'M5 5L8 8V26L5 29L2 26V8L5 5Z', g: 'M6 29H29L32 32L29 35H6L3 32L6 29Z' };
+  var DIG = { '0': 'abcdef', '1': 'bc', '2': 'abdeg', '3': 'abcdg', '4': 'bcfg', '5': 'acdfg', '6': 'acdefg', '7': 'abc', '8': 'abcdefg', '9': 'abcdfg', ' ': '', '-': 'g' };
+  function visor(el, s) {
+    var k = 0.62, html = '<svg width="' + ((s.length * 46 - 7) * k) + '" height="' + (63 * k) + '" viewBox="0 0 ' + (s.length * 46 - 7) + ' 63" aria-hidden="true">';
+    for (var i = 0; i < s.length; i++) { html += '<g transform="translate(' + (i * 46) + ' 0)">'; for (var g in SEG) html += '<path class="sg' + (DIG[s[i]].indexOf(g) >= 0 ? ' on' : '') + '" d="' + SEG[g] + '"/>'; html += '</g>'; }
+    el.innerHTML = html + '</svg>';
+  }
+  var caixas = document.querySelectorAll('#check input'), placar = document.getElementById('placar'), CH = 'dcx-guia-checklist';
+  var salvo = {}; try { salvo = JSON.parse(localStorage.getItem(CH) || '{}') || {}; } catch (e) { salvo = {}; }
+  function atualiza() {
+    var n = 0, est = {};
+    caixas.forEach(function (c) { if (c.checked) n++; est[c.dataset.k] = c.checked; });
+    var s = String(n); s = (s.length < 2 ? ' ' : '') + s;
+    visor(placar, s + '-' + caixas.length);
+    placar.setAttribute('aria-label', n + ' de ' + caixas.length);
+    try { localStorage.setItem(CH, JSON.stringify(est)); } catch (e) {}
+  }
+  caixas.forEach(function (c) { c.checked = !!salvo[c.dataset.k]; c.addEventListener('change', atualiza); });
+  document.getElementById('zerar').addEventListener('click', function () { caixas.forEach(function (c) { c.checked = false; }); atualiza(); });
+  atualiza();
+})();
+</script>
+</body>
+</html>
